@@ -20,10 +20,9 @@ import java.util.List;
  * @see Board
  */
 public class BoardView extends View {
-
+    Battleship bt = new Battleship();
     /** Callback interface to listen for board touches. */
     public interface BoardTouchListener {
-
         /**
          * Called when a place of the board is touched.
          * The coordinate of the touched place is provided.
@@ -117,8 +116,10 @@ public class BoardView extends View {
 
     /** Draw all the places of the board. */
     private void drawPlaces(Canvas canvas) {
+        bt.placeShip(boardSize); // place random places based on the board size
         // *** FOR YOU TO COMPLETE ***
         // check the state of each place of the board and draw it.
+
     }
 
     /** Draw horizontal and vertical lines. */

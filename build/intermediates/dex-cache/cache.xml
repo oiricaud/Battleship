@@ -3,6 +3,15 @@
 
     <item
         is-multidex="true"
+        jar="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="eeebabdfd8203f6ab639ccea4ffa1f20e1adee3a">
+        <dex dex="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-22.1.0_5dad85fe55845a73f8b28058fff33b3a5f5efd54/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/oscarricaud/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.0/support-annotations-22.1.0.jar"
         jumboMode="true"
         optimize="true"
@@ -16,8 +25,17 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="c51c1f20ca7f6c5c6b6270951e8d53cd4d64a167">
+        sha1="e8640036ae4fa66c6fd8d6121c7b7a3511edf500">
         <dex dex="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_6ca43f458b7927530f7fd9f36829933097a32521/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="983e2f375504bc04def18e709c35192afe92e65f">
+        <dex dex="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-22.1.0_af7e20b7717fadd83edbf0d0bb5ce1e2ef37d4b3/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -34,26 +52,8 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="f801cc0ae6f261116fdd2186837a2aa4e9e6aa52">
+        sha1="89a2d85c874dfe2b46ce0f5b115d2831566b7025">
         <dex dex="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_6d655bb0d45ab5885dd05ac0931979c7dee528bb/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="eeebabdfd8203f6ab639ccea4ffa1f20e1adee3a">
-        <dex dex="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-22.1.0_5dad85fe55845a73f8b28058fff33b3a5f5efd54/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="983e2f375504bc04def18e709c35192afe92e65f">
-        <dex dex="/Volumes/OSCARS/Mobile_Apps/BattleshipBase/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-22.1.0_af7e20b7717fadd83edbf0d0bb5ce1e2ef37d4b3/classes.dex" />
     </item>
 
 </items>
