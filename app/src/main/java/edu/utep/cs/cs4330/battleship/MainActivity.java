@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Board board;
     private BoardView boardView;
     private PopupWindow pw;
+    private int countNumOfHits = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         });
         Button newButton = (Button) findViewById(R.id.newButton);
         newButton.setOnClickListener(new View.OnClickListener() {
-
+        TextView counter =(TextView) findViewById(R.id.countOfHits);
             @Override
             public void onClick(View view) {
                 final Player player = new Player();
@@ -50,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
                 boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
                     @Override
                     public void onTouch(int x, int y) {
+                        countNumOfHits++;
+                        counter.setText(String.valueOf("Number of Shots:" + countNumOfHits));
                         toast(String.format("Touched: %d, %d", x, y));
-                        for(int i = 0; i < player.battleship.getWhereisBattleship().size(); i++){
+                        for(int i = 0; i < player.battleship.getBattleshipCoordinates().size(); i++){
                             // (LEFTMOST, RIGHTMOST), (LEFTMOST+1, RIGHTMOST+1)... (LEFTMOST+N, RIGHTMOST+N)
-                            String leftMost = String.valueOf(player.battleship.getWhereisBattleship().get(i).charAt(0));
-                            String rightMost = String.valueOf(player.battleship.getWhereisBattleship().get(i).charAt(2));
+                            String leftMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(0));
+                            String rightMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(2));
                             if((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) {
                                 Log.w("Critical hit! X:", String.valueOf(x));
                                 Log.w("Critical hit! Y:", String.valueOf(y));
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void makeExplosionSound() {
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.torpedo);
-        Log.v("noiseee", "Playing sound...");
+        Log.v("Kill the noise", "Ka-baam");
         mp.start();
     }
 

@@ -1,9 +1,16 @@
 package edu.utep.cs.cs4330.battleship;
 
+import android.util.Log;
+
 /**
  * Created by oscarricaud on 2/10/17.
  */
 
 public class Player {
-    Board board = new Board(5);
+    Battleship battleship = new Battleship();
+    public void setUpBoats() {
+        battleship.placeShip(10); // place random places based on the board size
+        Log.w("Battleship Coordinates:", String.valueOf(battleship.getBattleshipCoordinates()));
+        Submarine submarine = new Submarine();
+    }
 }
