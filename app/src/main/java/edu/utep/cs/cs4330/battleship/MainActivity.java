@@ -39,14 +39,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTouch(int x, int y) {
                 toast(String.format("Touched: %d, %d", x, y));
-
             }
         });
+
         Button newButton = (Button) findViewById(R.id.newButton);
+
         newButton.setOnClickListener(new View.OnClickListener() {
         TextView counter =(TextView) findViewById(R.id.countOfHits);
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) { // Start a new game
                 final Player player = new Player();
                 player.setUpBoats();
                 boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
@@ -59,19 +60,45 @@ public class MainActivity extends AppCompatActivity {
                             // (LEFTMOST, RIGHTMOST), (LEFTMOST+1, RIGHTMOST+1)... (LEFTMOST+N, RIGHTMOST+N)
                             String leftMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(0));
                             String rightMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(2));
-                            if((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) {
+
+                            if((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // User hits
                                 Log.w("Critical hit! X:", String.valueOf(x));
                                 Log.w("Critical hit! Y:", String.valueOf(y));
-                                makeExplosionSound();
+                                player.battleship.setXandY(x, y);
+                                String coordinates = x + " " + y;
+                                player.battleship.setNumOfHits(coordinates);
+                                player.battleship.ispositiontaken(x, y);
+
+                                if(!(player.battleship.isSunk())) { // When you hit the battleship
+                                    makeExplosionSound();
+                                }
+                                if(player.battleship.isSunk()){ // When you sink the boat
+                                    Log.w("Has it sunk", "true");
+                                    makeLouderExplosion();
+                                }
                             }
-                            else{
-                                Log.w("Missed!", "");
+
+                            if(!(String.valueOf(x).equals(leftMost)) && (!String.valueOf(y).equals(rightMost))) { // Misses
+                                missedSound();
                             }
                         }
+                        player.battleship.getXandY();
                     }
                 });
             }
         });
+    }
+
+    private void missedSound() {
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.missed);
+        Log.v("Missed", "Close-by");
+        mp.start();
+    }
+
+    private void makeLouderExplosion() {
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.sunk);
+        Log.v("Ship has been sunk", "Ka-baam");
+        mp.start();
     }
 
     private void makeExplosionSound() {
