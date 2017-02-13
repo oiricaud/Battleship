@@ -19,8 +19,10 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     private Board board;
     private BoardView boardView;
-    private int countShots;
+    private int countShots = 0;
     private MediaPlayer mp;
+    private TextView counter;
+    private  Player player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Player player = new Player();
-        final TextView counter = (TextView) findViewById(R.id.countOfHits);
+        player = new Player();
+        counter = (TextView) findViewById(R.id.countOfHits);
         countShots = 0;
         player.setUpBoats();
         setCountShots(0);
@@ -65,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
             public void onTouch(int x, int y) {
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
-                //     toast(String.format("Touched: %d, %d", x, y));
 
                 for (int i = 0; i < player.battleship.getBattleshipCoordinates().size(); i++) {
                     // (LEFTMOST, RIGHTMOST) == (x, y) == (x+1, y+1)... (x+N, y+N)
@@ -101,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Makes a swish noise when the player misses a shot.
+     */
     private void missedSound() {
         if (mp!=null) {
             mp.stop();
@@ -110,15 +114,9 @@ public class MainActivity extends AppCompatActivity {
         mp.start();
     }
 
-    private void makeLouderExplosion() {
-        if (mp!=null) {
-            mp.stop();
-            mp.release();
-        }
-        mp = MediaPlayer.create(this, R.raw.sunk);
-        mp.start();
-    }
-
+    /**
+     * Makes an explosion sound if the user hits a boat.
+     */
     private void makeExplosionSound() {
         if (mp!=null) {
             mp.stop();
@@ -128,10 +126,26 @@ public class MainActivity extends AppCompatActivity {
         mp.start();
     }
 
+    /**
+     * Makes a louder explosion as the latter method.
+     */
+    private void makeLouderExplosion() {
+        if (mp!=null) {
+            mp.stop();
+            mp.release();
+        }
+        mp = MediaPlayer.create(this, R.raw.sunk);
+        mp.start();
+    }
+
     /** Show a toast message. */
     protected void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
+
+    /**
+     * Restarts the activity
+     */
     public void restartActivity(){
         Intent intent = getIntent();
         overridePendingTransition(0, 0);
