@@ -10,5 +10,6 @@ public class Player {
     Battleship battleship = new Battleship();
     public void setUpBoats() {
         battleship.placeShip(10); // place random places based on the board size
+
     }
 }

@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * @param player makes shots based on its input (x,y) when it clicks on the board.
+     * @param counter auto-increments each time the player makes a shot and displays it in the view.
+     */
     private void makeShots(final Player player, final TextView counter) {
 
         boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
