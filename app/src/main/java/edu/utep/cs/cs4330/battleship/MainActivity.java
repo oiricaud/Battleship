@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private Board board;
     private BoardView boardView;
     private int countShots = 0;
-
+    private   MediaPlayer mp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
-                toast(String.format("Touched: %d, %d", x, y));
+                //toast(String.format("Touched: %d, %d", x, y));
             }
         });
 
@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
                 final TextView counter = (TextView) findViewById(R.id.countOfHits);
                 player.setUpBoats();
                 toast("New Game successfully created!");
-                counter.setText(String.valueOf("Number of Shots:" + 0));
+                counter.setText(String.valueOf("Number of Shots: " + 0));
                 boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
                     @Override
                     public void onTouch(int x, int y) {
                         countShots++;
-                        counter.setText(String.valueOf("Number of Shots:" + countShots));
-                        toast(String.format("Touched: %d, %d", x, y));
+                        counter.setText(String.valueOf("Number of Shots: " + countShots));
+                   //     toast(String.format("Touched: %d, %d", x, y));
 
                         for (int i = 0; i < player.battleship.getBattleshipCoordinates().size(); i++) {
                             // (LEFTMOST, RIGHTMOST) == (x, y) == (x+1, y+1)... (x+N, y+N)
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.w("Critical hit! X:", String.valueOf(x) + "Critical hit! Y:" + String.valueOf(y));
                                 player.battleship.setXandY(x, y);
                                 String coordinates = x + " " + y;
-
+                                toast(("Critical hit!"));
                                 // the setNumOfHits keeps track of the number of times the boat has been hit.
                                 player.battleship.setNumOfHits(coordinates);
                                 player.battleship.ispositiontaken(x, y); // for the final map in @see FleetShip
@@ -74,8 +74,9 @@ public class MainActivity extends AppCompatActivity {
                                     makeLouderExplosion();
                                 }
                             }
-                            if (!(String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // When the user misses
+                            if (!(String.valueOf(x).equals(leftMost)) && (!(String.valueOf(y).equals(rightMost)))) { // When the user misses
                                 Log.w("Phew", "That was close");
+                                toast(("Missed"));
                                 missedSound();
                             }
                         }
@@ -86,17 +87,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void missedSound() {
-        final MediaPlayer mp = MediaPlayer.create(this, R.raw.missed);
+        if (mp!=null) {
+            mp.stop();
+            mp.release();
+        }
+        mp = MediaPlayer.create(this, R.raw.missed);
         mp.start();
     }
 
     private void makeLouderExplosion() {
-        final MediaPlayer mp = MediaPlayer.create(this, R.raw.sunk);
+        if (mp!=null) {
+            mp.stop();
+            mp.release();
+        }
+        mp = MediaPlayer.create(this, R.raw.sunk);
         mp.start();
     }
 
     private void makeExplosionSound() {
-        final MediaPlayer mp = MediaPlayer.create(this, R.raw.torpedo);
+        if (mp!=null) {
+            mp.stop();
+            mp.release();
+        }
+        mp = MediaPlayer.create(this, R.raw.torpedo);
         mp.start();
     }
 
