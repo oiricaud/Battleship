@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -41,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 toast(String.format("Touched: %d, %d", x, y));
             }
         });
+
         // Start a new game when clicked button
         Button newButton = (Button) findViewById(R.id.newButton);
         newButton.setOnClickListener(new View.OnClickListener() {
@@ -49,25 +49,27 @@ public class MainActivity extends AppCompatActivity {
                 final Player player = new Player();
                 final TextView counter = (TextView) findViewById(R.id.countOfHits);
                 player.setUpBoats();
-                toast("New Game has started!");
+                toast("New Game successfully created!");
                 boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
                     @Override
                     public void onTouch(int x, int y) {
-                        counter.setText(String.valueOf("Number of Shots:" + countShots));
                         countShots++;
+                        counter.setText(String.valueOf("Number of Shots:" + countShots));
                         toast(String.format("Touched: %d, %d", x, y));
+
                         for (int i = 0; i < player.battleship.getBattleshipCoordinates().size(); i++) {
-                            // (LEFTMOST, RIGHTMOST), (LEFTMOST+1, RIGHTMOST+1)... (LEFTMOST+N, RIGHTMOST+N)
+                            // (LEFTMOST, RIGHTMOST) == (x, y) == (x+1, y+1)... (x+N, y+N)
                             String leftMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(0));
                             String rightMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(2));
 
                             if ((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // User hits
-                                Log.w("Critical hit! X:", String.valueOf(x));
-                                Log.w("Critical hit! Y:", String.valueOf(y));
+                                Log.w("Critical hit! X:", String.valueOf(x) + "Critical hit! Y:" + String.valueOf(y));
                                 player.battleship.setXandY(x, y);
                                 String coordinates = x + " " + y;
-                                player.battleship.setNumOfHits(coordinates);
-                                player.battleship.ispositiontaken(x, y);
+
+                                // the setNumOfHits keeps track of the number of times the boat has been hit.
+                                player.battleship.setNumOfHits(coordinates); 
+                                player.battleship.ispositiontaken(x, y); // for the final map in @see FleetShip
 
                                 if (!(player.battleship.isSunk())) { // When you hit the battleship
                                     makeExplosionSound();
@@ -87,53 +89,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-        // Button newButton = (Button) findViewById(R.id.newButton);
-        // newButton.setOnClickListener(new View.OnClickListener() {
-
-          //  @Override
-          //  public void onClick(View view) { // Start a new game
-        /*
-                final Player player = new Player();
-                player.setUpBoats();
-                boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-                    @Override
-                    public void onTouch(int x, int y) {
-                        countNumOfHits++;
-                     //   counter.setText(String.valueOf("Number of Shots:" + countNumOfHits));
-                        toast(String.format("Touched: %d, %d", x, y));
-                        for(int i = 0; i < player.battleship.getBattleshipCoordinates().size(); i++){
-                            // (LEFTMOST, RIGHTMOST), (LEFTMOST+1, RIGHTMOST+1)... (LEFTMOST+N, RIGHTMOST+N)
-                            String leftMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(0));
-                            String rightMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(2));
-
-                            if((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // User hits
-                                Log.w("Critical hit! X:", String.valueOf(x));
-                                Log.w("Critical hit! Y:", String.valueOf(y));
-                                player.battleship.setXandY(x, y);
-                                String coordinates = x + " " + y;
-                                player.battleship.setNumOfHits(coordinates);
-                                player.battleship.ispositiontaken(x, y);
-
-                                if(!(player.battleship.isSunk())) { // When you hit the battleship
-                                    makeExplosionSound();
-                                }
-                                if(player.battleship.isSunk()){ // When you sink the boat
-                                    Log.w("Has it sunk", "true");
-                                    makeLouderExplosion();
-                                }
-                            }
-
-                            if(!(String.valueOf(x).equals(leftMost)) && (!String.valueOf(y).equals(rightMost))) { // Misses
-                                missedSound();
-                            }
-                        }
-                        player.battleship.getXandY();
-                    }
-                });
-            }
-        //});
-   // }
-*/
     private void missedSound() {
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.missed);
         Log.v("Missed", "Close-by");
