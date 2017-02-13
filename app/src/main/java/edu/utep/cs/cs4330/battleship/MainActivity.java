@@ -81,12 +81,10 @@ public class MainActivity extends AppCompatActivity {
                                     makeLouderExplosion();
                                 }
                             }
-                            /*
-                            if (!(String.valueOf(x).equals(leftMost)) || (!String.valueOf(y).equals(rightMost))) { // Misses
+                            if (!(String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // Misses
                                 Log.w("Phew", "That was close");
                                 missedSound();
                             }
-                            */
                         }
                         player.battleship.getXandY();
                     }
