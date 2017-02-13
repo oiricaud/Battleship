@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 final TextView counter = (TextView) findViewById(R.id.countOfHits);
                 player.setUpBoats();
                 toast("New Game successfully created!");
+                counter.setText(String.valueOf("Number of Shots:" + 0));
                 boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
                     @Override
                     public void onTouch(int x, int y) {
@@ -68,20 +69,24 @@ public class MainActivity extends AppCompatActivity {
                                 String coordinates = x + " " + y;
 
                                 // the setNumOfHits keeps track of the number of times the boat has been hit.
-                                player.battleship.setNumOfHits(coordinates); 
+                                player.battleship.setNumOfHits(coordinates);
                                 player.battleship.ispositiontaken(x, y); // for the final map in @see FleetShip
 
                                 if (!(player.battleship.isSunk())) { // When you hit the battleship
+                                    Log.w("Hit", "Ka-pow");
                                     makeExplosionSound();
                                 }
                                 if (player.battleship.isSunk()) { // When you sink the boat
-                                    Log.w("Has it sunk", "true");
+                                    Log.w("Abort! Boat has sunk", "Ka-baam");
                                     makeLouderExplosion();
                                 }
                             }
-                            if (!(String.valueOf(x).equals(leftMost)) && (!String.valueOf(y).equals(rightMost))) { // Misses
+                            /*
+                            if (!(String.valueOf(x).equals(leftMost)) || (!String.valueOf(y).equals(rightMost))) { // Misses
+                                Log.w("Phew", "That was close");
                                 missedSound();
                             }
+                            */
                         }
                         player.battleship.getXandY();
                     }
@@ -91,19 +96,16 @@ public class MainActivity extends AppCompatActivity {
     }
     private void missedSound() {
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.missed);
-        Log.v("Missed", "Close-by");
         mp.start();
     }
 
     private void makeLouderExplosion() {
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.sunk);
-        Log.v("Ship has been sunk", "Ka-baam");
         mp.start();
     }
 
     private void makeExplosionSound() {
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.torpedo);
-        Log.v("Kill the noise", "Ka-baam");
         mp.start();
     }
 
