@@ -1,29 +1,22 @@
 package edu.utep.cs.cs4330.battleship;
 
-
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Battleship!!!
+ * @author Oscar Ivan Ricaud
+ * @version 1.0
+ * Last update: 02/12/2017
  */
 public class MainActivity extends AppCompatActivity {
     private Board board;
     private BoardView boardView;
-    private PopupWindow pw;
     private int countShots = 0;
 
     @Override
@@ -81,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                                     makeLouderExplosion();
                                 }
                             }
-                            if (!(String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // Misses
+                            if (!(String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // When the user misses
                                 Log.w("Phew", "That was close");
                                 missedSound();
                             }
