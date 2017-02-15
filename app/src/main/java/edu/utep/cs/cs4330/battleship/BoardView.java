@@ -23,6 +23,15 @@ import java.util.List;
 public class BoardView extends View {
     private LinkedList<Integer> coordinatesForX = new LinkedList<Integer>();
     private LinkedList<Integer> coordinatesForY = new LinkedList<Integer>();
+    private boolean iShot;
+
+    public boolean iShot() {
+        return iShot;
+    }
+
+    public void setiShot(boolean iShot) {
+        this.iShot = iShot;
+    }
 
     /** Callback interface to listen for board touches. */
     public interface BoardTouchListener {
@@ -44,17 +53,25 @@ public class BoardView extends View {
     private final int boardColor = Color.rgb(102, 163, 255);
 
     /** Red color circle **/
-    private final int circleColor = Color.rgb(178,34,34);
+    private final int redColor = Color.rgb(178,34,34);
+
+    /** White color circle **/
+    private final int whiteColor = Color.rgb(255,255,255);
 
     /** Board background paint. */
     private final Paint boardPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
         boardPaint.setColor(boardColor);
     }
-    /** Circle background paint */
-    private final Paint circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    /** Red background paint */
+    private final Paint redPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
-        circlePaint.setColor(circleColor);
+        redPaint.setColor(redColor);
+    }
+    /** Red background paint */
+    private final Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    {
+        whitePaint.setColor(whiteColor);
     }
     /** Board grid line color. */
     private final int boardLineColor = Color.WHITE;
@@ -137,7 +154,13 @@ public class BoardView extends View {
 
         if(coordinatesForX.size() > 2 || coordinatesForY.size() > 2) {
             for(int i = 2; i < coordinatesForX.size(); i++){
-                canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), circlePaint);
+                if(iShot) {
+                    canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
+                    canvas.drawCircle(coordinatesForX.getLast(), coordinatesForY.getLast(), (lineGap() / 2), redPaint);
+                }
+                else{
+                    canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
+                }
             }
         }
     }
