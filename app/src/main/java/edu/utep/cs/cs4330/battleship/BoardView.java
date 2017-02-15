@@ -23,6 +23,10 @@ import java.util.List;
 public class BoardView extends View {
     private LinkedList<Integer> coordinatesForX = new LinkedList<Integer>();
     private LinkedList<Integer> coordinatesForY = new LinkedList<Integer>();
+
+    private LinkedList<Integer> coordinatesHitX = new LinkedList<Integer>();
+    private LinkedList<Integer> coordinatesHitY = new LinkedList<Integer>();
+
     private boolean iShot;
 
     public boolean iShot() {
@@ -155,11 +159,20 @@ public class BoardView extends View {
         if(coordinatesForX.size() > 2 || coordinatesForY.size() > 2) {
             for(int i = 2; i < coordinatesForX.size(); i++){
                 if(iShot) {
+                    // Recolor the places user has shot
+                    coordinatesHitX.add((int) x);
+                    coordinatesHitY.add((int) y);
                     canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
                     canvas.drawCircle(coordinatesForX.getLast(), coordinatesForY.getLast(), (lineGap() / 2), redPaint);
                 }
                 else{
                     canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
+                }
+            }
+
+            for(int j = 0 ; j < coordinatesHitX.size(); j++){
+                for(int k = 0 ; k < coordinatesHitX.size(); k++){
+                    canvas.drawCircle(coordinatesHitX.get(j), coordinatesHitY.get(k), (lineGap() / 2), redPaint);
                 }
             }
         }
