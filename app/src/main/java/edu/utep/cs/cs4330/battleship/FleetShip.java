@@ -11,7 +11,6 @@ public class FleetShip {
     private int size;
     private boolean isSunk;
 
-
     int[][] coordinatesForFinalMap = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},

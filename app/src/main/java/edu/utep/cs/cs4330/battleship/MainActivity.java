@@ -1,6 +1,5 @@
 package edu.utep.cs.cs4330.battleship;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+// Controller
 /**
  * @author Oscar Ivan Ricaud
  * @version 1.0
@@ -23,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mp;
     private TextView counter;
     private  Player player;
+    private static final int SHORT_DELAY = 1000; // 2 seconds
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         board = new Board(10);
         boardView = (BoardView) findViewById(R.id.boardView);
@@ -65,15 +66,15 @@ public class MainActivity extends AppCompatActivity {
         boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
+                board.at(x, y, boardView);
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
-
                 for (int i = 0; i < player.battleship.getBattleshipCoordinates().size(); i++) {
                     // (LEFTMOST, RIGHTMOST) == (x, y) == (x+1, y+1)... (x+N, y+N)
                     String leftMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(0));
                     String rightMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(2));
-
                     if ((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // User hits
+
                         Log.w("Critical hit! X:", String.valueOf(x) + "Critical hit! Y:" + String.valueOf(y));
                         player.battleship.setXandY(x, y);
                         String coordinates = x + " " + y;
@@ -84,10 +85,16 @@ public class MainActivity extends AppCompatActivity {
 
                         if (!(player.battleship.isSunk())) { // When you hit the battleship
                             Log.w("Hit", "Ka-pow");
+                            toast("KA-POW");
                             makeExplosionSound();
+                           // board.setHitArray(666);
+                           // boardView.setCoordinates(player.battleship.getBattleshipCoordinates());
+                            boardView.invalidate(); // calls ondraw method eventually
                         }
                         if (player.battleship.isSunk()) { // When you sink the boat
                             Log.w("Abort! Boat has sunk", "Ka-baam");
+                            toast("SUNK BATTLESHIP");
+
                             makeLouderExplosion();
                         }
                     }

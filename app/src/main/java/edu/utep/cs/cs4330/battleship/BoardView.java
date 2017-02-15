@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,9 +21,12 @@ import java.util.List;
  * @see Board
  */
 public class BoardView extends View {
+    private LinkedList<Integer> coordinatesForX = new LinkedList<Integer>();
+    private LinkedList<Integer> coordinatesForY = new LinkedList<Integer>();
 
     /** Callback interface to listen for board touches. */
     public interface BoardTouchListener {
+
         /**
          * Called when a place of the board is touched.
          * The coordinate of the touched place is provided.
@@ -39,12 +43,19 @@ public class BoardView extends View {
     /** Board background color. */
     private final int boardColor = Color.rgb(102, 163, 255);
 
+    /** Red color circle **/
+    private final int circleColor = Color.rgb(178,34,34);
+
     /** Board background paint. */
     private final Paint boardPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
         boardPaint.setColor(boardColor);
     }
-
+    /** Circle background paint */
+    private final Paint circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    {
+        circlePaint.setColor(circleColor);
+    }
     /** Board grid line color. */
     private final int boardLineColor = Color.WHITE;
 
@@ -94,7 +105,10 @@ public class BoardView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 int xy = locatePlace(event.getX(), event.getY());
+                invalidate();
                 if (xy >= 0) {
+                    Log.w("x eventGetX ", String.valueOf(event.getX()));
+                    Log.w("y eventGetY", String.valueOf(event.getY()));
                     notifyBoardTouch(xy / 100, xy % 100);
                 }
                 break;
@@ -110,20 +124,29 @@ public class BoardView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawGrid(canvas);
-        drawPlaces(canvas);
+        drawGrid(canvas); // Draw blue
+        drawPlaces(canvas); // Draw red
     }
 
     /** Draw all the places of the board. */
     private void drawPlaces(Canvas canvas) {
+        float x = (board.getx() * lineGap()) + (lineGap()/2);
+        float y = (board.gety() * lineGap()) + (lineGap()/2);
+        coordinatesForX.add((int) x);
+        coordinatesForY.add((int) y);
 
-        // check the state of each place of the board and draw it.
 
-       // Log.w("FleetShip Coordinates:", String.valueOf(getboatsCoordinates));
+        if(coordinatesForX.size() > 2 || coordinatesForY.size() > 2) {
+            for(int i = 2; i < coordinatesForX.size(); i++){
+                canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), circlePaint);
+            }
+
+        }
     }
 
     /** Draw horizontal and vertical lines. */
     private void drawGrid(Canvas canvas) {
+        Log.w(" 2)BoardView", "draswGrid(Canvas canvas)");
         final float maxCoord = maxCoord();
         final float placeSize = lineGap();
         canvas.drawRect(0, 0, maxCoord, maxCoord, boardPaint);
@@ -156,6 +179,7 @@ public class BoardView extends View {
      * The returned coordinates are encoded as <code>x*100 + y</code>.
      */
     private int locatePlace(float x, float y) {
+
         if (x <= maxCoord() && y <= maxCoord()) {
             final float placeSize = lineGap();
             int ix = (int) (x / placeSize);

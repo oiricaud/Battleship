@@ -14,7 +14,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:text="@string/battleship"
@@ -30,7 +33,11 @@
             android:layout_height="wrap_content"
             android:text="@string/number_of_shots_0"
             android:id="@+id/countOfHits"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:textColor="?attr/editTextColor"
+            android:textStyle="normal|bold"
+            android:fontFamily="casual"
+            android:textSize="18sp" />
 
         <edu.utep.cs.cs4330.battleship.BoardView
             android:id="@+id/boardView"
