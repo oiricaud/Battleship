@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
                 handleBattleship(boardView, x,y);
-                handleAircraftCarrier(boardView, x,y);
+               // handleAircraftCarrier(boardView, x,y); This doesn't work
             }
         });
     }

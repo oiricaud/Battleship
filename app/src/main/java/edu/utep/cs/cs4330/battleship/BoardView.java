@@ -4,13 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -172,7 +169,7 @@ public class BoardView extends View {
             // Color red circles of the shots user has done
             for(int j = 0 ; j < coordinatesHitX.size(); j++){
                 for(int k = 0 ; k < coordinatesHitX.size(); k++){
-                    canvas.drawCircle(coordinatesHitX.get(j), coordinatesHitY.get(k), (lineGap() / 2), redPaint);
+                        canvas.drawCircle(coordinatesHitX.get(j), coordinatesHitY.get(k), (lineGap() / 2), redPaint);
                 }
             }
         }

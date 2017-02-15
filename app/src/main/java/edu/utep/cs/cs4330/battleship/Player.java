@@ -9,7 +9,9 @@ import android.util.Log;
 
 public class Player {
     Battleship battleship = new Battleship();
+    AircraftcraftCarrier aircraftcraftCarrier = new AircraftcraftCarrier();
     public void setUpBoats() {
         battleship.placeShip(10); // place random places based on the board size
+        aircraftcraftCarrier.placeShip(10);
     }
 }
