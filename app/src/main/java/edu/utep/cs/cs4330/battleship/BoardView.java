@@ -155,11 +155,11 @@ public class BoardView extends View {
         float y = (board.gety() * lineGap()) + (lineGap()/2);
         coordinatesForX.add((int) x);
         coordinatesForY.add((int) y);
-
+        // Nasty bug here. For some reason if i = 0 a circle at (0,0) displays.
         if(coordinatesForX.size() > 2 || coordinatesForY.size() > 2) {
             for(int i = 2; i < coordinatesForX.size(); i++){
                 if(iShot) {
-                    // Recolor the places user has shot
+                    // Keep track of the places user has shot
                     coordinatesHitX.add((int) x);
                     coordinatesHitY.add((int) y);
                     canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
@@ -169,7 +169,7 @@ public class BoardView extends View {
                     canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
                 }
             }
-
+            // Color red circles of the shots user has done
             for(int j = 0 ; j < coordinatesHitX.size(); j++){
                 for(int k = 0 ; k < coordinatesHitX.size(); k++){
                     canvas.drawCircle(coordinatesHitX.get(j), coordinatesHitY.get(k), (lineGap() / 2), redPaint);

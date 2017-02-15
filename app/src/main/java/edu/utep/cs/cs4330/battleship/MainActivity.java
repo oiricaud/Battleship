@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 restartActivity();
             }
         });
+
     }
 
     /**
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
+
                 board.at(x, y, boardView);
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.w("Hit", "Ka-pow");
                             toast("KA-POW");
                             makeExplosionSound();
+                            boardView.setiShot(true);
                            // board.setHitArray(666);
                            // boardView.setCoordinates(player.battleship.getBattleshipCoordinates());
                             boardView.invalidate(); // calls ondraw method eventually
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         if (player.battleship.isSunk()) { // When you sink the boat
                             Log.w("Abort! Boat has sunk", "Ka-baam");
                             toast("SUNK BATTLESHIP");
-
+                            boardView.setiShot(true);
                             makeLouderExplosion();
                         }
                     }
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.w("Phew", "That was close");
                         toast(("Missed"));
                         missedSound();
+                        boardView.setiShot(false); // shot missed
                     }
                 }
                 player.battleship.getXandY();
