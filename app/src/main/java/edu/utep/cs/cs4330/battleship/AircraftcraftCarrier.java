@@ -18,26 +18,26 @@ import java.util.Random;
  * Created by oscarricaud on 2/10/17.
  */
 
-public class AircraftcraftCarrierView extends View {
+public class AircraftcraftCarrier extends View {
 
         private final int hitColor = Color.rgb(220,20,60);
         private final Paint hitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         {
             hitPaint.setColor(hitColor);
         }
-        public AircraftcraftCarrierView(Context context)
+        public AircraftcraftCarrier(Context context)
         {
             super(context);
             init(context);
         }
 
-        public AircraftcraftCarrierView(Context context, AttributeSet attrs)
+        public AircraftcraftCarrier(Context context, AttributeSet attrs)
         {
             super(context, attrs);
             init(context);
         }
 
-        public AircraftcraftCarrierView(Context context, AttributeSet attrs, int defStyle)
+        public AircraftcraftCarrier(Context context, AttributeSet attrs, int defStyle)
         {
             super(context, attrs, defStyle);
             init(context);

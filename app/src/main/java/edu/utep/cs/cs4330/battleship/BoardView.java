@@ -135,12 +135,10 @@ public class BoardView extends View {
         coordinatesForX.add((int) x);
         coordinatesForY.add((int) y);
 
-
         if(coordinatesForX.size() > 2 || coordinatesForY.size() > 2) {
             for(int i = 2; i < coordinatesForX.size(); i++){
                 canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), circlePaint);
             }
-
         }
     }
 
