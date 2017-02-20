@@ -3,6 +3,7 @@ package edu.utep.cs.cs4330.battleship;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         board = new Board(10);
         boardView = (BoardView) findViewById(R.id.boardView);
@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
-
                 board.at(x, y, boardView);
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
@@ -126,34 +125,32 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.w("Critical hit! X:", String.valueOf(x) + "Critical hit! Y:" + String.valueOf(y));
                 player.battleship.setXandY(x, y);
-                String coordinates = x + " " + y;
-                toast(("Critical hit!"));
-                // the setNumOfHits keeps track of the number of times the boat has been hit.
-                player.battleship.setNumOfHits(coordinates);
                 player.battleship.ispositiontaken(x, y); // for the final map in @see FleetShip
 
                 if (!(player.battleship.isSunk())) { // When you hit the battleship
+                    player.battleship.hit();
                     Log.w("Hit", "Ka-pow");
                     toast("KA-POW");
                     makeExplosionSound();
                     boardView.setiShot(true);
-                    // board.setHitArray(666);
-                    // boardView.setCoordinates(player.battleship.getBattleshipCoordinates());
                     boardView.invalidate(); // calls ondraw method eventually
                 }
-                if (player.battleship.isSunk()) { // When you sink the boat
+                if (player.battleship.getNumOfHits() == 0) { // When you sink the boat
                     Log.w("Abort! Boat has sunk", "Ka-baam");
                     toast("SUNK BATTLESHIP");
                     boardView.setiShot(true);
                     makeLouderExplosion();
+                    player.battleship.setSunk();
                 }
             }
             if (!(String.valueOf(x).equals(leftMost)) && (!(String.valueOf(y).equals(rightMost)))) { // When the user misses
                 Log.w("Phew", "That was close");
-                toast(("Missed"));
+                toast("Missed");
+
                 missedSound();
                 boardView.setiShot(false); // shot missed
             }
+
         }
         player.battleship.getXandY();
     }
@@ -195,10 +192,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /** Show a toast message. */
-    protected void toast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
+    protected  void toast(String msg) {
+        final Toast toast = Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT);
+        toast.show();
+        new CountDownTimer(500, 1000) {
+            public void onTick(long millisUntilFinished) {
+                toast.show();
+            }
 
+            public void onFinish() {
+                toast.cancel();
+            }
+        }.start();
+    }
     /**
      * Restarts the activity
      */

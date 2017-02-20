@@ -73,16 +73,12 @@ public class Battleship extends FleetShip {
         return numOfHits;
     }
 
-    public void setNumOfHits(String coordinates) {
-        if(!placesthathavebeenhit.contains(coordinates)){
-            placesthathavebeenhit.add(coordinates);
-            numOfHits = numOfHits - 1;
-            if(numOfHits == 0){
-                setSunk();
-            }
+    public void hit() {
+        if(getNumOfHits() == 0){
+            setSunk();
         }
         else{
-            Log.w("Already hit that place", "");
+            numOfHits = numOfHits - 1;
         }
     }
 

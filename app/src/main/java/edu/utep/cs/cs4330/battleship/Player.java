@@ -12,6 +12,6 @@ public class Player {
     AircraftcraftCarrier aircraftcraftCarrier = new AircraftcraftCarrier();
     public void setUpBoats() {
         battleship.placeShip(10); // place random places based on the board size
-        aircraftcraftCarrier.placeShip(10);
+        //aircraftcraftCarrier.placeShip(10);
     }
 }
