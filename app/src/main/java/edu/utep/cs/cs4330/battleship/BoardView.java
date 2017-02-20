@@ -156,11 +156,12 @@ public class BoardView extends View {
         if(coordinatesForX.size() > 2 || coordinatesForY.size() > 2) {
             for(int i = 2; i < coordinatesForX.size(); i++){
                 if(iShot) {
+                    Log.w("Here", "HERE");
                     // Keep track of the places user has shot
                     coordinatesHitX.add((int) x);
                     coordinatesHitY.add((int) y);
                     canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
-                    canvas.drawCircle(coordinatesForX.getLast(), coordinatesForY.getLast(), (lineGap() / 2), redPaint);
+                    //canvas.drawCircle(coordinatesForX.getLast(), coordinatesForY.getLast(), (lineGap() / 2), redPaint);
                 }
                 else{
                     canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);

@@ -70,20 +70,15 @@ public class Battleship extends FleetShip {
 
     public int getNumOfHits() {
         Log.w("Num of hits left", String.valueOf(numOfHits));
-        return numOfHits;
+        return this.numOfHits;
     }
 
     public void hit() {
-        if(getNumOfHits() == 0){
-            setSunk();
-        }
-        else{
-            numOfHits = numOfHits - 1;
-        }
+        numOfHits = numOfHits - 1;
     }
 
     public boolean isSunk() {
-        return false;
+        return this.sunk;
     }
 
     public void setSunk() {

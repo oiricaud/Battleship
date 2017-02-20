@@ -95,14 +95,12 @@ public class MainActivity extends AppCompatActivity {
                     toast("ACKA-POW");
                     makeExplosionSound();
                     boardView.setiShot(true);
-                    // board.setHitArray(666);
-                    // boardView.setCoordinates(player.battleship.getBattleshipCoordinates());
-                  //  boardView.invalidate(); // calls ondraw method eventually
                 }
                 if (player.aircraftcraftCarrier.isSunk()) { // When you sink the boat
                     Log.w("ACAbort! Boat has sunk", "Ka-baam");
                     toast("ACSUNK BATTLESHIP");
-                    boardView.setiShot(true);
+                    boardView.setiShot(false);
+                    boardView.invalidate();
                     makeLouderExplosion();
                 }
             }
@@ -117,40 +115,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleBattleship(BoardView boardView, int x, int y) {
+
         for (int i = 0; i < player.battleship.getBattleshipCoordinates().size(); i++) {
             // (LEFTMOST, RIGHTMOST) == (x, y) == (x+1, y+1)... (x+N, y+N)
             String leftMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(0));
             String rightMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(2));
-            if ((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // User hits
 
-                Log.w("Critical hit! X:", String.valueOf(x) + "Critical hit! Y:" + String.valueOf(y));
+            if ((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // User hits
+                boardView.setiShot(true);
+                player.battleship.hit();
+                makeExplosionSound();
+                toast("KA-POW");
                 player.battleship.setXandY(x, y);
                 player.battleship.ispositiontaken(x, y); // for the final map in @see FleetShip
 
-                if (!(player.battleship.isSunk())) { // When you hit the battleship
-                    player.battleship.hit();
-                    Log.w("Hit", "Ka-pow");
-                    toast("KA-POW");
-                    makeExplosionSound();
-                    boardView.setiShot(true);
-                    boardView.invalidate(); // calls ondraw method eventually
-                }
                 if (player.battleship.getNumOfHits() == 0) { // When you sink the boat
-                    Log.w("Abort! Boat has sunk", "Ka-baam");
                     toast("SUNK BATTLESHIP");
-                    boardView.setiShot(true);
                     makeLouderExplosion();
                     player.battleship.setSunk();
                 }
             }
+
             if (!(String.valueOf(x).equals(leftMost)) && (!(String.valueOf(y).equals(rightMost)))) { // When the user misses
                 Log.w("Phew", "That was close");
                 toast("Missed");
-
                 missedSound();
                 boardView.setiShot(false); // shot missed
             }
-
+            if(player.battleship.isSunk()){
+                boardView.setiShot(false);
+            }
         }
         player.battleship.getXandY();
     }
