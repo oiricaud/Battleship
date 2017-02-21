@@ -24,6 +24,9 @@ public class BoardView extends View {
     private LinkedList<Integer> coordinatesHitX = new LinkedList<Integer>();
     private LinkedList<Integer> coordinatesHitY = new LinkedList<Integer>();
 
+    private LinkedList<Integer> coordinatesMissX = new LinkedList<Integer>();
+    private LinkedList<Integer> coordinatesMissY = new LinkedList<Integer>();
+
     private boolean iShot;
 
     public boolean iShot() {
@@ -156,22 +159,23 @@ public class BoardView extends View {
         if(coordinatesForX.size() > 2 || coordinatesForY.size() > 2) {
             for(int i = 2; i < coordinatesForX.size(); i++){
                 if(iShot) {
-                    Log.w("Here", "HERE");
-                    // Keep track of the places user has shot
+                    Log.w("Red paint", "red paint");
                     coordinatesHitX.add((int) x);
                     coordinatesHitY.add((int) y);
-                    canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
-                    //canvas.drawCircle(coordinatesForX.getLast(), coordinatesForY.getLast(), (lineGap() / 2), redPaint);
                 }
                 else{
-                    canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
+                    Log.w("White paint", "white paint");
+                    coordinatesMissX.add((int) x);
+                    coordinatesMissY.add((int) y);
                 }
             }
             // Color red circles of the shots user has done
             for(int j = 0 ; j < coordinatesHitX.size(); j++){
-                for(int k = 0 ; k < coordinatesHitX.size(); k++){
-                        canvas.drawCircle(coordinatesHitX.get(j), coordinatesHitY.get(k), (lineGap() / 2), redPaint);
-                }
+                canvas.drawCircle(coordinatesHitX.get(j), coordinatesHitY.get(j), (lineGap() / 2), redPaint);
+            }
+            // Color white circles of the shots user has done
+            for(int k = 0 ; k < coordinatesMissX.size(); k++){
+                canvas.drawCircle(coordinatesMissX.get(k), coordinatesMissY.get(k), (lineGap() / 2), whitePaint);
             }
         }
     }

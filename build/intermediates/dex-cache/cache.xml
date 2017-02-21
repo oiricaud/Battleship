@@ -25,7 +25,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="53f6d07314a0578f89f6d5b138b9fa7cba24aea2">
+        sha1="9125745528f4440dd5a3c410cd1e569f3ca0d474">
         <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_d03bcf1d5bc09e1d07227034a68b1b5aea738efc/classes.dex" />
     </item>
     <item
@@ -52,7 +52,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="6bbd8e92767a24ba735c9cf83dcd902abff0a91f">
+        sha1="0247b85a5c8140010728cb57f8f81da559b06811">
         <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_6d8bc6c66261cd8ef982846ba3c44012afaa354e/classes.dex" />
     </item>
 

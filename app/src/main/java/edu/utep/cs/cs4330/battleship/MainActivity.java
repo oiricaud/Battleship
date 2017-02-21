@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
                 handleBattleship(boardView, x,y);
-               // handleAircraftCarrier(boardView, x,y); This doesn't work
+                // handleAircraftCarrier(boardView, x,y); This doesn't work
             }
         });
     }
@@ -137,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 boardView.setiShot(false); // shot missed
             }
             if(player.battleship.isSunk()){
+                toast("Missed");
+                missedSound();
                 boardView.setiShot(false);
             }
         }
@@ -218,3 +220,4 @@ public class MainActivity extends AppCompatActivity {
         this.countShots = countShots;
     }
 }
+
