@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.LinkedList;
 // Controller
 /**
  * @author Oscar Ivan Ricaud
@@ -23,7 +25,12 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mp;
     private TextView counter;
     private  Player player;
-    private static final int SHORT_DELAY = 1000; // 2 seconds
+
+    LinkedList<Integer> hitPlacesX = new LinkedList<>();
+    LinkedList<Integer> hitPlacesY = new LinkedList<>();
+
+    LinkedList<Integer> missPlacesX = new LinkedList<>();
+    LinkedList<Integer> missPlacesY = new LinkedList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,19 +127,22 @@ public class MainActivity extends AppCompatActivity {
             // (LEFTMOST, RIGHTMOST) == (x, y) == (x+1, y+1)... (x+N, y+N)
             String leftMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(0));
             String rightMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(2));
-
-            if ((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // User hits
+            if ((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost)) && (!(hitPlacesX.contains(x) && (hitPlacesY.contains(y))))) { // User hits
                 boardView.setiShot(true);
                 player.battleship.hit();
                 makeExplosionSound();
                 toast("KA-POW");
+                hitPlacesX.add(x);
+                hitPlacesY.add(y);
                 player.battleship.setXandY(x, y);
                 player.battleship.ispositiontaken(x, y); // for the final map in @see FleetShip
             }
 
-            if (!(String.valueOf(x).equals(leftMost)) && (!(String.valueOf(y).equals(rightMost)))) { // When the user misses
+            if (!(String.valueOf(x).equals(leftMost)) && (!(String.valueOf(y).equals(rightMost))) && (!(missPlacesX.contains(x) && (missPlacesY.contains(y))))) { // When the user misses
                 Log.w("Phew", "That was close");
                 toast("Missed");
+                missPlacesX.add(x);
+                missPlacesY.add(y);
                 missedSound();
                 boardView.setiShot(false); // shot missed
             }
