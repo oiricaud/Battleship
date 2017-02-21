@@ -128,12 +128,6 @@ public class MainActivity extends AppCompatActivity {
                 toast("KA-POW");
                 player.battleship.setXandY(x, y);
                 player.battleship.ispositiontaken(x, y); // for the final map in @see FleetShip
-
-                if (player.battleship.getNumOfHits() == 0) { // When you sink the boat
-                    toast("SUNK BATTLESHIP");
-                    makeLouderExplosion();
-                    player.battleship.setSunk();
-                }
             }
 
             if (!(String.valueOf(x).equals(leftMost)) && (!(String.valueOf(y).equals(rightMost)))) { // When the user misses
@@ -145,6 +139,11 @@ public class MainActivity extends AppCompatActivity {
             if(player.battleship.isSunk()){
                 boardView.setiShot(false);
             }
+        }
+        if (player.battleship.getNumOfHits() == 0 && (!player.battleship.isSunk())) { // When you sink the boat
+            toast("SUNK BATTLESHIP");
+            makeLouderExplosion();
+            player.battleship.setSunk();
         }
         player.battleship.getXandY();
     }
