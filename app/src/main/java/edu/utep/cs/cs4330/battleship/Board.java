@@ -42,24 +42,6 @@ public class Board{
     //    public boolean isGameOver()
     //    ...
 
-    /*
-    public boolean placeShip(Ship ship, int x, int y, boolean dir) {
-        ship.setCoordinates(x, y, dir);
-       // Log.w("Get coordinates", Arrays.deepToString(ship.getCoordinates()));
-        int[][]shipCoordinates = ship.getCoordinates();
-        Log.w("Ship name: ", ship.getName());
-        Log.w("Ship position: ", ship.getPosition());
-        for(int i = 0 ; i < shipCoordinates.length; i++){
-            for(int j = 0; j < shipCoordinates[0].length; j++){
-                if(shipCoordinates[i][j] == 1){
-                    Log.w("     (x,y) ", "(" + String.valueOf(i) + ", " + String.valueOf(j) + ")");
-                    setCoordinateofBoats(shipCoordinates);
-                }
-            }
-        }
-        return false;
-    }
-*/
     public int numOfShots(){
         return 0;
     }

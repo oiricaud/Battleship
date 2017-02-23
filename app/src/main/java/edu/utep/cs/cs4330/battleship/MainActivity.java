@@ -5,17 +5,16 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Arrays;
+
 // Controller
 /**
  * @author Oscar Ivan Ricaud
  * @version 1.0
- * Last update: 02/12/2017
+ * Last update: 02/22/2017
  */
 public class MainActivity extends AppCompatActivity {
     private Board board;
@@ -40,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
         final Ship submarine = new Ship(3, "submarine");
         final Ship patrol = new Ship(2, "patrol");
 
-        Log.w("BTGet coordinates", Arrays.deepToString(battleship.getCoordinates()));
-        Log.w("ACGet coordinates", Arrays.deepToString( aircraft.getCoordinates()));
-
         counter = (TextView) findViewById(R.id.countOfHits);
         countShots = 0;
         setCountShots(0);
@@ -53,8 +49,12 @@ public class MainActivity extends AppCompatActivity {
                 //board.at(x, y);
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
-                if(isItAHit(battleship.getCoordinates(), x, y) || isItAHit(aircraft.getCoordinates(), x, y)
-                        || isItAHit(destroyer.getCoordinates(), x, y)  || isItAHit(submarine.getCoordinates(), x, y) || isItAHit(patrol.getCoordinates(), x, y)){
+                if(isItAHit(battleship.getCoordinates(), x, y)
+                        || isItAHit(aircraft.getCoordinates(), x, y)
+                        || isItAHit(destroyer.getCoordinates(), x, y)
+                        || isItAHit(submarine.getCoordinates(), x, y)
+                        || isItAHit(patrol.getCoordinates(), x, y))
+                {
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
