@@ -57,16 +57,21 @@ public class MainActivity extends AppCompatActivity {
         final Ship submarine = new Ship(3, "submarine");
         final Ship patrol = new Ship(2, "patrol");
 
+        // The counter displays the number of shots in the UI, the user has tapped on the board.
         counter = (TextView) findViewById(R.id.countOfHits);
         countShots = 0;
         setCountShots(0);
 
+        // Listen for the user input
         boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
-                
+
+                // Compare the coordinates the user just touched with any of the boats that are placed
+                    // on the board. Then either play a missed or explosion sound. When the boat sinks
+                        // play a louder explosion.
                 if(isItAHit(aircraft.getCoordinates(), x, y)){
                     makeExplosionSound();
                     aircraft.hit();
@@ -143,6 +148,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * @param coordinates are the coordinates from the user.
+     * @param x is the number of rows - 1.
+     * @param y is the number of columns - 1.
+     * @return  If the user hits a boat return true else false.
+     */
     private boolean isItAHit(int[][] coordinates, int x, int y) {
         if(coordinates[x][y] == 1){
             return true;
@@ -212,10 +223,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * @return the number of shots the user has shot
+     */
     public int getCountShots() {
         return countShots;
     }
 
+    /**
+     * @param countShots this method is only used when the program is in the starting state.
+     *                   By default this number of shots = 0. 
+     */
     public void setCountShots(int countShots) {
         this.countShots = countShots;
     }
