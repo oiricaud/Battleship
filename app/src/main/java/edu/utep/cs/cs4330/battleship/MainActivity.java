@@ -10,8 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.LinkedList;
+import java.util.Arrays;
 // Controller
 /**
  * @author Oscar Ivan Ricaud
@@ -24,34 +23,51 @@ public class MainActivity extends AppCompatActivity {
     private int countShots = 0;
     private MediaPlayer mp;
     private TextView counter;
-    private  Player player;
 
-    LinkedList<Integer> hitPlacesX = new LinkedList<>();
-    LinkedList<Integer> hitPlacesY = new LinkedList<>();
-
-    LinkedList<Integer> missPlacesX = new LinkedList<>();
-    LinkedList<Integer> missPlacesY = new LinkedList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         board = new Board(10);
+
         boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
+
+        final Ship aircraft = new Ship(5, "aircraft");
+        final Ship battleship = new Ship(4, "battleship");
+        final Ship destroyer = new Ship(3, "destroyer");
+        final Ship submarine = new Ship(3, "submarine");
+        final Ship patrol = new Ship(2, "patrol");
+
+        Log.w("BTGet coordinates", Arrays.deepToString(battleship.getCoordinates()));
+        Log.w("ACGet coordinates", Arrays.deepToString( aircraft.getCoordinates()));
+
+        counter = (TextView) findViewById(R.id.countOfHits);
+        countShots = 0;
+        setCountShots(0);
+
         boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
-                //toast(String.format("Touched: %d, %d", x, y));
+                //board.at(x, y);
+                setCountShots(countShots+1);
+                counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
+                if(isItAHit(battleship.getCoordinates(), x, y) || isItAHit(aircraft.getCoordinates(), x, y)
+                        || isItAHit(destroyer.getCoordinates(), x, y)  || isItAHit(submarine.getCoordinates(), x, y) || isItAHit(patrol.getCoordinates(), x, y)){
+                    boardView.setxHit(x);
+                    boardView.setyHit(y);
+                    toast("KA-POW");
+                    makeExplosionSound();
+                }
+                else{
+                    boardView.setxMiss(x);
+                    boardView.setyMiss(y);
+                    toast("That was close!");
+                    makeMissedSound();
+                }
             }
         });
-
-        player = new Player();
-        counter = (TextView) findViewById(R.id.countOfHits);
-        countShots = 0;
-        player.setUpBoats();
-        setCountShots(0);
-        makeShots(player, counter);
 
         // Start a new game when clicked button
         Button newButton = (Button) findViewById(R.id.newButton);
@@ -64,106 +80,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * @param player makes shots based on its input (x,y) when it clicks on the board.
-     * @param counter auto-increments each time the player makes a shot and displays it in the view.
-     */
-    private void makeShots(final Player player, final TextView counter) {
-
-        boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-            @Override
-            public void onTouch(int x, int y) {
-                board.at(x, y, boardView);
-                setCountShots(countShots+1);
-                counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
-                handleBattleship(boardView, x,y);
-                // handleAircraftCarrier(boardView, x,y); This doesn't work
-            }
-        });
-    }
-
-    private void handleAircraftCarrier(BoardView boardView, int x, int y) {
-        for (int i = 0; i < player.aircraftcraftCarrier.getAircraftcraftCarrierCoordinates().size(); i++) {
-            // (LEFTMOST, RIGHTMOST) == (x, y) == (x+1, y+1)... (x+N, y+N)
-            String leftMost = String.valueOf(player.aircraftcraftCarrier.getAircraftcraftCarrierCoordinates().get(i).charAt(0));
-            String rightMost = String.valueOf(player.aircraftcraftCarrier.getAircraftcraftCarrierCoordinates().get(i).charAt(2));
-            if ((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost))) { // User hits
-
-                Log.w("ACCritical hit! X:", String.valueOf(x) + "Critical hit! Y:" + String.valueOf(y));
-                player.aircraftcraftCarrier.setXandY(x, y);
-                String coordinates = x + " " + y;
-                toast(("ACCritical hit!"));
-                // the setNumOfHits keeps track of the number of times the boat has been hit.
-                player.aircraftcraftCarrier.setNumOfHits(coordinates);
-                player.aircraftcraftCarrier.ispositiontaken(x, y); // for the final map in @see FleetShip
-
-                if (!(player.aircraftcraftCarrier.isSunk())) { // When you hit the battleship
-                    Log.w("ACHit", "Ka-pow");
-                    toast("ACKA-POW");
-                    makeExplosionSound();
-                    boardView.setiShot(true);
-                }
-                if (player.aircraftcraftCarrier.isSunk()) { // When you sink the boat
-                    Log.w("ACAbort! Boat has sunk", "Ka-baam");
-                    toast("ACSUNK BATTLESHIP");
-                    boardView.setiShot(false);
-                    boardView.invalidate();
-                    makeLouderExplosion();
-                }
-            }
-            if (!(String.valueOf(x).equals(leftMost)) && (!(String.valueOf(y).equals(rightMost)))) { // When the user misses
-                Log.w("ACPhew", "That was close");
-                toast(("ACMissed"));
-                missedSound();
-                boardView.setiShot(false); // shot missed
-            }
+    private boolean isItAHit(int[][] coordinates, int x, int y) {
+        if(coordinates[x][y] == 1){
+            return true;
         }
-        player.aircraftcraftCarrier.getXandY();
-    }
-
-    private void handleBattleship(BoardView boardView, int x, int y) {
-
-        for (int i = 0; i < player.battleship.getBattleshipCoordinates().size(); i++) {
-            // (LEFTMOST, RIGHTMOST) == (x, y) == (x+1, y+1)... (x+N, y+N)
-            String leftMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(0));
-            String rightMost = String.valueOf(player.battleship.getBattleshipCoordinates().get(i).charAt(2));
-            if ((String.valueOf(x).equals(leftMost)) && (String.valueOf(y).equals(rightMost)) && (!(hitPlacesX.contains(x) && (hitPlacesY.contains(y))))) { // User hits
-                boardView.setiShot(true);
-                player.battleship.hit();
-                makeExplosionSound();
-                toast("KA-POW");
-                hitPlacesX.add(x);
-                hitPlacesY.add(y);
-                player.battleship.setXandY(x, y);
-                player.battleship.ispositiontaken(x, y); // for the final map in @see FleetShip
-            }
-
-            if (!(String.valueOf(x).equals(leftMost)) && (!(String.valueOf(y).equals(rightMost))) && (!(missPlacesX.contains(x) && (missPlacesY.contains(y))))) { // When the user misses
-                Log.w("Phew", "That was close");
-                toast("Missed");
-                missPlacesX.add(x);
-                missPlacesY.add(y);
-                missedSound();
-                boardView.setiShot(false); // shot missed
-            }
-            if(player.battleship.isSunk()){
-                toast("Missed");
-                missedSound();
-                boardView.setiShot(false);
-            }
-        }
-        if (player.battleship.getNumOfHits() == 0 && (!player.battleship.isSunk())) { // When you sink the boat
-            toast("SUNK BATTLESHIP");
-            makeLouderExplosion();
-            player.battleship.setSunk();
-        }
-        player.battleship.getXandY();
+        return false;
     }
 
     /**
      * Makes a swish noise when the player misses a shot.
      */
-    private void missedSound() {
+    private void makeMissedSound() {
         if (mp!=null) {
             mp.stop();
             mp.release();

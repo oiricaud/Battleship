@@ -1,10 +1,5 @@
 package edu.utep.cs.cs4330.battleship;
 
-        import android.graphics.Canvas;
-        import android.util.Log;
-
-        import java.util.LinkedList;
-
 /**
  * A game board consisting of <code>size</code> * <code>size</code> places
  * where battleships can be placed. A place of the board is denoted
@@ -12,26 +7,11 @@ package edu.utep.cs.cs4330.battleship;
  * and y is a row index. A place of the board can be shot at, resulting
  * in either a hit or miss.
  */
-public class Board {
-    private BoardView boardView;
-    public int x;
-    public int y;
+public class Board{
 
-    public void setCoordinates(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
+    private int x;
+    private int y;
 
-    public int getx() {
-        return x;
-    }
-
-    public int gety() {
-        return y;
-    }
-    public String coordinatesConvertToString() {
-        return "(" + x + "," + y + ")";
-    }
     /**
      * Size of this board. This board has
      * <code>size*size </code> places.
@@ -61,23 +41,30 @@ public class Board {
     //    public int numOfShots()
     //    public boolean isGameOver()
     //    ...
+
+    /*
     public boolean placeShip(Ship ship, int x, int y, boolean dir) {
+        ship.setCoordinates(x, y, dir);
+       // Log.w("Get coordinates", Arrays.deepToString(ship.getCoordinates()));
+        int[][]shipCoordinates = ship.getCoordinates();
+        Log.w("Ship name: ", ship.getName());
+        Log.w("Ship position: ", ship.getPosition());
+        for(int i = 0 ; i < shipCoordinates.length; i++){
+            for(int j = 0; j < shipCoordinates[0].length; j++){
+                if(shipCoordinates[i][j] == 1){
+                    Log.w("     (x,y) ", "(" + String.valueOf(i) + ", " + String.valueOf(j) + ")");
+                    setCoordinateofBoats(shipCoordinates);
+                }
+            }
+        }
         return false;
     }
-    public void hit(Place place){
-    }
-    public Place at(int x, int y, BoardView boardView)
-    {
-        setCoordinates(x, y);
-        return null;
-    }
-    public Place[] places(){
-        return new Place[0];
-    }
+*/
     public int numOfShots(){
         return 0;
     }
     public boolean isGameOver(){
         return true;
     }
+
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,14 +19,13 @@ import java.util.List;
  * @see Board
  */
 public class BoardView extends View {
-    private LinkedList<Integer> coordinatesForX = new LinkedList<Integer>();
-    private LinkedList<Integer> coordinatesForY = new LinkedList<Integer>();
+    private int[][] allBoats = new int[10][10];
 
-    private LinkedList<Integer> coordinatesHitX = new LinkedList<Integer>();
-    private LinkedList<Integer> coordinatesHitY = new LinkedList<Integer>();
+    private LinkedList<Integer> xHit = new LinkedList<>();
+    private LinkedList<Integer> yHit = new LinkedList<>();
 
-    private LinkedList<Integer> coordinatesMissX = new LinkedList<Integer>();
-    private LinkedList<Integer> coordinatesMissY = new LinkedList<Integer>();
+    private LinkedList<Integer> setxMiss = new LinkedList<>();
+    private LinkedList<Integer> setyMiss = new LinkedList<>();
 
     private boolean iShot;
 
@@ -35,6 +35,45 @@ public class BoardView extends View {
 
     public void setiShot(boolean iShot) {
         this.iShot = iShot;
+    }
+
+    public int[][] getAllBoats() {
+        return allBoats;
+    }
+
+    public void setAllBoats(int[][] allBoats) {
+        this.allBoats = allBoats;
+    }
+
+    public LinkedList<Integer> getxHit() {
+        return xHit;
+    }
+
+    public void setxHit(int i) {
+        xHit.add(i);
+    }
+
+    public LinkedList<Integer> getyHit() {
+        return yHit;
+    }
+    public void setyHit(int i) {
+        yHit.add(i);
+    }
+
+    public LinkedList<Integer> getxMiss() {
+        return setxMiss;
+    }
+
+    public void setxMiss(int i) {
+        setxMiss.add(i);
+    }
+
+    public LinkedList<Integer> getyMiss() {
+        return setyMiss;
+    }
+
+    public void setyMiss(int i) {
+         setyMiss.add(i);
     }
 
     /** Callback interface to listen for board touches. */
@@ -151,6 +190,34 @@ public class BoardView extends View {
 
     /** Draw all the places of the board. */
     private void drawPlaces(Canvas canvas) {
+
+        Log.w("     Get All X", String.valueOf(getxHit()));
+
+        for(int i = 0 ; i < getxMiss().size(); i++){
+            float xMiss = (getxMiss().get(i) * lineGap()) + (lineGap()/2);
+            float yMiss = (getyMiss().get(i) * lineGap()) + (lineGap()/2);
+            canvas.drawCircle(xMiss, yMiss, (lineGap() / 2), whitePaint);
+        }
+
+        for(int j = 0 ; j < getxHit().size(); j++){
+            float xHit = (getxHit().get(j) * lineGap()) + (lineGap()/2);
+            float yHit = (getyHit().get(j) * lineGap()) + (lineGap() / 2);
+            canvas.drawCircle(xHit, yHit, (lineGap() / 2), redPaint);
+        }
+       // int[][]AllShipCoordinates = (board.getCoordinateofBoats());
+        /*
+        Log.w("     Get All", Arrays.deepToString(AllShipCoordinates));
+
+        Log.w("value of X when touched", String.valueOf(board.getX()));
+        Log.w("value of Y when touched", String.valueOf(board.getY()));
+        */
+        /*
+        if(AllShipCoordinates[board.getX()][board.getY()] == 1){
+            Log.w("     Paint", "me red");
+            canvas.drawCircle(x, y, (lineGap() / 2), redPaint);
+        }
+*/
+        /*
         float x = (board.getx() * lineGap()) + (lineGap()/2);
         float y = (board.gety() * lineGap()) + (lineGap()/2);
         coordinatesForX.add((int) x);
@@ -177,6 +244,7 @@ public class BoardView extends View {
                 }
             }
         }
+        */
     }
 
 
