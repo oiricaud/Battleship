@@ -15,7 +15,7 @@ import android.widget.Toast;
 /**
  * @author Oscar Ivan Ricaud
  * @version 1.0
- * Last update: 02/22/2017
+ * Last update: 02/23/2017
  */
 public class MainActivity extends AppCompatActivity {
     private Board board;
@@ -24,6 +24,22 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mp;
     private TextView counter;
 
+    /** This is the main controller class and handles the creation of multiple ships and board.
+     *  @see Ship.java
+     *  @see BoardView.java
+     *  @see Board.java
+     *  for more information.
+     *
+     *  At random, ships are placed either horizontally or vertically on a 10x10 board.
+     *  The user is able to interact with this board and creates (x,y) coordinates.
+     *  The user coordinates are compared to the coordinates from all boats that are randomly placed
+     *  on the board. If the user hits a boat the method onDraw is invoked from the
+     *  @see BoardView.java
+     *  and colors a red circle the position of the boats, else colors a white circle indicating the
+     *  user missed.
+     *
+     * @param savedInstanceState is the starting state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
 
+        // Below we define the boats that will be placed on the board
         final Ship aircraft = new Ship(5, "aircraft");
         final Ship battleship = new Ship(4, "battleship");
         final Ship destroyer = new Ship(3, "destroyer");
@@ -49,28 +66,26 @@ public class MainActivity extends AppCompatActivity {
             public void onTouch(int x, int y) {
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
-
+                
                 if(isItAHit(aircraft.getCoordinates(), x, y)){
                     makeExplosionSound();
                     aircraft.hit();
-                    Log.w("hit", String.valueOf(aircraft.getHit()));
-
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(aircraft.getHit() == 5){
+                        toast("Aircraft SUNK");
                         makeLouderExplosion();
                     }
                 }
                 else if(isItAHit(battleship.getCoordinates(), x, y)) {
                     makeExplosionSound();
                     battleship.hit();
-                    Log.w("hit", String.valueOf(battleship.getHit()));
-
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(battleship.getHit() == 4){
+                        toast("Battleship SUNK");
                         makeLouderExplosion();
                     }
                 }
@@ -78,36 +93,33 @@ public class MainActivity extends AppCompatActivity {
                 else if(isItAHit(destroyer.getCoordinates(), x, y)){
                     makeExplosionSound();
                     destroyer.hit();
-                    Log.w("hit", String.valueOf(destroyer.getHit()));
-
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(destroyer.getHit() == 3){
+                        toast("Destroyer SUNK");
                         makeLouderExplosion();
                     }
                 }
                 else if(isItAHit(submarine.getCoordinates(), x, y)) {
                     makeExplosionSound();
                     submarine.hit();
-                    Log.w("hit", String.valueOf(submarine.getHit()));
-
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(submarine.getHit() == 3){
+                        toast("Submarine SUNK");
                         makeLouderExplosion();
                     }
                 }
                 else if(isItAHit(patrol.getCoordinates(), x, y)) {
                     makeExplosionSound();
                     patrol.hit();
-                    Log.w("hit", String.valueOf(patrol.getHit()));
-
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(patrol.getHit() == 2){
+                        toast("Patrol SUNK");
                         makeLouderExplosion();
                     }
                 }
