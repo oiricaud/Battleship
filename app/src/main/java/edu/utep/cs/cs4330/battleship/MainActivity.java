@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -46,19 +47,69 @@ public class MainActivity extends AppCompatActivity {
         boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
-                //board.at(x, y);
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots after: " + getCountShots()));
-                if(isItAHit(battleship.getCoordinates(), x, y)
-                        || isItAHit(aircraft.getCoordinates(), x, y)
-                        || isItAHit(destroyer.getCoordinates(), x, y)
-                        || isItAHit(submarine.getCoordinates(), x, y)
-                        || isItAHit(patrol.getCoordinates(), x, y))
-                {
+
+                if(isItAHit(aircraft.getCoordinates(), x, y)){
+                    makeExplosionSound();
+                    aircraft.hit();
+                    Log.w("hit", String.valueOf(aircraft.getHit()));
+
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
+                    if(aircraft.getHit() == 5){
+                        makeLouderExplosion();
+                    }
+                }
+                else if(isItAHit(battleship.getCoordinates(), x, y)) {
                     makeExplosionSound();
+                    battleship.hit();
+                    Log.w("hit", String.valueOf(battleship.getHit()));
+
+                    boardView.setxHit(x);
+                    boardView.setyHit(y);
+                    toast("KA-POW");
+                    if(battleship.getHit() == 4){
+                        makeLouderExplosion();
+                    }
+                }
+
+                else if(isItAHit(destroyer.getCoordinates(), x, y)){
+                    makeExplosionSound();
+                    destroyer.hit();
+                    Log.w("hit", String.valueOf(destroyer.getHit()));
+
+                    boardView.setxHit(x);
+                    boardView.setyHit(y);
+                    toast("KA-POW");
+                    if(destroyer.getHit() == 3){
+                        makeLouderExplosion();
+                    }
+                }
+                else if(isItAHit(submarine.getCoordinates(), x, y)) {
+                    makeExplosionSound();
+                    submarine.hit();
+                    Log.w("hit", String.valueOf(submarine.getHit()));
+
+                    boardView.setxHit(x);
+                    boardView.setyHit(y);
+                    toast("KA-POW");
+                    if(submarine.getHit() == 3){
+                        makeLouderExplosion();
+                    }
+                }
+                else if(isItAHit(patrol.getCoordinates(), x, y)) {
+                    makeExplosionSound();
+                    patrol.hit();
+                    Log.w("hit", String.valueOf(patrol.getHit()));
+
+                    boardView.setxHit(x);
+                    boardView.setyHit(y);
+                    toast("KA-POW");
+                    if(patrol.getHit() == 2){
+                        makeLouderExplosion();
+                    }
                 }
                 else{
                     boardView.setxMiss(x);

@@ -8,11 +8,14 @@ public class Ship {
     private int size;
     private String name;
     private String position;
+    private boolean sink;
+    private int hit;
 
     public Ship(int size, String nameofship) {
         setSize(size);
         setName(nameofship);
         setCoordinates();
+        setSink(false);
     }
 
     public void setCoordinates() {
@@ -54,5 +57,21 @@ public class Ship {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public boolean isSink() {
+        return sink;
+    }
+
+    public void setSink(boolean sink) {
+        this.sink = sink;
+    }
+
+    public int getHit() {
+        return hit;
+    }
+
+    public void hit() {
+        hit++;
     }
 }
