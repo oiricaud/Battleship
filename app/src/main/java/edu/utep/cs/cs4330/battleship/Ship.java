@@ -12,14 +12,15 @@ public class Ship {
     public Ship(int size, String nameofship) {
         setSize(size);
         setName(nameofship);
-        setCoordinates(true);
+        setCoordinates();
     }
 
-    public void setCoordinates(boolean dir) {
+    public void setCoordinates() {
         int coordinatesRange = (map.length - getSize());
         int randomx = (int) (Math.random() * coordinatesRange);
         int randomy = (int) (Math.random() * coordinatesRange);
-        if(dir) { // if boat is horizontal
+        int direction = (int) (Math.random() * 2);
+        if(direction == 1) { // if boat is horizontal
             setPosition("Horizontal");
             for(int i = 0; i < getSize(); i++){ // place boat horizontal
                 map[randomx][randomy+i] = 1; // Adding to the right of the head
