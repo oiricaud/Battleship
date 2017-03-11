@@ -3,7 +3,7 @@ Homework 1 Assignment Requirements
 ### About the program
 When you compile the program a cool background image should appear as well as a blue grid, with the title BattleShip, now in the background the boats are placed at random on the grid, horizontally or vertically. If the user misses, it makes a swoosh sound, else it makes a ka-boom sound. When the user taps on the board immediate feedback is given to the user, white circle = missed shot, red circle = non-missed shot.
 
-Assignment
+Assignment #1
 ======
 
 	CS 4330/5390: Mobile Application Development, Spring 2017
