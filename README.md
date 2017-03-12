@@ -1,9 +1,7 @@
-Oscar Ivan Ricaud, Adriana Escobar
+Battleship
 ======
 ### About the program
 When you compile the program a cool background image should appear as well as a blue grid, with the title BattleShip, now in the background the boats are placed at random on the grid, horizontally or vertically. If the user misses, it makes a swoosh sound, else it makes a ka-boom sound. When the user taps on the board immediate feedback is given to the user, white circle = missed shot, red circle = non-missed shot.
-
-There are minor issues that are not working. We were only able to implement 1 boat out of 5 but in the future we plan to implement the rest of the boats. Another issue is that the Toast takes a little longer than it should be. 
 
 Assignment
 ======
