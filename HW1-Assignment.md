@@ -1,30 +1,21 @@
-Battleship
+Homework 1 Assignment Requirements
 ======
 ### About the program
 When you compile the program a cool background image should appear as well as a blue grid, with the title BattleShip, now in the background the boats are placed at random on the grid, horizontally or vertically. If the user misses, it makes a swoosh sound, else it makes a ka-boom sound. When the user taps on the board immediate feedback is given to the user, white circle = missed shot, red circle = non-missed shot.
 
-To view the requirements for Assignment #1  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW1-Assignment.md).
-
-Assignment #2 
+Assignment #1
 ======
 
-	 CS 4330/5390: Mobile Application Development, Spring 2017
-		HOMEWORK 2: UI, Activities and Intents
-		 (File $Date: 2017/02/21 02:52:45 $)
+	CS 4330/5390: Mobile Application Development, Spring 2017
+	HOMEWORK 1: Basic Android Programming and 2D Graphics
+		 (File $Date: 2017/01/30 23:59:19 $)
 
-Due: March 20, 2017
+Due: February 14, 2017
 
-This homework may be done individually or in pair. 
-
-In this homework you will extend your HW1 code to allow a user to play
-the Battleship game against the computer. For this, you will extend
-the UI to deploy the user's fleet of ships and play against the
-computer. You will also design a shooting strategy for the computer to
-decide its shots. The most common playing rule is for players to
-alternate firing at each other. We will change the rule to let players
-keep their turns as long as they hit ships. Your app shall meet the
-following functional and non-functional requirements.
-
+This homework may be done individually or in pair. Research has shown
+that students learn better when they do homework assignments in pairs;
+however, it does not necessarily mean a decrease in the time you will
+spend on your assignments. 
 
 You will be developing an Android application that allows one to play
 Battleship game. Battleship is a guessing game for two players
@@ -127,82 +118,28 @@ HINTS
    Android Studio; use File > New > Import Project... 
 
    Refer to Section 5.3 (Drawing and Canvas class) of the textbook for
-R1-R6 of HW1 requirements (see HW1 handout)
-
-R1. It shall provide a good shooting strategy for the computer to pick
-    the next place to shoot. When the computer hits a ship, it shall
-    sink the ship by shooting the adjacent places of the hit. Create
-    your own algorithm or use a popular one like the "hunt and target"
-    strategy [1]. Consider using the Strategy design pattern [2] to
-    provide more than one strategy (see Problem 5 below).
-
-R2. It shall provide a UI to deploy the user's fleet of ships. The UI
-    shall allow the user to specify the places and the direction of
-    each ship (see R2 of HW1 for the fleet of ships).
-
-R3. It shall show the progress of a game by displaying the current
-    state of the game, including the two boards, the user's ships, the
-    turn, and the game outcome (see R1 and R3 of HW1). As in HW1, the
-    boards shall be displayed using 2D graphics.
-
-R4. It shall consist of at least two activities, one for deploying the
-    user's ships (R2) and the other for making shots (R3).
-
-R5. It shall support screen orientation changes for the second
-    activity of R4 above. It shall store and restore the game state
-    when the screen orientation changes. You will need to define two
-    different layouts: portrait and landscape.
-
-R6. Use the following configuration for your project.
-
-    Application name: Battleship
-    Company domain: cs4330.cs.utep.edu
-    Min SDK version: API 14 - Android 4.0 (IceCreamSandwich)
-    Main activity: MainActivity
-
-    Name your signed distribution apk file as battleship.apk (see the
-    submission instruction below).
-
-1. (15 points) Design your app and express your design in a UML class
-   diagram [3]. Your class diagram should include both model classes
-   and UI classes (see HW1 R5) by using a layered architecture, where
-   the business logic layer is completely separated from the
-   presentation layer.
-
-   - Your class diagram should show the main components (classes) 
-     of your app, their roles and their relationships. 
-   - Your model (business logic) classes should be cleanly separated 
-     from the view/control (UI) classes with no dependency.
-   - For each class in your diagram, define key (public) operations
-     to show its roles or responsibilities.
-   - For each association including aggregate and composite, include
-     at least a label, multiplicities and directions.
-   - For each class appearing in your class diagram, provide a brief 
-     description.
-
-2. (85 points) Code your design. Your code should conform to your
-   design.
-
-3. (5 bonus points) Provide an action icon to enable/disable the sound
-   effect (see HW1 Problem 5).
+   Android 2-D graphics. Conceptually, it's similar to Java 2-D
+   graphics.
    
-4. (10 bonus points) Provide an animated transition when navigating
-   between activities (read Sections 3.6, 3.7 and 4.6).
+   The following Android framework classes and methods may be useful;
+   read their API documents.
 
-5. (10 bonus points) Improve the implementation of R1 by supporting
-   more than one shooting strategy and providing a menu to select one
-   (or game level).
-
-HINTS
+   android.app.DialogFragment or android.app.AlertDialog
+   android.graphics.Canvas
+   android.graphics.Color
+   android.graphics.Paint
+   android.view.View
+   android.widget.Button
+   android.widget.TextView
+   android.widget.Toast
    
-   Reuse your HW1 design and code as much as possible. Organize your
-   classes in a class hierarchy. You will have several classes with
-   similar structures and behaviors, e.g., different board views.
-
-TESTING
-
-   Your code should compile using SDK version 25 and run correctly on
-   Android 4.0 (API Level 14) and later.
+   void Canvas.drawCircle(float, float, float, Paint)
+   void Canvas.drawLine(float, float, float, float, Paint)
+   void Canvas.drawRect(float, float, float, float, Paint)
+   void Paint.setColor(int)
+   void View.onDraw(Canvas)
+   void View.onTouch(MotionEvent) or
+     void View.onTouchListener(View.OnTouchListener)
 
 WHAT AND HOW TO TURN IN
 
@@ -234,7 +171,7 @@ DEMO
 
    You will do an demo of your app, either in-class or to TA. Bring a
    WiFi-capable Android device with your app installed; you may also
-   use an AVD on your laptop. Prepare a 2~3 minutes demo of your app.
+   use an AVD on your laptop. Prepare a 2 minutes demo of your app.
 
 GRADING
 
@@ -247,14 +184,11 @@ GRADING
 
 REFERENCES 
 
-   [1] Aisha Harris, How to Win at Battleship. 
-       http://www.slate.com/blogs/browbeat/2012/05/16/
-       _battleship_how_to_win_the_classic_board_game_every_time.html
-       (Retrieved: February 19, 2017)
-
-   [2] Holger Gast, How to Use Objects, Addison-Wesley, 2016.
+   [1] Holger Gast, How to Use Objects, Addison-Wesley, 2016.
        Sections 9.1 and 9.2. Ebook available from UTEP library.
 
-   [3] Martina Seidl, et al., UML@Classroom: An Introduction to
+   [2] Martina Seidl, et al., UML@Classroom: An Introduction to
        Object-Oriented Modeling, Springer, 2015. Free ebook through
        UTEP library.
+
+
