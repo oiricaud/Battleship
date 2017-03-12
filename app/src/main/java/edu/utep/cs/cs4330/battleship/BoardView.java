@@ -93,10 +93,10 @@ public class BoardView extends View {
     private final List<BoardTouchListener> listeners = new ArrayList<>();
 
     /** Board background color. */
-    private final int boardColor = Color.rgb(102, 163, 255);
+    private final int boardColor = Color.argb(0, 255, 255, 255);
 
     /** Red color circle **/
-    private final int redColor = Color.rgb(178,34,34);
+    private final int redColor = Color.rgb(255,69,0);
 
     /** White color circle **/
     private final int whiteColor = Color.rgb(255,255,255);

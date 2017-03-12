@@ -1,6 +1,7 @@
 package edu.utep.cs.cs4330.battleship;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -57,8 +58,14 @@ public class MainActivity extends AppCompatActivity {
         final Ship submarine = new Ship(3, "submarine");
         final Ship patrol = new Ship(2, "patrol");
 
+        // Change font
+        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
+        //Typeface typeface=Typeface.createFromAsset(getAssets(), "fonts");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
+        battleshipLabel.setTypeface(typeface);
         // The counter displays the number of shots in the UI, the user has tapped on the board.
         counter = (TextView) findViewById(R.id.countOfHits);
+        counter.setTypeface(typeface);
         countShots = 0;
         setCountShots(0);
 
