@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:weightSum="1"
     android:orientation="horizontal">
@@ -8,9 +9,52 @@
         android:id="@+id/imageView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src = "@drawable/waterbackgroundmain"
+        android:contentDescription="Background Image"
         android:scaleType="fitXY"
-        android:contentDescription="Background Image" />
+        android:src="@drawable/waterbackgroundmain" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/placeboats"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/battleship"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:srcCompat="@drawable/battleship" />
+
+        <ImageView
+            android:id="@+id/submarine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:srcCompat="@drawable/submarine" />
+
+        <ImageView
+            android:id="@+id/aircraft"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/placeboats"
+            android:layout_marginTop="21dp"
+            android:layout_weight="0.11"
+            android:srcCompat="@drawable/aircraft" />
+
+        <ImageView
+            android:id="@+id/minesweeper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:srcCompat="@drawable/minesweeper" />
+
+        <ImageView
+            android:id="@+id/frigate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:srcCompat="@drawable/frigate" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/next"
@@ -30,14 +74,14 @@
         android:id="@+id/placeboats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="74dp"
+        android:layout_marginTop="22dp"
         android:gravity="center"
         android:text="Place Boats"
         android:textAlignment="center"
         android:textColor="@android:color/holo_orange_dark"
-        android:textSize="36sp" />
+        android:textSize="36sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
