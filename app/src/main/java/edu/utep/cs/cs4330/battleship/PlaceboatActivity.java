@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -46,7 +47,8 @@ public class PlaceboatActivity  extends Activity implements View.OnTouchListener
         findViewById(R.id.frigate).setOnTouchListener(this);
 
         // Place ships to this view only
-        findViewById(R.id.boardView).setOnDragListener(this);
+        findViewById(R.id.defaultBoatsView).setOnDragListener(this);
+        findViewById(R.id.gridBoatsView).setOnDragListener(this);
 
         // Change font
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
@@ -71,7 +73,7 @@ public class PlaceboatActivity  extends Activity implements View.OnTouchListener
             //we want to make sure it is dropped only to left and right parent view
             View view = (View) event.getLocalState();
 
-            if (v.getId() == R.id.boardView) {
+            if (v.getId() == R.id.gridBoatsView || v.getId() == R.id.defaultBoatsView) {
 
                 ViewGroup source = (ViewGroup) view.getParent();
                 source.removeView(view);
