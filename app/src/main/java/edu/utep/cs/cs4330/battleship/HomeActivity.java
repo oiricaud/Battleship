@@ -19,25 +19,26 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        // Change font
-        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
-        //Typeface typeface=Typeface.createFromAsset(getAssets(), "fonts");
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
-        battleshipLabel.setTypeface(typeface);
-
         start();
     }
 
     private void start() {
         playMusic();
         // Start a new game
+        // Change font
+        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
+        //Typeface typeface=Typeface.createFromAsset(getAssets(), "fonts");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
+        battleshipLabel.setTypeface(typeface);
         Button startButton = (Button) findViewById(R.id.start);
+        startButton.setTypeface(typeface);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                Intent intent = new Intent(HomeActivity.this, GameActivity.class);
                 HomeActivity.this.startActivity(intent);
+                /** Fading Transition Effect */
+                HomeActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }

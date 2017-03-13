@@ -41,7 +41,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="casual"
             android:text="@string/number_of_shots_0"
-            android:textColor="?attr/editTextColor"
+            android:textColor="?attr/actionModeSplitBackground"
             android:textSize="12sp"
             android:textStyle="normal|bold" />
 
