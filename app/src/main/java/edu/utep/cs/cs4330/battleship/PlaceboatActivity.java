@@ -28,7 +28,7 @@ public class PlaceboatActivity extends AppCompatActivity {
         title.setTypeface(typeface);
         next.setTypeface(typeface);
 
-        // 
+        //
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
