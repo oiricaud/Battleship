@@ -53,10 +53,11 @@
             android:layout_marginTop="10dp"/>
 
         <Button
-            android:text="@string/new_button_label"
+            android:id="@+id/newButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/newButton" />
+            android:background="@android:color/holo_blue_light"
+            android:text="@string/new_button_label" />
 
     </LinearLayout>
 

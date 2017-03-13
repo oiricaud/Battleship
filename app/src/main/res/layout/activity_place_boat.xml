@@ -12,6 +12,20 @@
         android:scaleType="fitXY"
         android:contentDescription="Background Image" />
 
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:background="@android:color/holo_red_light"
+        android:text="@string/next"
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/placeboats"
         android:layout_width="wrap_content"
@@ -24,17 +38,6 @@
         android:textAlignment="center"
         android:textColor="@android:color/holo_orange_dark"
         android:textSize="36sp" />
-    <Button
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:background="@android:color/holo_red_light"
-        android:text="@string/next"
-        android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/placeboats"
-        android:layout_toEndOf="@+id/placeboats" />
 
 
 </RelativeLayout>
