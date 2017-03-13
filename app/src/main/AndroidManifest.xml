@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MainActivity"> </activity>
+        <activity android:name=".GameActivity"> </activity>
 
         <activity
             android:name=".HomeActivity"
