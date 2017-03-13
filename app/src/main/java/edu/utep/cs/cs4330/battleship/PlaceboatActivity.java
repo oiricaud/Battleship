@@ -14,11 +14,18 @@ import android.widget.TextView;
  */
 
 public class PlaceboatActivity extends AppCompatActivity {
+    private Board board;
+    private BoardView boardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_boat);
+
+        board = new Board(10);
+
+        boardView = (BoardView) findViewById(R.id.boardView);
+        boardView.setBoard(board);
 
         TextView title = (TextView) findViewById(R.id.placeboats);
         Button next = (Button) findViewById(R.id.next);
