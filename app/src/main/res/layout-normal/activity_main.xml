@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <!-- <ImageView
+         android:id="@+id/imageView"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent"
+         android:src = "@drawable/gamebackground"
+         android:tileMode="repeat"
+         android:scaleType="fitXY"/>
+         -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:tileMode="repeat"
+        android:scaleType="fitXY"
+        android:background="@drawable/gamebackground">
+
+        <TextView
+            android:id="@+id/BattleShip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/battleship"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/countOfHits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="casual"
+            android:text="@string/number_of_shots_0"
+            android:textColor="?attr/actionModeSplitBackground"
+            android:textSize="12sp"
+            android:textStyle="normal|bold" />
+
+        <edu.utep.cs.cs4330.battleship.BoardView
+            android:id="@+id/boardView"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/newButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_light"
+            android:text="@string/new_button_label" />
+
+    </LinearLayout>
+
+</RelativeLayout>
