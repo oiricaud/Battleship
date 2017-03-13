@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:weightSum="1"
     android:orientation="horizontal">
 
@@ -24,13 +26,15 @@
             android:id="@+id/battleship"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:srcCompat="@drawable/battleship" />
+            android:background="@drawable/battleship"
+            android:contentDescription="Battleship" />
 
         <ImageView
             android:id="@+id/submarine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:srcCompat="@drawable/submarine" />
+            android:background="@drawable/submarine"
+            android:contentDescription="Submarine" />
 
         <ImageView
             android:id="@+id/aircraft"
@@ -41,19 +45,22 @@
             android:layout_below="@+id/placeboats"
             android:layout_marginTop="21dp"
             android:layout_weight="0.11"
-            android:srcCompat="@drawable/aircraft" />
+            android:background="@drawable/aircraft"
+            android:contentDescription="Aircraft" />
 
         <ImageView
             android:id="@+id/minesweeper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:srcCompat="@drawable/minesweeper" />
+            android:background="@drawable/minesweeper"
+            android:contentDescription="Minesweeper" />
 
         <ImageView
             android:id="@+id/frigate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:srcCompat="@drawable/frigate" />
+            android:background="@drawable/frigate"
+            android:contentDescription="Frigate" />
     </LinearLayout>
 
     <Button
