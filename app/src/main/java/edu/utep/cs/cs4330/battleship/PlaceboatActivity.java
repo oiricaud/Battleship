@@ -29,21 +29,24 @@ public class PlaceboatActivity  extends Activity implements View.OnTouchListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_boat);
-
-        // Move ships
-        findViewById(R.id.aircraft).setOnTouchListener(this);
-        findViewById(R.id.battleship).setOnTouchListener(this);
-        findViewById(R.id.minesweeper).setOnTouchListener(this);
-        findViewById(R.id.submarine).setOnTouchListener(this);
-        findViewById(R.id.frigate).setOnTouchListener(this);
+        // Title and next button
+        title = (TextView) findViewById(R.id.placeboats);
+        next = (Button) findViewById(R.id.next);
 
         // Set the board view so boats can be placed on the grid
         board = new Board(10);
         boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
 
-        title = (TextView) findViewById(R.id.placeboats);
-        next = (Button) findViewById(R.id.next);
+        // Drag ships
+        findViewById(R.id.aircraft).setOnTouchListener(this);
+        findViewById(R.id.battleship).setOnTouchListener(this);
+        findViewById(R.id.minesweeper).setOnTouchListener(this);
+        findViewById(R.id.submarine).setOnTouchListener(this);
+        findViewById(R.id.frigate).setOnTouchListener(this);
+
+        // Place ships to this view only
+        findViewById(R.id.boardView).setOnDragListener(this);
 
         // Change font
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
@@ -58,14 +61,6 @@ public class PlaceboatActivity  extends Activity implements View.OnTouchListener
                 PlaceboatActivity.this.startActivity(intent);
                 /** Fading Transition Effect */
                 PlaceboatActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
-        });
-
-        // Display boats on grid
-        boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-            @Override
-            public void onTouch(int x, int y) {
-
             }
         });
     }

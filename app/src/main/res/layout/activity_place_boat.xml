@@ -93,7 +93,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_above="@+id/next" />
 
     <Button
         android:id="@+id/next"
@@ -121,6 +122,5 @@
         android:textSize="36sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
-
 
 </RelativeLayout>
