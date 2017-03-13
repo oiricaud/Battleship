@@ -77,8 +77,7 @@ public class PlaceboatActivity  extends Activity implements View.OnTouchListener
 
                 ViewGroup source = (ViewGroup) view.getParent();
                 source.removeView(view);
-
-                LinearLayout target = (LinearLayout) v;
+                RelativeLayout target = (RelativeLayout) v;
                 target.addView(view);
             }
             //make view visible as we set visibility to invisible while starting drag
