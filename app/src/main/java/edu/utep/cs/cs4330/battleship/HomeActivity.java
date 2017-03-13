@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Random;
+
 /**
  * Created by oscarricaud on 3/11/17.
  */
@@ -21,21 +23,20 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         start();
     }
-
+    // The beginning to a wonderful journey
     private void start() {
         playMusic();
-        // Start a new game
-        // Change font
-        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
-        //Typeface typeface=Typeface.createFromAsset(getAssets(), "fonts");
+        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
         battleshipLabel.setTypeface(typeface);
+
+        // Begin to the next activity, placing boats on the map
         Button startButton = (Button) findViewById(R.id.start);
         startButton.setTypeface(typeface);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, GameActivity.class);
+                Intent intent = new Intent(HomeActivity.this, PlaceboatActivity.class);
                 HomeActivity.this.startActivity(intent);
                 /** Fading Transition Effect */
                 HomeActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -47,7 +48,18 @@ public class HomeActivity extends AppCompatActivity {
             mp.stop();
             mp.release();
         }
-        mp = MediaPlayer.create(this, R.raw.alterego);
+        // Play one of these random songs in the background.
+        Random random = new Random();
+        int obtainRandomNumber = random.nextInt(3 - 1 + 1) + 1;
+        if(obtainRandomNumber == 1){
+            mp = MediaPlayer.create(this, R.raw.alterego);
+        }
+        if(obtainRandomNumber == 2){
+            mp = MediaPlayer.create(this, R.raw.oblivion);
+        }
+        if(obtainRandomNumber == 3){
+            mp = MediaPlayer.create(this, R.raw.yolo);
+        }
         mp.start();
     }
 }

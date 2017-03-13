@@ -5,4 +5,5 @@
     <string name="number_of_shots_0">Number of Shots: 0 </string>
     <string name="battleship">BattleShip</string>
     <string name="start">Start</string>
+    <string name="next">Next</string>
 </resources>

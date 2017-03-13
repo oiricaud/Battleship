@@ -28,15 +28,15 @@
             android:layout_centerHorizontal="true" />
 
         <Button
-            android:id="@+id/start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="32dp"
-            android:background="@android:color/holo_red_light"
-            android:text="@string/start"
-            android:textStyle="bold" />
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:background="@android:color/holo_red_light"
+        android:text="@string/start"
+        android:textStyle="bold" />
     </RelativeLayout>
 
 </LinearLayout>
