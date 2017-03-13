@@ -13,54 +13,78 @@
         android:layout_height="fill_parent"
         android:contentDescription="Background Image"
         android:scaleType="fitXY"
-        android:src="@drawable/waterbackgroundmain" />
+        android:src="@drawable/waterbackgroundmain"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="33dp"
+        android:id="@+id/linearLayout2"
         android:layout_below="@+id/placeboats"
-        android:orientation="vertical"
-        android:weightSum="1">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <ImageView
             android:id="@+id/battleship"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/aircraft"
+            android:layout_toEndOf="@+id/aircraft"
+            android:layout_toRightOf="@+id/aircraft"
+            android:layout_weight="1"
             android:background="@drawable/battleship"
             android:contentDescription="Battleship" />
 
         <ImageView
             android:id="@+id/submarine"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/battleship"
+            android:layout_toEndOf="@+id/battleship"
+            android:layout_toRightOf="@+id/battleship"
+            android:layout_weight="1"
             android:background="@drawable/submarine"
             android:contentDescription="Submarine" />
 
         <ImageView
-            android:id="@+id/aircraft"
-            android:layout_width="match_parent"
-            android:layout_height="63dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/placeboats"
-            android:layout_marginTop="21dp"
-            android:layout_weight="0.11"
-            android:background="@drawable/aircraft"
-            android:contentDescription="Aircraft" />
+            android:id="@+id/frigate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/submarine"
+            android:layout_toEndOf="@+id/submarine"
+            android:layout_toRightOf="@+id/submarine"
+            android:layout_weight="1"
+            android:background="@drawable/frigate"
+            android:contentDescription="Frigate" />
 
         <ImageView
             android:id="@+id/minesweeper"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/frigate"
+            android:layout_toEndOf="@+id/frigate"
+            android:layout_toRightOf="@+id/frigate"
+            android:layout_weight="1"
             android:background="@drawable/minesweeper"
             android:contentDescription="Minesweeper" />
 
         <ImageView
-            android:id="@+id/frigate"
-            android:layout_width="match_parent"
+            android:id="@+id/aircraft"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/frigate"
-            android:contentDescription="Frigate" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_weight="1"
+            android:background="@drawable/aircraft"
+            android:contentDescription="Aircraft" />
+
     </LinearLayout>
 
     <Button
