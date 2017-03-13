@@ -74,7 +74,12 @@ public class PlaceboatActivity  extends Activity implements View.OnTouchListener
             View view = (View) event.getLocalState();
 
             if (v.getId() == R.id.gridBoatsView || v.getId() == R.id.defaultBoatsView) {
+                boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+                    @Override
+                    public void onTouch(int x, int y) {
 
+                    }
+                    });
                 ViewGroup source = (ViewGroup) view.getParent();
                 source.removeView(view);
                 RelativeLayout target = (RelativeLayout) v;
