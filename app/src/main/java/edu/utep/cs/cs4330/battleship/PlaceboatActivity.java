@@ -71,7 +71,7 @@ public class PlaceboatActivity  extends Activity {
         minesweeperImage.setLayoutParams(layoutParams);
         minesweeperImage.setOnTouchListener(new ChoiceToucheListener());
 
-        // Minesweeper
+        // Frigate
         frigateImage = (ImageView) findViewById(R.id.frigate);
         frigateImage.setLayoutParams(layoutParams);
         frigateImage.setOnTouchListener(new ChoiceToucheListener());
