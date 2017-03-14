@@ -21,15 +21,9 @@ import android.widget.TextView;
  */
 
 public class PlaceboatActivity  extends Activity {
-    private Board board;
-    private BoardView boardView;
     private TextView title;
     private Button next;
-    private ImageView aircraftImage;
-    private ImageView battleshipImage;
-    private ImageView submarineImage;
-    private ImageView minesweeperImage;
-    private ImageView frigateImage;
+    private Button quit;
     private ViewGroup rootLayout;
     private int _xDelta;
     private int _yDelta;
@@ -38,49 +32,33 @@ public class PlaceboatActivity  extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_boat);
-        // Title and next button
-        title = (TextView) findViewById(R.id.placeboats);
-        next = (Button) findViewById(R.id.next);
 
+        setEverything(); // The creation of this activity
+    }
+
+    /**
+     * This method creates buttons and drag & drop feauture the user uses to place boats on grid.
+     */
+    private void setEverything() {
+        title = (TextView) findViewById(R.id.placeboats); // PLACE BOATS
+        setBoard();
+        setButtons();           // Sets the appropriate buttons
+        setBoatImagesOnView(); // Displays all 5 boats on UI
+    }
+
+    private void setBoard() {
         // Set the board view so boats can be placed on the grid
-        board = new Board(10);
-        boardView = (BoardView) findViewById(R.id.boardView);
+        Board board = new Board(10);
+        BoardView boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
+    }
 
-        rootLayout = (ViewGroup) findViewById(R.id.defaultBoatsView);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150); // Size of ships
-
-
-        //Aircraft
-        battleshipImage = (ImageView) findViewById(R.id.aircraft);
-        battleshipImage.setLayoutParams(layoutParams);
-        battleshipImage.setOnTouchListener(new ChoiceToucheListener());
-
-        // Battleship
-        aircraftImage = (ImageView) findViewById(R.id.battleship);
-        aircraftImage.setLayoutParams(layoutParams);
-        aircraftImage.setOnTouchListener(new ChoiceToucheListener());
-
-        // Submarine
-        submarineImage = (ImageView) findViewById(R.id.submarine);
-        submarineImage.setLayoutParams(layoutParams);
-        submarineImage.setOnTouchListener(new ChoiceToucheListener());
-
-        // Minesweeper
-        minesweeperImage = (ImageView) findViewById(R.id.minesweeper);
-        minesweeperImage.setLayoutParams(layoutParams);
-        minesweeperImage.setOnTouchListener(new ChoiceToucheListener());
-
-        // Frigate
-        frigateImage = (ImageView) findViewById(R.id.frigate);
-        frigateImage.setLayoutParams(layoutParams);
-        frigateImage.setOnTouchListener(new ChoiceToucheListener());
-
-        // Change font
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
-        title.setTypeface(typeface);
-        next.setTypeface(typeface);
-
+    /**
+     *  The user needs to be able to traverse to next or quit, hence the maker creates buttons.
+     */
+    private void setButtons() {
+        next = (Button) findViewById(R.id.next);
+        quit =(Button) findViewById(R.id.quitB);
         // Go to the next activity
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,12 +69,6 @@ public class PlaceboatActivity  extends Activity {
                 PlaceboatActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
-
-        Button quit = (Button) findViewById(R.id.quitB);
-
-        Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
-        title.setTypeface(typeface2);
-        next.setTypeface(typeface2);
 
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +81,44 @@ public class PlaceboatActivity  extends Activity {
         });
     }
 
+    private void setBoatImagesOnView() {
+        rootLayout = (ViewGroup) findViewById(R.id.defaultBoatsView);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150); // Size of ships
+        //Aircraft
+        ImageView battleshipImage = (ImageView) findViewById(R.id.aircraft);
+        battleshipImage.setLayoutParams(layoutParams);
+        battleshipImage.setOnTouchListener(new ChoiceToucheListener());
+
+        // Battleship
+        ImageView aircraftImage = (ImageView) findViewById(R.id.battleship);
+        aircraftImage.setLayoutParams(layoutParams);
+        aircraftImage.setOnTouchListener(new ChoiceToucheListener());
+
+        // Submarine
+        ImageView submarineImage = (ImageView) findViewById(R.id.submarine);
+        submarineImage.setLayoutParams(layoutParams);
+        submarineImage.setOnTouchListener(new ChoiceToucheListener());
+
+        // Minesweeper
+        ImageView minesweeperImage = (ImageView) findViewById(R.id.minesweeper);
+        minesweeperImage.setLayoutParams(layoutParams);
+        minesweeperImage.setOnTouchListener(new ChoiceToucheListener());
+
+        // Frigate
+        ImageView frigateImage = (ImageView) findViewById(R.id.frigate);
+        frigateImage.setLayoutParams(layoutParams);
+        frigateImage.setOnTouchListener(new ChoiceToucheListener());
+
+        // Change font
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
+        title.setTypeface(typeface);
+        next.setTypeface(typeface);
+        quit.setTypeface(typeface);
+    }
+
+    /**
+     * The drag and drop feature
+     */
     private final class ChoiceToucheListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
