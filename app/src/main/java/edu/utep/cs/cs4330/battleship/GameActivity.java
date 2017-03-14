@@ -26,16 +26,16 @@ public class GameActivity extends AppCompatActivity {
     private TextView counter;
 
     /** This is the main controller class and handles the creation of multiple ships and board.
- //    *  @see Ship.java
-  //   *  @see BoardView.java
-  //   *  @see Board.java
+     *  @see Ship.java
+     *  @see BoardView.java
+     *  @see Board.java
      *  for more information.
      *
      *  At random, ships are placed either horizontally or vertically on a 10x10 board.
      *  The user is able to interact with this board and creates (x,y) coordinates.
      *  The user coordinates are compared to the coordinates from all boats that are randomly placed
      *  on the board. If the user hits a boat the method onDraw is invoked from the
-  //   *  @see BoardView.java
+     *  @see BoardView.java
      *  and colors a red circle the position of the boats, else colors a white circle indicating the
      *  user missed.
      *
@@ -151,21 +151,6 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 toast("New Game successfully created!");
                 restartActivity();
-                Intent intent = new Intent(GameActivity.this, PlaceboatActivity.class);
-                GameActivity.this.startActivity(intent);
-                GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
-        });
-
-        Button quitButton = (Button) findViewById(R.id.quitButton);
-        quitButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                toast("Quiting Game!");
-                finish();
-                Intent intent = new Intent(GameActivity.this, HomeActivity.class);
-                GameActivity.this.startActivity(intent);
-                GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
