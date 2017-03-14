@@ -25,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     }
     // The beginning to a wonderful journey
     private void start() {
+
         playMusic();
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
@@ -62,5 +63,8 @@ public class HomeActivity extends AppCompatActivity {
             mp = MediaPlayer.create(this, R.raw.yolo);
         }
         mp.start();
+    }
+    public void stopMusic(){
+        mp.stop();
     }
 }
