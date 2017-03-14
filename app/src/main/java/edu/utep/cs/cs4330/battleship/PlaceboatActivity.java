@@ -2,6 +2,7 @@ package edu.utep.cs.cs4330.battleship;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 public class PlaceboatActivity extends AppCompatActivity {
     private Board board;
     private BoardView boardView;
+    private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,22 @@ public class PlaceboatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PlaceboatActivity.this, GameActivity.class);
+                PlaceboatActivity.this.startActivity(intent);
+                /** Fading Transition Effect */
+                PlaceboatActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+
+        Button quit = (Button) findViewById(R.id.quitB);
+
+        Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
+        title.setTypeface(typeface2);
+        next.setTypeface(typeface2);
+
+        quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PlaceboatActivity.this, HomeActivity.class);
                 PlaceboatActivity.this.startActivity(intent);
                 /** Fading Transition Effect */
                 PlaceboatActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
