@@ -58,54 +58,6 @@
             android:layout_marginLeft="17dp"
             android:layout_marginStart="17dp" />
 
-
-        <!--
-        <ImageView
-            android:id="@+id/submarine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/battleship"
-            android:layout_toEndOf="@+id/battleship"
-            android:layout_toRightOf="@+id/battleship"
-            android:layout_weight="1"
-            android:background="@drawable/submarine"
-            android:contentDescription="Submarine" />
-
-        <ImageView
-            android:id="@+id/frigate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/submarine"
-            android:layout_toEndOf="@+id/submarine"
-            android:layout_toRightOf="@+id/submarine"
-            android:layout_weight="1"
-            android:background="@drawable/frigate"
-            android:contentDescription="Frigate" />
-
-        <ImageView
-            android:id="@+id/minesweeper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/frigate"
-            android:layout_toEndOf="@+id/frigate"
-            android:layout_toRightOf="@+id/frigate"
-            android:layout_weight="1"
-            android:background="@drawable/minesweeper"
-            android:contentDescription="Minesweeper" />
-
-        <ImageView
-            android:id="@+id/aircraft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/linearLayout2"
-            android:layout_weight="1"
-            android:background="@drawable/aircraft"
-            android:contentDescription="Aircraft" />
--->
-
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -158,7 +110,38 @@
             android:layout_marginEnd="19dp" />
     </RelativeLayout>
 
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/minesweeper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/minesweeper"
+            android:contentDescription="minesweeper"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="19dp"
+            android:layout_marginEnd="19dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/frigate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/frigate"
+            android:contentDescription="frigate"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="19dp"
+            android:layout_marginEnd="19dp" />
+    </RelativeLayout>
 
 </RelativeLayout>
 
