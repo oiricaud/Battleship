@@ -6,139 +6,96 @@
     android:orientation="horizontal"
     android:background="@drawable/oceanwclouds">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:tileMode="repeat"
-        android:scaleType="fitXY"
-        android:id="@+id/defaultBoatsView">
-
-        <TextView
-            android:id="@+id/placeboats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp"
-            android:gravity="center"
-            android:text="Place Boats"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_dark"
-            android:textSize="28sp" />
-
-        <edu.utep.cs.cs4330.battleship.BoardView
-            android:id="@+id/boardView"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="110dp"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
-
     <RelativeLayout
+        android:id="@+id/defaultBoatsView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_above="@+id/linearLayout"
+        android:layout_below="@+id/placeboats"
+        android:layout_toEndOf="@+id/boardView"
+        android:layout_toRightOf="@+id/boardView">
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/battleship"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
-            android:layout_weight="1"
-            android:background="@drawable/battleship"
-            android:contentDescription="Battleship"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <ImageView
             android:id="@+id/aircraft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="66dp"
-            android:background="@drawable/aircraft"
-            android:contentDescription="aircraft"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/submarine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:background="@drawable/submarine"
-            android:contentDescription="submarine"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginEnd="19dp"
             android:layout_marginRight="19dp"
-            android:layout_marginEnd="19dp" />
-    </RelativeLayout>
+            android:background="@drawable/aircraft"
+            android:contentDescription="aircraft" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <ImageView
             android:id="@+id/minesweeper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_alignLeft="@+id/frigate"
+            android:layout_alignStart="@+id/frigate"
+            android:layout_alignTop="@+id/submarine"
             android:background="@drawable/minesweeper"
-            android:contentDescription="minesweeper"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="19dp"
-            android:layout_marginEnd="19dp" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:contentDescription="minesweeper" />
+
         <ImageView
             android:id="@+id/frigate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_alignTop="@+id/battleship"
+            android:layout_marginEnd="37dp"
+            android:layout_marginRight="37dp"
+            android:layout_toLeftOf="@+id/battleship"
+            android:layout_toStartOf="@+id/battleship"
             android:background="@drawable/frigate"
-            android:contentDescription="frigate"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="19dp"
-            android:layout_marginEnd="19dp" />
+            android:contentDescription="frigate" />
 
+        <ImageView
+            android:id="@+id/battleship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/submarine"
+            android:layout_alignLeft="@+id/submarine"
+            android:layout_alignStart="@+id/submarine"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/battleship"
+            android:contentDescription="Battleship" />
 
+        <ImageView
+            android:id="@+id/submarine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/aircraft"
+            android:layout_alignStart="@+id/aircraft"
+            android:layout_centerVertical="true"
+            android:background="@drawable/submarine" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/placeboats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="Place Boats"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="28sp" />
+
+    <edu.utep.cs.cs4330.battleship.BoardView
+        android:id="@+id/boardView"
+        android:layout_width="265dp"
+        android:layout_height="224dp"
+        android:layout_below="@+id/placeboats"
+        android:layout_above="@+id/linearLayout" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
 
         <Button
             android:id="@+id/quitB"
@@ -152,7 +109,6 @@
             android:id="@+id/next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="false"
             android:layout_weight="0.5"
             android:background="@android:color/holo_green_light"
             android:text="@string/next" />
