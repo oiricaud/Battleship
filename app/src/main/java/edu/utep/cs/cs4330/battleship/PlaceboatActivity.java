@@ -28,6 +28,7 @@ public class PlaceboatActivity  extends Activity {
     private ImageView aircraftImage;
     private ImageView battleshipImage;
     private ImageView submarineImage;
+    private ImageView minesweeperImage;
     private ViewGroup rootLayout;
     private int _xDelta;
     private int _yDelta;
@@ -63,6 +64,11 @@ public class PlaceboatActivity  extends Activity {
         submarineImage = (ImageView) findViewById(R.id.submarine);
         submarineImage.setLayoutParams(layoutParams);
         submarineImage.setOnTouchListener(new ChoiceToucheListener());
+
+        // Minesweeper
+        minesweeperImage = (ImageView) findViewById(R.id.minesweeper);
+        minesweeperImage.setLayoutParams(layoutParams);
+        minesweeperImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Change font
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
