@@ -91,6 +91,22 @@ public class PlaceboatActivity  extends Activity {
                 PlaceboatActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
+
+        Button quit = (Button) findViewById(R.id.quitB);
+
+        Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
+        title.setTypeface(typeface2);
+        next.setTypeface(typeface2);
+
+        quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PlaceboatActivity.this, HomeActivity.class);
+                PlaceboatActivity.this.startActivity(intent);
+                /** Fading Transition Effect */
+                PlaceboatActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
     }
 
     private final class ChoiceToucheListener implements View.OnTouchListener {

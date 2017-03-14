@@ -57,7 +57,19 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="17dp"
             android:layout_marginStart="17dp" />
-
+        <Button
+            android:id="@+id/quitB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="19dp"
+            android:layout_marginRight="19dp"
+            android:layout_weight="1"
+            android:background="@android:color/holo_red_light"
+            android:text="Quit"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <RelativeLayout
