@@ -42,7 +42,6 @@ public class HomeActivity extends AppCompatActivity {
                 HomeActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
-
     }
     private void playMusic() {
         if (mp!=null) {
