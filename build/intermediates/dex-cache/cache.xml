@@ -2,49 +2,13 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="/Users/oscarricaud/.android/build-cache/94a42e36a9aa867878dfa6335a3407a4859cf8d7/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="983e2f375504bc04def18e709c35192afe92e65f">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/classes_cb7d6cd3f23ef9553595827c5824cb61bd14450b.jar" />
-    </item>
-    <item
         is-multidex="true"
         jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="782372c74d0e1a59e479823dd4ee32691d6fe6c3">
+        sha1="04671c2d6998c1c5697d93d0fe938ed6c6024204">
         <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_d03bcf1d5bc09e1d07227034a68b1b5aea738efc/classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/oscarricaud/.android/build-cache/0273be2cf171d1b3cebf0e5d24f0812a3d2cac78/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="eeebabdfd8203f6ab639ccea4ffa1f20e1adee3a">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/classes_c9afa1765e6cf2d17e0794701dbb415cd12671d2.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/oscarricaud/.android/build-cache/0273be2cf171d1b3cebf0e5d24f0812a3d2cac78/output/jars/libs/internal_impl-22.1.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="025cb89f2896c63200ff4c2e6c467a95691d880a">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.0_b3933a84d0df10eb79c1c491fb9ad8d406dc5895.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/oscarricaud/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.0/support-annotations-22.1.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="281bc6c58ecb3644c23fbc5ee0452019f67b4d5d">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.0_51481a6bbc3f9ca8fa2abdbfa7362976390c70df.jar" />
     </item>
     <item
         is-multidex="true"

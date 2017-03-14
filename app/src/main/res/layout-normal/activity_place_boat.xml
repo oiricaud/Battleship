@@ -1,46 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:weightSum="1"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@drawable/oceanwclouds">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:contentDescription="Background Image"
-        android:scaleType="fitXY"
-        android:src="@drawable/waterbackgroundmain"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:tileMode="repeat"
+        android:scaleType="fitXY"
+        android:id="@+id/defaultBoatsView">
+
+        <TextView
+            android:id="@+id/placeboats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="Place Boats"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="28sp" />
+
+        <edu.utep.cs.cs4330.battleship.BoardView
+            android:id="@+id/boardView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="110dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="33dp"
-        android:id="@+id/defaultBoatsView"
-        android:layout_below="@+id/placeboats"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-        <ImageView
-            android:id="@+id/battleship"
+        android:layout_alignParentTop="true">
+        <Button
+            android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/aircraft"
-            android:layout_toEndOf="@+id/aircraft"
-            android:layout_toRightOf="@+id/aircraft"
-            android:layout_weight="1"
-            android:background="@drawable/battleship"
-            android:contentDescription="Battleship" />
+            android:background="@android:color/holo_red_light"
+            android:text="@string/next"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="17dp"
+            android:layout_marginStart="17dp" />
 
+
+        <!--
         <ImageView
             android:id="@+id/submarine"
             android:layout_width="wrap_content"
@@ -84,49 +103,62 @@
             android:layout_weight="1"
             android:background="@drawable/aircraft"
             android:contentDescription="Aircraft" />
+-->
+
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/gridBoatsView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/next"
-        android:layout_below="@+id/defaultBoatsView"
-        android:orientation="horizontal">
-
-        <edu.utep.cs.cs4330.battleship.BoardView
-            android:id="@+id/boardView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/battleship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:layout_weight="1"
+            android:background="@drawable/battleship"
+            android:contentDescription="Battleship"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="19dp"
-        android:layout_marginRight="19dp"
-        android:background="@android:color/holo_red_light"
-        android:text="@string/next"
-        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/placeboats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
-        android:gravity="center"
-        android:text="Place Boats"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_orange_dark"
-        android:textSize="28sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/aircraft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="66dp"
+            android:background="@drawable/aircraft"
+            android:contentDescription="aircraft"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/submarine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/submarine"
+            android:contentDescription="submarine"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="19dp"
+            android:layout_marginEnd="19dp" />
+    </RelativeLayout>
+
 
 
 </RelativeLayout>
+

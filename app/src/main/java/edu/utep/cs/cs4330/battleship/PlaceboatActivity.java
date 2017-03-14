@@ -20,11 +20,17 @@ import android.widget.TextView;
  * This activity will allow the user to place boats. @see activity_place_boat
  */
 
-public class PlaceboatActivity  extends Activity implements View.OnTouchListener, View.OnDragListener {
+public class PlaceboatActivity  extends Activity {
     private Board board;
     private BoardView boardView;
     private TextView title;
     private Button next;
+    private ImageView aircraftImage;
+    private ImageView battleshipImage;
+    private ImageView submarineImage;
+    private ViewGroup rootLayout;
+    private int _xDelta;
+    private int _yDelta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +45,24 @@ public class PlaceboatActivity  extends Activity implements View.OnTouchListener
         boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
 
-        // Drag ships
-        findViewById(R.id.aircraft).setOnTouchListener(this);
-        findViewById(R.id.battleship).setOnTouchListener(this);
-        findViewById(R.id.minesweeper).setOnTouchListener(this);
-        findViewById(R.id.submarine).setOnTouchListener(this);
-        findViewById(R.id.frigate).setOnTouchListener(this);
+        rootLayout = (ViewGroup) findViewById(R.id.defaultBoatsView);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150); // Size of ships
 
-        // Place ships to this view only
-        findViewById(R.id.defaultBoatsView).setOnDragListener(this);
-        findViewById(R.id.gridBoatsView).setOnDragListener(this);
+
+        //Aircraft
+        battleshipImage = (ImageView) findViewById(R.id.aircraft);
+        battleshipImage.setLayoutParams(layoutParams);
+        battleshipImage.setOnTouchListener(new ChoiceToucheListener());
+
+        // Battleship
+        aircraftImage = (ImageView) findViewById(R.id.battleship);
+        aircraftImage.setLayoutParams(layoutParams);
+        aircraftImage.setOnTouchListener(new ChoiceToucheListener());
+
+        // Submarine
+        submarineImage = (ImageView) findViewById(R.id.submarine);
+        submarineImage.setLayoutParams(layoutParams);
+        submarineImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Change font
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
@@ -66,44 +80,35 @@ public class PlaceboatActivity  extends Activity implements View.OnTouchListener
             }
         });
     }
-    @Override
-    public boolean onDrag(View v, DragEvent event) {
-        // TODO Auto-generated method stub
-        if (event.getAction() == DragEvent.ACTION_DROP) {
-            //we want to make sure it is dropped only to left and right parent view
-            View view = (View) event.getLocalState();
 
-            if (v.getId() == R.id.gridBoatsView || v.getId() == R.id.defaultBoatsView) {
-                boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-                    @Override
-                    public void onTouch(int x, int y) {
+    private final class ChoiceToucheListener implements View.OnTouchListener {
+        @Override
+        public boolean onTouch(View view, MotionEvent event) {
+            // TODO Auto-generated method stub
+            final int X = (int) event.getRawX();
+            final int Y = (int) event.getRawY();
 
-                    }
-                    });
-                ViewGroup source = (ViewGroup) view.getParent();
-                source.removeView(view);
-                RelativeLayout target = (RelativeLayout) v;
-                target.addView(view);
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN:
+                    RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                    _xDelta = X - lParams.leftMargin;
+                    _yDelta = Y - lParams.topMargin;
+                break;
+                case MotionEvent.ACTION_UP:
+                    break;
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                    layoutParams.leftMargin = X - _xDelta;
+                    layoutParams.topMargin = Y - _yDelta;
+                    view.setLayoutParams(layoutParams);
+                    break;
             }
-            //make view visible as we set visibility to invisible while starting drag
-            view.setVisibility(View.VISIBLE);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onTouch(View view, MotionEvent event) {
-        // TODO Auto-generated method stub
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                view.startDragAndDrop(null, shadowBuilder, view, 0);
-            } else {
-                view.startDrag(null, shadowBuilder, view, 0);
-            }
-            view.setVisibility(View.INVISIBLE);
+            rootLayout.invalidate();
             return true;
         }
-        return false;
     }
 }

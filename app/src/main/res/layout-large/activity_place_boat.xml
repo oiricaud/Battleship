@@ -93,9 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/next"
-        android:layout_below="@+id/defaultBoatsView"
-        android:orientation="horizontal">
-
+        android:layout_below="@+id/defaultBoatsView">
 
         <edu.utep.cs.cs4330.battleship.BoardView
             android:id="@+id/boardView"
