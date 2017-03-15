@@ -1,5 +1,8 @@
 package edu.utep.cs.cs4330.battleship;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -144,6 +147,8 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        final Context context = this;
+
         // Start a new game when clicked button
         Button newButton = (Button) findViewById(R.id.newButton);
         newButton.setOnClickListener(new View.OnClickListener() {
@@ -161,13 +166,37 @@ public class GameActivity extends AppCompatActivity {
         quitButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                toast("Quiting Game!");
-                finish();
-                Intent intent = new Intent(GameActivity.this, HomeActivity.class);
-                GameActivity.this.startActivity(intent);
-                GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                // Alert Dialogue
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                builder1.setMessage("Are you sure you want to quit?");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                toast("Quiting Game!");
+                                finish();
+                                Intent intent = new Intent(GameActivity.this, HomeActivity.class);
+                                GameActivity.this.startActivity(intent);
+                                GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                dialog.cancel();
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
         });
+
         newButton.setTypeface(typeface);
         quitButton.setTypeface(typeface);
     }
