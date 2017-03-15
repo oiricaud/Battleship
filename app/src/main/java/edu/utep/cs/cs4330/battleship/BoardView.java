@@ -97,7 +97,7 @@ public class BoardView extends View {
     private final List<BoardTouchListener> listeners = new ArrayList<>();
 
     /** Board background color. */
-    private final int boardColor = Color.argb(0, 255, 255, 255);
+    private final int boardColor = Color.argb(0, 255, 255, 255); // Transparent
 
     /** Red color circle **/
     private final int redColor = Color.rgb(255,69,0);
@@ -115,7 +115,7 @@ public class BoardView extends View {
     {
         redPaint.setColor(redColor);
     }
-    /** Red background paint */
+    /** White background paint */
     private final Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
         whitePaint.setColor(whiteColor);
@@ -127,7 +127,7 @@ public class BoardView extends View {
     private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
         boardLinePaint.setColor(boardLineColor);
-        boardLinePaint.setStrokeWidth(2);
+        boardLinePaint.setStrokeWidth(3);
     }
 
     /** Board to be displayed by this view. */
@@ -196,15 +196,15 @@ public class BoardView extends View {
     private void drawPlaces(Canvas canvas) {
 
         for(int i = 0 ; i < getxMiss().size(); i++){
-            float xMiss = (getxMiss().get(i) * lineGap()) + (lineGap()/4);
-            float yMiss = (getyMiss().get(i) * lineGap()) + (lineGap()/4);
-            canvas.drawCircle(xMiss, yMiss, (lineGap() / 4), whitePaint);
+            float xMiss = (getxMiss().get(i) * lineGap()) + (lineGap()/2);
+            float yMiss = (getyMiss().get(i) * lineGap()) + (lineGap()/2);
+            canvas.drawCircle(xMiss, yMiss, (lineGap() / 2), whitePaint);
         }
 
         for(int j = 0 ; j < getxHit().size(); j++){
-            float xHit = (getxHit().get(j) * lineGap()) + (lineGap()/4);
-            float yHit = (getyHit().get(j) * lineGap()) + (lineGap() / 4);
-            canvas.drawCircle(xHit, yHit, (lineGap() / 4), redPaint);
+            float xHit = (getxHit().get(j) * lineGap()) + (lineGap()/2);
+            float yHit = (getyHit().get(j) * lineGap()) + (lineGap() / 2);
+            canvas.drawCircle(xHit, yHit, (lineGap() / 2    ), redPaint);
         }
     }
 
