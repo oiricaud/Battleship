@@ -154,11 +154,32 @@ public class GameActivity extends AppCompatActivity {
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toast("New Game successfully created!");
-                restartActivity();
-                Intent intent = new Intent(GameActivity.this, PlaceboatActivity.class);
-                GameActivity.this.startActivity(intent);
-                GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                // Alert Dialogue
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                builder1.setMessage("Are you sure you want to start a new Game?");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                toast("New Game successfully created!");
+                                restartActivity();
+                                Intent intent = new Intent(GameActivity.this, PlaceboatActivity.class);
+                                GameActivity.this.startActivity(intent);
+                                GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
         });
 
@@ -196,7 +217,6 @@ public class GameActivity extends AppCompatActivity {
                 alert11.show();
             }
         });
-
         newButton.setTypeface(typeface);
         quitButton.setTypeface(typeface);
     }
