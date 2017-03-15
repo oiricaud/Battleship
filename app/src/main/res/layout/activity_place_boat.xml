@@ -153,8 +153,6 @@
                 android:background="@android:color/holo_green_light"
                 android:text="@string/next"
                 android:textStyle="bold" />
-
-
         </RelativeLayout>
     </RelativeLayout>
 
