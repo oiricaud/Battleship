@@ -168,6 +168,8 @@ public class GameActivity extends AppCompatActivity {
                 GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
+        newButton.setTypeface(typeface);
+        quitButton.setTypeface(typeface);
     }
 
     /**

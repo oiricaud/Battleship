@@ -195,60 +195,17 @@ public class BoardView extends View {
     /** Draw all the places of the board. */
     private void drawPlaces(Canvas canvas) {
 
-        Log.w("     Get All X", String.valueOf(getxHit()));
-
         for(int i = 0 ; i < getxMiss().size(); i++){
-            float xMiss = (getxMiss().get(i) * lineGap()) + (lineGap()/2);
-            float yMiss = (getyMiss().get(i) * lineGap()) + (lineGap()/2);
-            canvas.drawCircle(xMiss, yMiss, (lineGap() / 2), whitePaint);
+            float xMiss = (getxMiss().get(i) * lineGap()) + (lineGap()/4);
+            float yMiss = (getyMiss().get(i) * lineGap()) + (lineGap()/4);
+            canvas.drawCircle(xMiss, yMiss, (lineGap() / 4), whitePaint);
         }
 
         for(int j = 0 ; j < getxHit().size(); j++){
-            float xHit = (getxHit().get(j) * lineGap()) + (lineGap()/2);
-            float yHit = (getyHit().get(j) * lineGap()) + (lineGap() / 2);
-            canvas.drawCircle(xHit, yHit, (lineGap() / 2), redPaint);
+            float xHit = (getxHit().get(j) * lineGap()) + (lineGap()/4);
+            float yHit = (getyHit().get(j) * lineGap()) + (lineGap() / 4);
+            canvas.drawCircle(xHit, yHit, (lineGap() / 4), redPaint);
         }
-       // int[][]AllShipCoordinates = (board.getCoordinateofBoats());
-        /*
-        Log.w("     Get All", Arrays.deepToString(AllShipCoordinates));
-
-        Log.w("value of X when touched", String.valueOf(board.getX()));
-        Log.w("value of Y when touched", String.valueOf(board.getY()));
-        */
-        /*
-        if(AllShipCoordinates[board.getX()][board.getY()] == 1){
-            Log.w("     Paint", "me red");
-            canvas.drawCircle(x, y, (lineGap() / 2), redPaint);
-        }
-*/
-        /*
-        float x = (board.getx() * lineGap()) + (lineGap()/2);
-        float y = (board.gety() * lineGap()) + (lineGap()/2);
-        coordinatesForX.add((int) x);
-        coordinatesForY.add((int) y);
-        // Nasty bug here. For some reason if i = 0 a circle at (0,0) displays.
-        if(coordinatesForX.size() > 2 || coordinatesForY.size() > 2) {
-            for(int i = 2; i < coordinatesForX.size(); i++){
-                if(iShot) {
-                    Log.w("Here", "HERE");
-                    // Keep track of the places user has shot
-                    coordinatesHitX.add((int) x);
-                    coordinatesHitY.add((int) y);
-                    canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
-                    //canvas.drawCircle(coordinatesForX.getLast(), coordinatesForY.getLast(), (lineGap() / 2), redPaint);
-                }
-                else{
-                    canvas.drawCircle(coordinatesForX.get(i), coordinatesForY.get(i), (lineGap() / 2), whitePaint);
-                }
-            }
-            // Color red circles of the shots user has done
-            for(int j = 0 ; j < coordinatesHitX.size(); j++){
-                for(int k = 0 ; k < coordinatesHitX.size(); k++){
-                    canvas.drawCircle(coordinatesHitX.get(j), coordinatesHitY.get(k), (lineGap() / 2), redPaint);
-                }
-            }
-        }
-        */
     }
 
 

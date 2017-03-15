@@ -136,8 +136,8 @@ public class PlaceboatActivity  extends Activity {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                    layoutParams.leftMargin = X - _xDelta;
-                    layoutParams.topMargin = Y - _yDelta;
+                    layoutParams.leftMargin = X;
+                    layoutParams.topMargin = Y ;
                     view.setLayoutParams(layoutParams);
                     break;
             }
