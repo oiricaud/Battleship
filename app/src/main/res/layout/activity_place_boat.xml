@@ -34,6 +34,8 @@
             android:id="@+id/boardView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="110dp"
             android:layout_weight="1" />
 
@@ -144,7 +146,7 @@
             android:layout_marginLeft="34dp"
             android:layout_marginStart="34dp"
             android:background="@android:color/holo_red_light"
-            android:text="Quit"
+            android:text="Back"
             android:textStyle="bold" />
 
         <Button

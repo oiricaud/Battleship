@@ -89,7 +89,6 @@
         android:layout_below="@+id/placeboats"
         android:layout_above="@+id/linearLayout" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,7 +102,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/holo_red_light"
             android:layout_weight="0.5"
-            android:text="Quit" />
+            android:text="Back" />
 
         <Button
             android:id="@+id/next"

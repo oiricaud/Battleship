@@ -171,7 +171,7 @@ public class BoardView extends View {
                 int xy = locatePlace(event.getX(), event.getY());
                 invalidate();
                 if (xy >= 0) {
-                    Log.w("x eventGetX ", String.valueOf(event.getX()));
+                    Log.w("x1 eventGetX ", String.valueOf(event.getX()));
                     Log.w("y eventGetY", String.valueOf(event.getY()));
                     notifyBoardTouch(xy / 100, xy % 100);
                 }

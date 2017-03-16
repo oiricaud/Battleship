@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class PlaceboatActivity  extends Activity {
     }
 
     /**
-     * This method creates buttons and drag & drop feauture the user uses to place boats on grid.
+     * This method creates buttons and drag & drop feature the user uses to place boats on grid.
      */
     private void setEverything() {
         title = (TextView) findViewById(R.id.placeboats); // PLACE BOATS
@@ -111,7 +112,6 @@ public class PlaceboatActivity  extends Activity {
         next.setTypeface(typeface);
         quit.setTypeface(typeface);
     }
-
     /**
      * The drag and drop feature
      */
@@ -126,6 +126,7 @@ public class PlaceboatActivity  extends Activity {
                 case MotionEvent.ACTION_DOWN:
                     _xDelta = X;
                     _yDelta = Y;
+                    Log.w("_xDelta", String.valueOf(_xDelta));
                 break;
                 case MotionEvent.ACTION_UP:
                     break;
