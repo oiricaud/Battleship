@@ -211,7 +211,6 @@ public class BoardView extends View {
 
     /** Draw horizontal and vertical lines. */
     private void drawGrid(Canvas canvas) {
-        Log.w(" 2)BoardView", "draswGrid(Canvas canvas)");
         final float maxCoord = maxCoord();
         final float placeSize = lineGap();
         canvas.drawRect(0, 0, maxCoord, maxCoord, boardPaint);
@@ -243,12 +242,13 @@ public class BoardView extends View {
      * don't correspond to any place in the board.
      * The returned coordinates are encoded as <code>x*100 + y</code>.
      */
-    private int locatePlace(float x, float y) {
+    public int locatePlace(float x, float y) {
 
         if (x <= maxCoord() && y <= maxCoord()) {
             final float placeSize = lineGap();
             int ix = (int) (x / placeSize);
             int iy = (int) (y / placeSize);
+            Log.w("(ix, iy)", String.valueOf(ix) + "," + String.valueOf(iy));
             return ix * 100 + iy;
         }
         return -1;
@@ -267,7 +267,7 @@ public class BoardView extends View {
     }
 
     /** Notify all registered listeners. */
-    private void notifyBoardTouch(int x, int y) {
+    public void notifyBoardTouch(int x, int y) {
         for (BoardTouchListener listener: listeners) {
             listener.onTouch(x, y);
         }

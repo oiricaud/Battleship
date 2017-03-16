@@ -10,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by oscarricaud on 3/12/17.
@@ -22,10 +26,10 @@ public class PlaceboatActivity  extends Activity {
     private TextView title;
     private Button next;
     private Button quit;
-    private ViewGroup rootLayout;
+    private RelativeLayout rootLayout;
     private int _xDelta;
     private int _yDelta;
-
+    private final List<BoardView.BoardTouchListener> listeners = new ArrayList<>();
     // Set the board view so boats can be placed on the grid
     private Board board;
     private BoardView boardView;
@@ -83,41 +87,41 @@ public class PlaceboatActivity  extends Activity {
     }
 
     private void setBoatImagesOnView() {
-        rootLayout = (ViewGroup) findViewById(R.id.defaultBoatsView);
+        rootLayout = (RelativeLayout) findViewById(R.id.defaultBoatsView);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(100, 100); // Size of ships
 
         //Aircraft
         ImageView aircraftImage = (ImageView) findViewById(R.id.aircraft);
-        aircraftImage.setX(50);
-        aircraftImage.setY(50);
+      //  aircraftImage.setX(50);
+     //   aircraftImage.setY(50);
         aircraftImage.setLayoutParams(layoutParams);
         aircraftImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Battleship
         ImageView battleshipImage = (ImageView) findViewById(R.id.battleship);
-        battleshipImage.setX(150);
-        battleshipImage.setY(50);
+     //   battleshipImage.setX(150);
+     //   battleshipImage.setY(50);
         battleshipImage.setLayoutParams(layoutParams);
         battleshipImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Submarine
         ImageView submarineImage = (ImageView) findViewById(R.id.submarine);
-        submarineImage.setX(250);
-        submarineImage.setY(50);
+      //  submarineImage.setX(250);
+     //   submarineImage.setY(50);
         submarineImage.setLayoutParams(layoutParams);
         submarineImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Minesweeper
         ImageView minesweeperImage = (ImageView) findViewById(R.id.minesweeper);
-        submarineImage.setX(350);
-        submarineImage.setY(50);
+      //  submarineImage.setX(350);
+     //  submarineImage.setY(50);
         minesweeperImage.setLayoutParams(layoutParams);
         minesweeperImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Frigate
         ImageView frigateImage = (ImageView) findViewById(R.id.frigate);
-        frigateImage.setX(450);
-        frigateImage.setY(50);
+      //  frigateImage.setX(450);
+      //  frigateImage.setY(50);
         frigateImage.setLayoutParams(layoutParams);
         frigateImage.setOnTouchListener(new ChoiceToucheListener());
 
@@ -131,6 +135,7 @@ public class PlaceboatActivity  extends Activity {
      * The drag and drop feature
      */
     private final class ChoiceToucheListener implements View.OnTouchListener {
+
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             // TODO Auto-generated method stub
@@ -141,8 +146,6 @@ public class PlaceboatActivity  extends Activity {
                 case MotionEvent.ACTION_DOWN:
                     _xDelta = X;
                     _yDelta = Y;
-                    Log.w("_xDelta", String.valueOf(_xDelta));
-                    Log.w("view params", String.valueOf(view.getLayoutParams()));
                     break;
                 case MotionEvent.ACTION_UP:
                     break;
@@ -152,10 +155,20 @@ public class PlaceboatActivity  extends Activity {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                    layoutParams.leftMargin = X - 300;
-                    layoutParams.topMargin = Y - 300;
-                    view.setLayoutParams(layoutParams);
-                    break;
+                    layoutParams.leftMargin = X;
+                    layoutParams.topMargin = Y;
+                    boardView.locatePlace(X, Y);
+                    int height = boardView.getMeasuredHeight();
+                    int width = boardView.getMeasuredWidth();
+                    if(Y <= width && X <= height){
+                        Log.w("height", String.valueOf(height));
+                        Log.w("width", String.valueOf(width));
+                        Log.w("X", String.valueOf(X));
+                        Log.w("Y", String.valueOf(Y));
+                        view.setLayoutParams(layoutParams);
+                        break;
+                    }
+
             }
             rootLayout.invalidate();
             return true;
