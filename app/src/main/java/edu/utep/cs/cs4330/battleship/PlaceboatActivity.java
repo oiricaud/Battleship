@@ -26,6 +26,10 @@ public class PlaceboatActivity  extends Activity {
     private int _xDelta;
     private int _yDelta;
 
+    // Set the board view so boats can be placed on the grid
+    private Board board;
+    private BoardView boardView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +49,8 @@ public class PlaceboatActivity  extends Activity {
 
     private void setBoard() {
         // Set the board view so boats can be placed on the grid
-        Board board = new Board(10);
-        BoardView boardView = (BoardView) findViewById(R.id.boardView);
+        board = new Board(10);
+        boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
     }
 
@@ -80,29 +84,40 @@ public class PlaceboatActivity  extends Activity {
 
     private void setBoatImagesOnView() {
         rootLayout = (ViewGroup) findViewById(R.id.defaultBoatsView);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150); // Size of ships
-        //Aircraft
-        ImageView battleshipImage = (ImageView) findViewById(R.id.aircraft);
-        battleshipImage.setLayoutParams(layoutParams);
-        battleshipImage.setOnTouchListener(new ChoiceToucheListener());
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(100, 100); // Size of ships
 
-        // Battleship
-        ImageView aircraftImage = (ImageView) findViewById(R.id.battleship);
+        //Aircraft
+        ImageView aircraftImage = (ImageView) findViewById(R.id.aircraft);
+        aircraftImage.setX(50);
+        aircraftImage.setY(50);
         aircraftImage.setLayoutParams(layoutParams);
         aircraftImage.setOnTouchListener(new ChoiceToucheListener());
 
+        // Battleship
+        ImageView battleshipImage = (ImageView) findViewById(R.id.battleship);
+        battleshipImage.setX(150);
+        battleshipImage.setY(50);
+        battleshipImage.setLayoutParams(layoutParams);
+        battleshipImage.setOnTouchListener(new ChoiceToucheListener());
+
         // Submarine
         ImageView submarineImage = (ImageView) findViewById(R.id.submarine);
+        submarineImage.setX(250);
+        submarineImage.setY(50);
         submarineImage.setLayoutParams(layoutParams);
         submarineImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Minesweeper
         ImageView minesweeperImage = (ImageView) findViewById(R.id.minesweeper);
+        submarineImage.setX(350);
+        submarineImage.setY(50);
         minesweeperImage.setLayoutParams(layoutParams);
         minesweeperImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Frigate
         ImageView frigateImage = (ImageView) findViewById(R.id.frigate);
+        frigateImage.setX(450);
+        frigateImage.setY(50);
         frigateImage.setLayoutParams(layoutParams);
         frigateImage.setOnTouchListener(new ChoiceToucheListener());
 
@@ -127,7 +142,8 @@ public class PlaceboatActivity  extends Activity {
                     _xDelta = X;
                     _yDelta = Y;
                     Log.w("_xDelta", String.valueOf(_xDelta));
-                break;
+                    Log.w("view params", String.valueOf(view.getLayoutParams()));
+                    break;
                 case MotionEvent.ACTION_UP:
                     break;
                 case MotionEvent.ACTION_POINTER_DOWN:
@@ -136,8 +152,8 @@ public class PlaceboatActivity  extends Activity {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                    layoutParams.leftMargin = X;
-                    layoutParams.topMargin = Y;
+                    layoutParams.leftMargin = X - 300;
+                    layoutParams.topMargin = Y - 300;
                     view.setLayoutParams(layoutParams);
                     break;
             }
@@ -146,3 +162,4 @@ public class PlaceboatActivity  extends Activity {
         }
     }
 }
+
