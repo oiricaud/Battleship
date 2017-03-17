@@ -51,7 +51,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void beginGame() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
         board = new Board(10);
         boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);

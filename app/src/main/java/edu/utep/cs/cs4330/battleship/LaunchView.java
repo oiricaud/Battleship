@@ -20,7 +20,7 @@ public class LaunchView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_launch);
         start();
     }
     // The beginning to a wonderful journey

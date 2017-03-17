@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Created by oscarricaud on 3/12/17.
- * This activity will allow the user to place boats. @see activity_place_boat
+ * This activity will allow the user to place boats. @see activity_place_ship
  */
 
 public class Place_Ship extends Activity {
@@ -35,7 +35,7 @@ public class Place_Ship extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_place_boat);
+        setContentView(R.layout.activity_place_ship);
         setEverything(); // The creation of this activity
     }
 
