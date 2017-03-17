@@ -7,10 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,7 +20,7 @@ import java.util.List;
  * This activity will allow the user to place boats. @see activity_place_boat
  */
 
-public class PlaceboatActivity  extends Activity {
+public class Place_Ship extends Activity {
     private TextView title;
     private Button next;
     private Button quit;
@@ -68,20 +66,20 @@ public class PlaceboatActivity  extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PlaceboatActivity.this, GameActivity.class);
-                PlaceboatActivity.this.startActivity(intent);
+                Intent intent = new Intent(Place_Ship.this, GameActivity.class);
+                Place_Ship.this.startActivity(intent);
                 /** Fading Transition Effect */
-                PlaceboatActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PlaceboatActivity.this, HomeActivity.class);
-                PlaceboatActivity.this.startActivity(intent);
+                Intent intent = new Intent(Place_Ship.this, LaunchView.class);
+                Place_Ship.this.startActivity(intent);
                 /** Fading Transition Effect */
-                PlaceboatActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }

@@ -15,13 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
-            android:name=".HomeActivity">
+            android:name=".LaunchView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".GameActivity"> </activity>
-        <activity android:name=".PlaceboatActivity"></activity>
+        <activity android:name=".Place_Ship"></activity>
     </application>
 </manifest>

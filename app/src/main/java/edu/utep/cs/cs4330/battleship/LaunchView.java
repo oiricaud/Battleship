@@ -15,7 +15,7 @@ import java.util.Random;
  * Created by oscarricaud on 3/11/17.
  */
 
-public class HomeActivity extends AppCompatActivity {
+public class LaunchView extends AppCompatActivity {
     private MediaPlayer mp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +36,10 @@ public class HomeActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, PlaceboatActivity.class);
-                HomeActivity.this.startActivity(intent);
+                Intent intent = new Intent(LaunchView.this, Place_Ship.class);
+                LaunchView.this.startActivity(intent);
                 /** Fading Transition Effect */
-                HomeActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                LaunchView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }

@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -165,7 +164,7 @@ public class GameActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("New Game successfully created!");
                                 restartActivity();
-                                Intent intent = new Intent(GameActivity.this, PlaceboatActivity.class);
+                                Intent intent = new Intent(GameActivity.this, Place_Ship.class);
                                 GameActivity.this.startActivity(intent);
                                 GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             }
@@ -198,7 +197,7 @@ public class GameActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("Quiting Game!");
                                 finish();
-                                Intent intent = new Intent(GameActivity.this, HomeActivity.class);
+                                Intent intent = new Intent(GameActivity.this, LaunchView.class);
                                 GameActivity.this.startActivity(intent);
                                 GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                 dialog.cancel();
