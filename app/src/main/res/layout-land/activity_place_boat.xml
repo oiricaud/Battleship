@@ -7,83 +7,34 @@
     android:background="@drawable/oceanwclouds">
 
 
-    <TextView
-        android:id="@+id/placeboats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Place Boats"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_orange_dark"
-        android:textSize="28sp" />
     <RelativeLayout
         android:id="@+id/defaultBoatsView"
-        android:layout_width="match_parent"
+        android:layout_width="450dp"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:orientation="vertical"
-        android:scaleType="fitXY"
-        android:tileMode="repeat"
-        android:layout_alignTop="@+id/relativeLayout"
-        android:layout_above="@+id/relativeLayout2">
+        android:orientation="vertical">
+
         <edu.utep.cs.cs4330.battleship.BoardView
             android:id="@+id/boardView"
-            android:layout_width="265dp"
-            android:layout_height="224dp" />
-        </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp">
-
-        <ImageView
-            android:id="@+id/battleship"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/battleship"
-            android:contentDescription="Battleship" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp">
-
-        <ImageView
-            android:id="@+id/aircraft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/aircraft"
-            android:contentDescription="aircraft" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="70dp">
-
-        <ImageView
-            android:id="@+id/submarine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/submarine"
-            android:contentDescription="submarine" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp">
+        android:layout_marginTop="70dp"
+        android:layout_toRightOf="@+id/defaultBoatsView"
+        android:layout_toEndOf="@+id/defaultBoatsView"
+        android:id="@+id/relativeLayout4">
 
         <ImageView
             android:id="@+id/minesweeper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
             android:background="@drawable/minesweeper"
             android:contentDescription="minesweeper" />
 
@@ -92,17 +43,71 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/battleship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/battleship"
+            android:contentDescription="Battleship" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/aircraft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/aircraft"
+            android:contentDescription="aircraft"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="78dp"
+            android:layout_marginEnd="78dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="120dp"
-        android:id="@+id/relativeLayout">
+        android:id="@+id/relativeLayout"
+        android:layout_toRightOf="@+id/defaultBoatsView"
+        android:layout_toEndOf="@+id/defaultBoatsView">
 
         <ImageView
             android:id="@+id/frigate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/frigate"
-            android:contentDescription="frigate" />
+            android:contentDescription="frigate"
+            android:layout_marginBottom="83dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/placeboats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Place Boats"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="28sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="86dp"
+        android:layout_marginEnd="86dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -116,14 +121,14 @@
             android:id="@+id/quitB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="34dp"
-            android:layout_marginStart="34dp"
             android:background="@android:color/holo_red_light"
             android:text="Back"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/next"
+            android:layout_toStartOf="@+id/next"
+            android:layout_marginRight="56dp"
+            android:layout_marginEnd="56dp" />
 
         <Button
             android:id="@+id/next"
@@ -138,6 +143,26 @@
             android:text="@string/next"
             android:textStyle="bold" />
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/placeboats"
+        android:layout_alignStart="@+id/placeboats">
+
+        <ImageView
+            android:id="@+id/submarine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/submarine"
+            android:contentDescription="submarine"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="176dp"
+            android:layout_marginEnd="176dp" />
     </RelativeLayout>
 </RelativeLayout>
 
