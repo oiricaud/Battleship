@@ -146,6 +146,7 @@ public class PlaceboatActivity  extends Activity {
                 case MotionEvent.ACTION_DOWN:
                     _xDelta = X;
                     _yDelta = Y;
+
                     break;
                 case MotionEvent.ACTION_UP:
                     break;
@@ -155,12 +156,13 @@ public class PlaceboatActivity  extends Activity {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                    layoutParams.leftMargin = X;
-                    layoutParams.topMargin = Y;
+
                     boardView.locatePlace(X, Y);
                     int height = boardView.getMeasuredHeight();
                     int width = boardView.getMeasuredWidth();
-                    if(Y <= width && X <= height){
+                    if((X <= 1000 && Y <= 1050)){
+                        layoutParams.leftMargin = X;
+                        layoutParams.topMargin = Y;
                         Log.w("height", String.valueOf(height));
                         Log.w("width", String.valueOf(width));
                         Log.w("X", String.valueOf(X));
@@ -168,7 +170,6 @@ public class PlaceboatActivity  extends Activity {
                         view.setLayoutParams(layoutParams);
                         break;
                     }
-
             }
             rootLayout.invalidate();
             return true;

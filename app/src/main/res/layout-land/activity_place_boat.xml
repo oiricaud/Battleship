@@ -73,14 +73,19 @@
 
     <TextView
         android:id="@+id/placeboats"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
+        android:layout_marginTop="28dp"
+        android:gravity="right"
         android:text="Place Boats"
         android:textAlignment="center"
         android:textColor="@android:color/holo_orange_dark"
-        android:textSize="28sp" />
+        android:textSize="28sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="57dp"
+        android:layout_marginEnd="57dp" />
 
     <edu.utep.cs.cs4330.battleship.BoardView
         android:id="@+id/boardView"
