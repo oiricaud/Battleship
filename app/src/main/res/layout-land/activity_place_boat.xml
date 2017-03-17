@@ -24,12 +24,13 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="70dp"
-        android:layout_toRightOf="@+id/defaultBoatsView"
         android:layout_toEndOf="@+id/defaultBoatsView"
-        android:id="@+id/relativeLayout4">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/minesweeper"
@@ -42,11 +43,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
-
+        android:layout_height="match_parent">
         <ImageView
             android:id="@+id/battleship"
             android:layout_width="wrap_content"
@@ -65,33 +62,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/aircraft"
-            android:contentDescription="aircraft"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="78dp"
-            android:layout_marginEnd="78dp" />
+            android:contentDescription="aircraft" />
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
-        android:id="@+id/relativeLayout"
-        android:layout_toRightOf="@+id/defaultBoatsView"
-        android:layout_toEndOf="@+id/defaultBoatsView">
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp"
+        android:layout_toEndOf="@+id/submarine"
+        android:layout_toRightOf="@+id/submarine">
 
         <ImageView
             android:id="@+id/frigate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/frigate"
-            android:contentDescription="frigate"
-            android:layout_marginBottom="83dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:contentDescription="frigate" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/submarine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/submarine"
+            android:contentDescription="submarine"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
@@ -105,9 +111,7 @@
         android:textSize="28sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="86dp"
-        android:layout_marginEnd="86dp" />
+        android:layout_alignParentEnd="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -145,24 +149,5 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/placeboats"
-        android:layout_alignStart="@+id/placeboats">
-
-        <ImageView
-            android:id="@+id/submarine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/submarine"
-            android:contentDescription="submarine"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="176dp"
-            android:layout_marginEnd="176dp" />
-    </RelativeLayout>
 </RelativeLayout>
 
