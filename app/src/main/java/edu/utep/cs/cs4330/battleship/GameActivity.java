@@ -46,10 +46,13 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // We can modify this to verify if the AI and user are ready to begin the game, if so begin.
+        beginGame();
+    }
+
+    private void beginGame() {
         setContentView(R.layout.activity_main);
-
         board = new Board(10);
-
         boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
 
