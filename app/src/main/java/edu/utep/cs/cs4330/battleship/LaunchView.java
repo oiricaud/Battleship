@@ -41,7 +41,8 @@ public class LaunchView extends AppCompatActivity {
             }
         });
     }
-    /** Gives an opportunity to the user to choose an array of buttons based on the difficulty level
+    /** Changes the current view, @see layout/activity_launch to a view where the user can choose
+     *  the game play difficulty level, @see  layout/activity_level
      */
     private void chooseLevel() {
         setContentView(R.layout.activity_level);

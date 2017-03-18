@@ -23,6 +23,7 @@ public class Place_Ship extends Activity {
     private RelativeLayout rootLayout;
     private int _xDelta;
     private int _yDelta;
+    private Font eightBitFont = new Font("fonts/eightbit.TTF");
     // Set the board view so boats can be placed on the grid
     private Board board;
     private BoardView boardView;
@@ -117,15 +118,8 @@ public class Place_Ship extends Activity {
         patrolImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Change font
-        changeFont(title);
-        changeFont(quit);
-    }
-    /**
-     * @param textView Is the argument the method is taking to change the font.
-     */
-    public void changeFont(TextView textView){
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
-        textView.setTypeface(typeface);
+        eightBitFont.changeFont(this, title);
+        eightBitFont.changeFont(this, quit);
     }
     /**
      * Only allows the user to advanced to the next activity once all boats have been placed
@@ -133,7 +127,7 @@ public class Place_Ship extends Activity {
      */
     public void haveAllBoatsBeenPlaced(){
         next = (Button) findViewById(R.id.next);
-        changeFont(next);
+        eightBitFont.changeFont(this, next);
 
         // Once the user has place all ships on grid, advance to the next activity
         if(aircraft.isPlaced() && battleship.isPlaced() && destroyer.isPlaced() &&
