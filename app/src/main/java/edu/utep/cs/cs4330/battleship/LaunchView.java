@@ -17,6 +17,7 @@ import java.util.Random;
 
 public class LaunchView extends AppCompatActivity {
     private MediaPlayer mp;
+    private Font eightBitFont = new Font("fonts/eightbit.TTF");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,15 +28,15 @@ public class LaunchView extends AppCompatActivity {
     private void start() {
         playMusic();
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
-        battleshipLabel.setTypeface(typeface);
+        eightBitFont.changeFont(this, battleshipLabel);
 
         // Begin to the next activity, placing boats on the map
         Button startButton = (Button) findViewById(R.id.start);
-        startButton.setTypeface(typeface);
+        eightBitFont.changeFont(this, startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //String difficulty = chooseLevel();
                 Intent intent = new Intent(LaunchView.this, Place_Ship.class);
                 LaunchView.this.startActivity(intent);
                 /** Fading Transition Effect */
@@ -43,6 +44,24 @@ public class LaunchView extends AppCompatActivity {
             }
         });
     }
+
+    private String chooseLevel() {
+        setContentView(R.layout.activity_level);
+        Button easy = (Button) findViewById(R.id.easy);
+        Button medium = (Button) findViewById(R.id.medium);
+        Button hard = (Button) findViewById(R.id.hard);
+        eightBitFont.changeFont(this, easy);
+        eightBitFont.changeFont(this, medium);
+        eightBitFont.changeFont(this, hard);
+        easy.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        return null;
+    }
+
     private void playMusic() {
         if (mp!=null) {
             mp.stop();

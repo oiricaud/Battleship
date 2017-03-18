@@ -72,7 +72,6 @@ public class Place_Ship extends Activity {
             }
         });
     }
-
     /**
      * This method sets up the images to be able to drag and drop method that is later used.
      */
