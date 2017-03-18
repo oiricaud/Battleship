@@ -11,10 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by oscarricaud on 3/12/17.
  * This activity will allow the user to place boats. @see activity_place_ship
@@ -58,7 +54,6 @@ public class Place_Ship extends Activity {
         boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
     }
-
     /**
      *  The user needs to be able to traverse to next or quit, hence the maker creates buttons.
      */
@@ -78,6 +73,9 @@ public class Place_Ship extends Activity {
         });
     }
 
+    /**
+     * This method sets up the images to be able to drag and drop method that is later used.
+     */
     private void setBoatImagesOnView() {
         rootLayout = (RelativeLayout) findViewById(R.id.defaultBoatsView);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(100, 100); // Size of ships
@@ -116,12 +114,17 @@ public class Place_Ship extends Activity {
         changeFont(title);
         changeFont(quit);
     }
-
+    /**
+     * @param textView Is the argument the method is taking to change the font.
+     */
     public void changeFont(TextView textView){
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
         textView.setTypeface(typeface);
-
     }
+    /**
+     * Only allows the user to advanced to the next activity once all boats have been placed
+     * on the board grid.
+     */
     public void haveAllBoatsBeenPlaced(){
         next = (Button) findViewById(R.id.next);
         changeFont(next);

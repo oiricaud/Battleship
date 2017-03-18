@@ -1,9 +1,5 @@
 package edu.utep.cs.cs4330.battleship;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-
 /**
  * Created by oscarricaud on 2/14/17.
  */
@@ -94,16 +90,4 @@ public class Ship {
     public void setPlaced(boolean placed) {
         isPlaced = placed;
     }
-    /**
-     * @return true if all boats are placed else return false
-
-    private boolean allBoatsPlaced() {
-        if((aircraft.isPlaced() == true) && ((battleship.isPlaced() == true) &&
-                ((submarine.isPlaced() == true) && ((submarineImage.isPlaced() == true) &&
-                        (destroyer.isPlaced() == true) &&  (patrol.isPlaced() == true))))){
-            return true;
-        }
-        return false;
-    }
-     */
 }
