@@ -90,26 +90,31 @@ public class Place_Ship extends Activity {
 
         //Aircraft
         ImageView aircraftImage = (ImageView) findViewById(R.id.aircraft);
+        aircraftImage.setTag("aircraft");
         aircraftImage.setLayoutParams(layoutParams);
         aircraftImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Battleship
         ImageView battleshipImage = (ImageView) findViewById(R.id.battleship);
+        battleshipImage.setTag("battleship");
         battleshipImage.setLayoutParams(layoutParams);
         battleshipImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Submarine
         ImageView submarineImage = (ImageView) findViewById(R.id.submarine);
+        submarineImage.setTag("submarine");
         submarineImage.setLayoutParams(layoutParams);
         submarineImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Minesweeper
         ImageView minesweeperImage = (ImageView) findViewById(R.id.minesweeper);
+        minesweeperImage.setTag("minesweeper");
         minesweeperImage.setLayoutParams(layoutParams);
         minesweeperImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Frigate
         ImageView frigateImage = (ImageView) findViewById(R.id.frigate);
+        frigateImage.setTag("frigate");
         frigateImage.setLayoutParams(layoutParams);
         frigateImage.setOnTouchListener(new ChoiceToucheListener());
 
@@ -134,7 +139,6 @@ public class Place_Ship extends Activity {
                 case MotionEvent.ACTION_DOWN:
                     _xDelta = X;
                     _yDelta = Y;
-
                     break;
                 case MotionEvent.ACTION_UP:
                     break;
@@ -151,6 +155,7 @@ public class Place_Ship extends Activity {
                     if((X <= 1000 && Y <= 1050)){
                         layoutParams.leftMargin = X;
                         layoutParams.topMargin = Y;
+                        Log.w("Get tag", String.valueOf(view.getTag()));
                         Log.w("height", String.valueOf(height));
                         Log.w("width", String.valueOf(width));
                         Log.w("X", String.valueOf(X));
