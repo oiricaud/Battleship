@@ -16,9 +16,6 @@ public class Ship {
     private int hit;
     private boolean isPlaced;
 
-    public Ship( String nameofship){
-
-    }
     public Ship(int size, String nameofship) {
         setSize(size);
         setName(nameofship);

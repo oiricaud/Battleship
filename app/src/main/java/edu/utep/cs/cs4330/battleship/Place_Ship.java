@@ -27,26 +27,21 @@ public class Place_Ship extends Activity {
     private RelativeLayout rootLayout;
     private int _xDelta;
     private int _yDelta;
-    private final List<BoardView.BoardTouchListener> listeners = new ArrayList<>();
     // Set the board view so boats can be placed on the grid
     private Board board;
     private BoardView boardView;
-    private Ship aircraft = new Ship ("aircraft");
-    private Ship battleship = new Ship("battleship");
-    private Ship submarine = new Ship("submarine");
-    private Ship minesweeper = new Ship("minesweeper");
-    private Ship frigate = new Ship("frigate");
-    private boolean allBoatsPlaced;
-
+    private Ship aircraft = new Ship (5, "aircraft");
+    private Ship battleship = new Ship(4, "battleship");
+    private Ship submarine = new Ship(3, "submarine");
+    private Ship minesweeper = new Ship(3, "minesweeper");
+    private Ship frigate = new Ship(2, "frigate");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_ship);
         setEverything(); // The creation of this activity
-
     }
-
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
      */
@@ -142,7 +137,7 @@ public class Place_Ship extends Activity {
             });
         }
         else{ // By default hide the next button and don't let the user advance until all boats have
-            // been placed on the grid. 
+            // been placed on the grid.
             next.setVisibility(View.INVISIBLE);
         }
     }
@@ -181,27 +176,22 @@ public class Place_Ship extends Activity {
 
                         if(view.getTag() == "aircraft"){
                             Log.w("aircraft", "aircraft");
-                            aircraft.setName("aircraft");
                             aircraft.setPlaced(true);
                         }
                         else if(view.getTag() == "battleship"){
                             Log.w("battleship", "battleship");
-                            battleship.setName("battleship");
                             battleship.setPlaced(true);
                         }
                         else if(view.getTag() == "submarine"){
                             Log.w("submarine", "submarine");
-                            submarine.setName("submarine");
                             submarine.setPlaced(true);
                         }
                         else if(view.getTag() == "minesweeper"){
                             Log.w("minesweeper", "minesweeper");
-                            minesweeper = new Ship("minesweeper");
                             minesweeper.setPlaced(true);
                         }
                         else if(view.getTag() == "frigate"){
                             Log.w("frigate", "frigate");
-                            frigate = new Ship("frigate");
                             frigate.setPlaced(true);
                         }
 
