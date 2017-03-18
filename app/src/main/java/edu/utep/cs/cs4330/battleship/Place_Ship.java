@@ -2,7 +2,6 @@ package edu.utep.cs.cs4330.battleship;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -136,7 +135,7 @@ public class Place_Ship extends Activity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(Place_Ship.this, GameActivity.class);
+                    Intent intent = new Intent(Place_Ship.this, GameController.class);
                     Place_Ship.this.startActivity(intent);
                     /** Fading Transition Effect */
                     Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

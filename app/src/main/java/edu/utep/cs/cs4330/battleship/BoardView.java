@@ -18,7 +18,7 @@ import static android.R.attr.width;
 import static edu.utep.cs.cs4330.battleship.R.attr.height;
 
 /**
- * A special view class to display a battleship board as a2D grid.
+ * A special view class to display a battleship board as a 2D grid.
  *
  * @see Board
  */

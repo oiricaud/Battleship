@@ -19,7 +19,7 @@ import android.widget.Toast;
  * @version 1.0
  * Last update: 02/23/2017
  */
-public class GameActivity extends AppCompatActivity {
+public class GameController extends AppCompatActivity {
     private Board board;
     private BoardView boardView;
     private int countShots = 0;
@@ -165,9 +165,9 @@ public class GameActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("New Game successfully created!");
                                 restartActivity();
-                                Intent intent = new Intent(GameActivity.this, Place_Ship.class);
-                                GameActivity.this.startActivity(intent);
-                                GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                Intent intent = new Intent(GameController.this, Place_Ship.class);
+                                GameController.this.startActivity(intent);
+                                GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             }
                         });
 
@@ -198,9 +198,9 @@ public class GameActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("Quiting Game!");
                                 finish();
-                                Intent intent = new Intent(GameActivity.this, LaunchView.class);
-                                GameActivity.this.startActivity(intent);
-                                GameActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                Intent intent = new Intent(GameController.this, LaunchView.class);
+                                GameController.this.startActivity(intent);
+                                GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                 dialog.cancel();
                             }
                         });
