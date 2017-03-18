@@ -18,6 +18,7 @@ import java.util.Random;
 public class LaunchView extends AppCompatActivity {
     private MediaPlayer mp;
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
+    private String difficulty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,30 +37,53 @@ public class LaunchView extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //String difficulty = chooseLevel();
-                Intent intent = new Intent(LaunchView.this, Place_Ship.class);
-                LaunchView.this.startActivity(intent);
-                /** Fading Transition Effect */
-                LaunchView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                chooseLevel(); // Ask the user what Level of difficulty do they want to play on.
             }
         });
     }
-
-    private String chooseLevel() {
+    /** Gives an opportunity to the user to choose an array of buttons based on the difficulty level
+     */
+    private void chooseLevel() {
         setContentView(R.layout.activity_level);
         Button easy = (Button) findViewById(R.id.easy);
         Button medium = (Button) findViewById(R.id.medium);
         Button hard = (Button) findViewById(R.id.hard);
+
+        // Change font to a cooler 8 bit font.
         eightBitFont.changeFont(this, easy);
         eightBitFont.changeFont(this, medium);
         eightBitFont.changeFont(this, hard);
+
         easy.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-
+               setDifficulty("easy");
+               humanPlaceBoats();  // Takes the user to @see Place_Ship to place ships on the grid.
             }
         });
-        return null;
+        medium.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                setDifficulty("medium");
+                humanPlaceBoats(); // Takes the user to @see Place_Ship to place ships on the grid.
+            }
+        });
+        hard.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                setDifficulty("hard");
+                humanPlaceBoats(); // Takes the user to @see Place_Ship to place ships on the grid.
+            }
+        });
+    }
+
+    private void humanPlaceBoats() {
+        Intent intent = new Intent(LaunchView.this, Place_Ship.class);
+        String level_of_difficulty = String.valueOf(getDifficulty());
+        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        LaunchView.this.startActivity(intent);
+        /** Fading Transition Effect */
+        LaunchView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void playMusic() {
@@ -80,5 +104,13 @@ public class LaunchView extends AppCompatActivity {
             mp = MediaPlayer.create(this, R.raw.yolo);
         }
         mp.start();
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 }

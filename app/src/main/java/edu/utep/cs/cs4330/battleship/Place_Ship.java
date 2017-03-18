@@ -26,6 +26,7 @@ public class Place_Ship extends Activity {
     // Set the board view so boats can be placed on the grid
     private Board board;
     private BoardView boardView;
+    private TextView level_of_difficulty_placeHolder;
     private Ship aircraft = new Ship (5, "aircraft", "Human");
     private Ship battleship = new Ship(4, "battleship", "Human");
     private Ship destroyer = new Ship(3, "destroyer", "Human");
@@ -37,6 +38,12 @@ public class Place_Ship extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_ship);
         setEverything(); // The creation of this activity
+
+        // Receiving level_of_difficulty from @see LaunchView
+         level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
+        Bundle extras = getIntent().getExtras();
+        String levelOfDifficulty = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
+        level_of_difficulty_placeHolder.setText(levelOfDifficulty);
     }
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
