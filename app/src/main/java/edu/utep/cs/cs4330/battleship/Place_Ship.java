@@ -156,6 +156,21 @@ public class Place_Ship extends Activity {
                         layoutParams.leftMargin = X;
                         layoutParams.topMargin = Y;
                         Log.w("Get tag", String.valueOf(view.getTag()));
+                        if(view.getTag() == "aircraft"){
+                            Log.w("aircraft", "aircraft");
+                        }
+                        else if(view.getTag() == "battleship"){
+                            Log.w("battleship", "battleship");
+                        }
+                        else if(view.getTag() == "submarine"){
+                            Log.w("submarine", "submarine");
+                        }
+                        else if(view.getTag() == "minesweeper"){
+                            Log.w("minesweeper", "minesweeper");
+                        }
+                        else if(view.getTag() == "frigate"){
+                            Log.w("frigate", "frigate");
+                        }
                         Log.w("height", String.valueOf(height));
                         Log.w("width", String.valueOf(width));
                         Log.w("X", String.valueOf(X));
