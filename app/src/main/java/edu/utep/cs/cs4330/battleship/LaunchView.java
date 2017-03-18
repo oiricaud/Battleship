@@ -49,11 +49,13 @@ public class LaunchView extends AppCompatActivity {
         Button easy = (Button) findViewById(R.id.easy);
         Button medium = (Button) findViewById(R.id.medium);
         Button hard = (Button) findViewById(R.id.hard);
+        TextView chooseLevel = (TextView) findViewById(R.id.chooseDifficulty);
 
         // Change font to a cooler 8 bit font.
         eightBitFont.changeFont(this, easy);
         eightBitFont.changeFont(this, medium);
         eightBitFont.changeFont(this, hard);
+        eightBitFont.changeFont(this, chooseLevel);
 
         easy.setOnClickListener(new View.OnClickListener(){
             @Override

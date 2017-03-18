@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -26,7 +25,7 @@ public class GameActivity extends AppCompatActivity {
     private int countShots = 0;
     private MediaPlayer mp;
     private TextView counter;
-
+    private Font eightBitFont = new Font("fonts/eightbit.TTF");
     /** This is the main controller class and handles the creation of multiple ships and board.
      //    *  @see Ship.java
      //   *  @see BoardView.java
@@ -63,14 +62,13 @@ public class GameActivity extends AppCompatActivity {
         final Ship submarine = new Ship(3, "submarine", "Computer");
         final Ship patrol = new Ship(2, "patrol", "Computer");
 
-        // Change font
+
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
-        //Typeface typeface=Typeface.createFromAsset(getAssets(), "fonts");
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
-        battleshipLabel.setTypeface(typeface);
+        eightBitFont.changeFont(this, battleshipLabel); // Change font
+
         // The counter displays the number of shots in the UI, the user has tapped on the board.
         counter = (TextView) findViewById(R.id.countOfHits);
-        counter.setTypeface(typeface);
+        eightBitFont.changeFont(this, counter); // Change font
         countShots = 0;
         setCountShots(0);
 
@@ -219,8 +217,8 @@ public class GameActivity extends AppCompatActivity {
                 alert11.show();
             }
         });
-        newButton.setTypeface(typeface);
-        quitButton.setTypeface(typeface);
+        eightBitFont.changeFont(this, newButton);
+        eightBitFont.changeFont(this, quitButton);
     }
 
     /**
