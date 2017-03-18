@@ -113,15 +113,18 @@ public class Place_Ship extends Activity {
         frigateImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Change font
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
-        title.setTypeface(typeface);
-        //next.setTypeface(typeface);
-        quit.setTypeface(typeface);
+        changeFont(title);
+        changeFont(quit);
     }
 
+    public void changeFont(TextView textView){
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
+        textView.setTypeface(typeface);
+
+    }
     public void haveAllBoatsBeenPlaced(){
         next = (Button) findViewById(R.id.next);
-
+        changeFont(next);
         // Once the user has place all ships on grid, advance to the next activity
         if(aircraft.isPlaced() && battleship.isPlaced() && submarine.isPlaced() &&
                 minesweeper.isPlaced() && frigate.isPlaced()){
@@ -145,7 +148,6 @@ public class Place_Ship extends Activity {
      * The drag and drop feature
      */
     private final class ChoiceToucheListener implements View.OnTouchListener {
-
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             // TODO Auto-generated method stub
@@ -165,7 +167,6 @@ public class Place_Ship extends Activity {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-
                     boardView.locatePlace(X, Y);
                     int height = boardView.getMeasuredHeight();
                     int width = boardView.getMeasuredWidth();
@@ -194,7 +195,6 @@ public class Place_Ship extends Activity {
                             Log.w("frigate", "frigate");
                             frigate.setPlaced(true);
                         }
-
                         Log.w("height", String.valueOf(height));
                         Log.w("width", String.valueOf(width));
                         Log.w("X", String.valueOf(X));
