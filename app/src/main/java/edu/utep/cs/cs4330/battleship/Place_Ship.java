@@ -31,12 +31,20 @@ public class Place_Ship extends Activity {
     // Set the board view so boats can be placed on the grid
     private Board board;
     private BoardView boardView;
+    private Ship aircraft = new Ship ("aircraft");
+    private Ship battleship = new Ship("battleship");
+    private Ship submarine = new Ship("submarine");
+    private Ship minesweeper = new Ship("minesweeper");
+    private Ship frigate = new Ship("frigate");
+    private boolean allBoatsPlaced;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_ship);
         setEverything(); // The creation of this activity
+
     }
 
     /**
@@ -60,19 +68,10 @@ public class Place_Ship extends Activity {
      *  The user needs to be able to traverse to next or quit, hence the maker creates buttons.
      */
     private void setButtons() {
-        next = (Button) findViewById(R.id.next);
+        haveAllBoatsBeenPlaced(); // Hide the "NEXT" button by default
         quit =(Button) findViewById(R.id.quitB);
-        // Go to the next activity
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Place_Ship.this, GameActivity.class);
-                Place_Ship.this.startActivity(intent);
-                /** Fading Transition Effect */
-                Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
-        });
 
+        // Quit and go to the Launch View aka Home.
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,8 +120,31 @@ public class Place_Ship extends Activity {
         // Change font
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/eightbit.TTF");
         title.setTypeface(typeface);
-        next.setTypeface(typeface);
+        //next.setTypeface(typeface);
         quit.setTypeface(typeface);
+    }
+
+    public void haveAllBoatsBeenPlaced(){
+        next = (Button) findViewById(R.id.next);
+
+        // Once the user has place all ships on grid, advance to the next activity
+        if(aircraft.isPlaced() && battleship.isPlaced() && submarine.isPlaced() &&
+                minesweeper.isPlaced() && frigate.isPlaced()){
+            next.setVisibility(View.VISIBLE);
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Place_Ship.this, GameActivity.class);
+                    Place_Ship.this.startActivity(intent);
+                    /** Fading Transition Effect */
+                    Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+            });
+        }
+        else{ // By default hide the next button and don't let the user advance until all boats have
+            // been placed on the grid. 
+            next.setVisibility(View.INVISIBLE);
+        }
     }
     /**
      * The drag and drop feature
@@ -156,21 +178,33 @@ public class Place_Ship extends Activity {
                         layoutParams.leftMargin = X;
                         layoutParams.topMargin = Y;
                         Log.w("Get tag", String.valueOf(view.getTag()));
+
                         if(view.getTag() == "aircraft"){
                             Log.w("aircraft", "aircraft");
+                            aircraft.setName("aircraft");
+                            aircraft.setPlaced(true);
                         }
                         else if(view.getTag() == "battleship"){
                             Log.w("battleship", "battleship");
+                            battleship.setName("battleship");
+                            battleship.setPlaced(true);
                         }
                         else if(view.getTag() == "submarine"){
                             Log.w("submarine", "submarine");
+                            submarine.setName("submarine");
+                            submarine.setPlaced(true);
                         }
                         else if(view.getTag() == "minesweeper"){
                             Log.w("minesweeper", "minesweeper");
+                            minesweeper = new Ship("minesweeper");
+                            minesweeper.setPlaced(true);
                         }
                         else if(view.getTag() == "frigate"){
                             Log.w("frigate", "frigate");
+                            frigate = new Ship("frigate");
+                            frigate.setPlaced(true);
                         }
+
                         Log.w("height", String.valueOf(height));
                         Log.w("width", String.valueOf(width));
                         Log.w("X", String.valueOf(X));
@@ -179,6 +213,7 @@ public class Place_Ship extends Activity {
                         break;
                     }
             }
+            haveAllBoatsBeenPlaced();
             rootLayout.invalidate();
             return true;
         }
