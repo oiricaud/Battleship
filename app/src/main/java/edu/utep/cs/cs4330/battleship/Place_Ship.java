@@ -90,36 +90,26 @@ public class Place_Ship extends Activity {
 
         //Aircraft
         ImageView aircraftImage = (ImageView) findViewById(R.id.aircraft);
-      //  aircraftImage.setX(50);
-     //   aircraftImage.setY(50);
         aircraftImage.setLayoutParams(layoutParams);
         aircraftImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Battleship
         ImageView battleshipImage = (ImageView) findViewById(R.id.battleship);
-     //   battleshipImage.setX(150);
-     //   battleshipImage.setY(50);
         battleshipImage.setLayoutParams(layoutParams);
         battleshipImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Submarine
         ImageView submarineImage = (ImageView) findViewById(R.id.submarine);
-      //  submarineImage.setX(250);
-     //   submarineImage.setY(50);
         submarineImage.setLayoutParams(layoutParams);
         submarineImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Minesweeper
         ImageView minesweeperImage = (ImageView) findViewById(R.id.minesweeper);
-      //  submarineImage.setX(350);
-     //  submarineImage.setY(50);
         minesweeperImage.setLayoutParams(layoutParams);
         minesweeperImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Frigate
         ImageView frigateImage = (ImageView) findViewById(R.id.frigate);
-      //  frigateImage.setX(450);
-      //  frigateImage.setY(50);
         frigateImage.setLayoutParams(layoutParams);
         frigateImage.setOnTouchListener(new ChoiceToucheListener());
 
