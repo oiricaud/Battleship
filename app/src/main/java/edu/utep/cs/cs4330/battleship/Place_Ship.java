@@ -30,11 +30,11 @@ public class Place_Ship extends Activity {
     // Set the board view so boats can be placed on the grid
     private Board board;
     private BoardView boardView;
-    private Ship aircraft = new Ship (5, "aircraft");
-    private Ship battleship = new Ship(4, "battleship");
-    private Ship submarine = new Ship(3, "submarine");
-    private Ship minesweeper = new Ship(3, "minesweeper");
-    private Ship frigate = new Ship(2, "frigate");
+    private Ship aircraft = new Ship (5, "aircraft", "Human");
+    private Ship battleship = new Ship(4, "battleship", "Human");
+    private Ship destroyer = new Ship(3, "destroyer", "Human");
+    private Ship submarine = new Ship(3, "submarine", "Human");
+    private Ship patrol = new Ship(2, "patrol", "Human");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,23 +94,23 @@ public class Place_Ship extends Activity {
         battleshipImage.setLayoutParams(layoutParams);
         battleshipImage.setOnTouchListener(new ChoiceToucheListener());
 
+        // Destroyer
+        ImageView destroyerImage = (ImageView) findViewById(R.id.destroyer);
+        destroyerImage.setTag("destroyer");
+        destroyerImage.setLayoutParams(layoutParams);
+        destroyerImage.setOnTouchListener(new ChoiceToucheListener());
+
         // Submarine
         ImageView submarineImage = (ImageView) findViewById(R.id.submarine);
         submarineImage.setTag("submarine");
         submarineImage.setLayoutParams(layoutParams);
         submarineImage.setOnTouchListener(new ChoiceToucheListener());
 
-        // Minesweeper
-        ImageView minesweeperImage = (ImageView) findViewById(R.id.minesweeper);
-        minesweeperImage.setTag("minesweeper");
-        minesweeperImage.setLayoutParams(layoutParams);
-        minesweeperImage.setOnTouchListener(new ChoiceToucheListener());
-
-        // Frigate
-        ImageView frigateImage = (ImageView) findViewById(R.id.frigate);
-        frigateImage.setTag("frigate");
-        frigateImage.setLayoutParams(layoutParams);
-        frigateImage.setOnTouchListener(new ChoiceToucheListener());
+        // Patrol
+        ImageView patrolImage = (ImageView) findViewById(R.id.patrol);
+        patrolImage.setTag("patrol");
+        patrolImage.setLayoutParams(layoutParams);
+        patrolImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Change font
         changeFont(title);
@@ -125,9 +125,10 @@ public class Place_Ship extends Activity {
     public void haveAllBoatsBeenPlaced(){
         next = (Button) findViewById(R.id.next);
         changeFont(next);
+
         // Once the user has place all ships on grid, advance to the next activity
-        if(aircraft.isPlaced() && battleship.isPlaced() && submarine.isPlaced() &&
-                minesweeper.isPlaced() && frigate.isPlaced()){
+        if(aircraft.isPlaced() && battleship.isPlaced() && destroyer.isPlaced() &&
+                submarine.isPlaced() && patrol.isPlaced()){
             next.setVisibility(View.VISIBLE);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -183,17 +184,17 @@ public class Place_Ship extends Activity {
                             Log.w("battleship", "battleship");
                             battleship.setPlaced(true);
                         }
+                        else if(view.getTag() == "destroyer"){
+                            Log.w("destroyer", "destroyer");
+                            destroyer.setPlaced(true);
+                        }
                         else if(view.getTag() == "submarine"){
                             Log.w("submarine", "submarine");
                             submarine.setPlaced(true);
                         }
-                        else if(view.getTag() == "minesweeper"){
-                            Log.w("minesweeper", "minesweeper");
-                            minesweeper.setPlaced(true);
-                        }
-                        else if(view.getTag() == "frigate"){
-                            Log.w("frigate", "frigate");
-                            frigate.setPlaced(true);
+                        else if(view.getTag() == "patrol"){
+                            Log.w("patrol", "patrol");
+                            patrol.setPlaced(true);
                         }
                         Log.w("height", String.valueOf(height));
                         Log.w("width", String.valueOf(width));

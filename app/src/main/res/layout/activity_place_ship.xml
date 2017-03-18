@@ -85,7 +85,7 @@
         android:layout_marginTop="70dp">
 
         <ImageView
-            android:id="@+id/minesweeper"
+            android:id="@+id/destroyer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -93,8 +93,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="0dp"
             android:layout_marginRight="0dp"
-            android:background="@drawable/minesweeper"
-            android:contentDescription="minesweeper" />
+            android:background="@drawable/destroyer"
+            android:contentDescription="destroyer" />
 
     </RelativeLayout>
 
@@ -105,11 +105,11 @@
         android:id="@+id/relativeLayout">
 
         <ImageView
-            android:id="@+id/frigate"
+            android:id="@+id/patrol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/frigate"
-            android:contentDescription="frigate" />
+            android:background="@drawable/patrol"
+            android:contentDescription="patrol" />
 
     </RelativeLayout>
 

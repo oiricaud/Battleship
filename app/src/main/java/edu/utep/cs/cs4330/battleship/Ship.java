@@ -16,11 +16,18 @@ public class Ship {
     private int hit;
     private boolean isPlaced;
 
-    public Ship(int size, String nameofship) {
-        setSize(size);
-        setName(nameofship);
-        setCoordinates();
-        setSink(false);
+    public Ship(int size, String nameofship, String typeOfUser) {
+        if(typeOfUser.equals("Computer")){
+            setSize(size);
+            setName(nameofship);
+            setCoordinates();
+            setSink(false);
+        }
+        if(typeOfUser.equals("Human")){
+            setSize(size);
+            setName(nameofship);
+            setSink(false);
+        }
     }
 
     public void setCoordinates() {
@@ -93,7 +100,7 @@ public class Ship {
     private boolean allBoatsPlaced() {
         if((aircraft.isPlaced() == true) && ((battleship.isPlaced() == true) &&
                 ((submarine.isPlaced() == true) && ((submarineImage.isPlaced() == true) &&
-                        (minesweeper.isPlaced() == true) &&  (frigate.isPlaced() == true))))){
+                        (destroyer.isPlaced() == true) &&  (patrol.isPlaced() == true))))){
             return true;
         }
         return false;

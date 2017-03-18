@@ -33,11 +33,11 @@
         android:layout_alignParentStart="true">
 
         <ImageView
-            android:id="@+id/minesweeper"
+            android:id="@+id/destroyer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/minesweeper"
-            android:contentDescription="minesweeper" />
+            android:background="@drawable/destroyer"
+            android:contentDescription="destroyer" />
 
     </RelativeLayout>
 
@@ -80,8 +80,8 @@
             android:id="@+id/frigate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/frigate"
-            android:contentDescription="frigate" />
+            android:background="@drawable/patrol"
+            android:contentDescription="patrol" />
 
     </RelativeLayout>
 

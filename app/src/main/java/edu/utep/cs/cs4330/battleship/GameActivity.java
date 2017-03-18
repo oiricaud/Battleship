@@ -57,11 +57,11 @@ public class GameActivity extends AppCompatActivity {
         boardView.setBoard(board);
 
         // Below we define the boats that will be placed on the board
-        final Ship aircraft = new Ship(5, "aircraft");
-        final Ship battleship = new Ship(4, "battleship");
-        final Ship destroyer = new Ship(3, "destroyer");
-        final Ship submarine = new Ship(3, "submarine");
-        final Ship patrol = new Ship(2, "patrol");
+        final Ship aircraft = new Ship(5, "aircraft", "Computer");
+        final Ship battleship = new Ship(4, "battleship", "Computer");
+        final Ship destroyer = new Ship(3, "destroyer", "Computer");
+        final Ship submarine = new Ship(3, "submarine", "Computer");
+        final Ship patrol = new Ship(2, "patrol", "Computer");
 
         // Change font
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
