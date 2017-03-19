@@ -30,7 +30,7 @@ public class PlaceShips extends Activity {
     private Button quit;
     private RelativeLayout rootLayout;
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
-    private BoardView boardView;
+    private BoardView humanBoardView;
     private Ship aircraft = new Ship(5, "aircraft", "Human");
     private Ship battleship = new Ship(4, "battleship", "Human");
     private Ship destroyer = new Ship(3, "destroyer", "Human");
@@ -40,6 +40,7 @@ public class PlaceShips extends Activity {
     /* End Fields for Human */
 
     /* Begin Fields for AI */
+    private BoardView computerBoardView;
     private int countShots = 0;
     private TextView counter;
     private Music shipSound = new Music();
@@ -111,10 +112,10 @@ public class PlaceShips extends Activity {
     }
 
     private LinkedList<Integer> setEverythingForComputer() {
-        setContentView(R.layout.activity_game);
+       // setContentView(R.layout.activity_game);
         Board board = new Board(10);
-        boardView = (BoardView) findViewById(R.id.boardView);
-        boardView.setBoard(board);
+        computerBoardView = (BoardView) findViewById(R.id.boardView);
+        computerBoardView.setBoard(board);
 
         // Below we define the boats that will be placed on the board
         final Ship aircraft = new Ship(5, "aircraft", "Computer");
@@ -136,7 +137,7 @@ public class PlaceShips extends Activity {
         final Context activityContext = this;
 
         // Listen for the user input
-        boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+        computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
                 setCountShots(countShots + 1);
@@ -148,8 +149,8 @@ public class PlaceShips extends Activity {
                 if (isItAHit(aircraft.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     aircraft.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (aircraft.getHit() == 5) {
                         toast("Aircraft SUNK");
@@ -158,8 +159,8 @@ public class PlaceShips extends Activity {
                 } else if (isItAHit(battleship.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     battleship.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (battleship.getHit() == 4) {
                         toast("Battleship SUNK");
@@ -168,8 +169,8 @@ public class PlaceShips extends Activity {
                 } else if (isItAHit(destroyer.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     destroyer.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (destroyer.getHit() == 3) {
                         toast("Destroyer SUNK");
@@ -178,8 +179,8 @@ public class PlaceShips extends Activity {
                 } else if (isItAHit(submarine.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     submarine.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (submarine.getHit() == 3) {
                         toast("Submarine SUNK");
@@ -188,16 +189,16 @@ public class PlaceShips extends Activity {
                 } else if (isItAHit(patrol.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     patrol.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (patrol.getHit() == 2) {
                         toast("Patrol SUNK");
                         shipSound.makeLouderExplosion(activityContext);
                     }
                 } else {
-                    boardView.setxMiss(x);
-                    boardView.setyMiss(y);
+                    computerBoardView.setxMiss(x);
+                    computerBoardView.setyMiss(y);
                     toast("That was close!");
                     shipSound.makeMissedSound(activityContext);
                 }
@@ -228,8 +229,8 @@ public class PlaceShips extends Activity {
         // SET BOARD
         // Set the board view so boats can be placed on the grid
         Board board = new Board(10);
-        boardView = (BoardView) findViewById(R.id.boardView);
-        boardView.setBoard(board);
+        humanBoardView = (BoardView) findViewById(R.id.boardView);
+        humanBoardView.setBoard(board);
 
         // SET BUTTONS
         hasHumanPlacedAllBoats(); // Hide the "NEXT" button by default
@@ -305,7 +306,8 @@ public class PlaceShips extends Activity {
 
     private void beginGame(LinkedList<Integer> coordinatesForAllBoatsAI, LinkedList<Integer> coordinatesForAllBoatsHuman) {
         setContentView(R.layout.current_game);
-
+        Log.w("coordinates4AllBoatsAI", coordinatesForAllBoatsAI.toString());
+        /*
         Board humanBoard = new Board(10);
         BoardView humanBoardView = (BoardView) findViewById(R.id.humanBoard);
         humanBoardView.setBoard(humanBoard);
@@ -313,6 +315,7 @@ public class PlaceShips extends Activity {
         Board computerBoard = new Board(10);
         BoardView computerBoardView = (BoardView) findViewById(R.id.computerBoard);
         computerBoardView.setBoard(computerBoard);
+        */
     }
 
     /**
@@ -338,9 +341,9 @@ public class PlaceShips extends Activity {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                    boardView.locatePlace(X, Y);
-                    int height = boardView.getMeasuredHeight();
-                    int width = boardView.getMeasuredWidth();
+                    humanBoardView.locatePlace(X, Y);
+                    int height = humanBoardView.getMeasuredHeight();
+                    int width = humanBoardView.getMeasuredWidth();
                     if ((X <= 1000 && Y <= 1050)) {
                         layoutParams.leftMargin = X;
                         layoutParams.topMargin = Y;
