@@ -16,8 +16,9 @@ import java.util.Random;
  */
 
 public class LaunchView extends AppCompatActivity {
-    private MediaPlayer mp;
+
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
+    private Music gamePlayMusic = new Music();
     private String difficulty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class LaunchView extends AppCompatActivity {
     }
     // The beginning to a wonderful journey
     private void start() {
-        playMusic();
+        gamePlayMusic.playMusic(this);
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
         eightBitFont.changeFont(this, battleshipLabel);
 
@@ -80,6 +81,9 @@ public class LaunchView extends AppCompatActivity {
         });
     }
 
+    /**
+     * Takes the user to @see Place_Ship to place ships on the grid.
+     */
     private void humanPlaceBoats() {
         Intent intent = new Intent(LaunchView.this, Place_Ship.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
@@ -87,26 +91,6 @@ public class LaunchView extends AppCompatActivity {
         LaunchView.this.startActivity(intent);
         /** Fading Transition Effect */
         LaunchView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    private void playMusic() {
-        if (mp!=null) {
-            mp.stop();
-            mp.release();
-        }
-        // Play one of these random songs in the background.
-        Random random = new Random();
-        int obtainRandomNumber = random.nextInt(3 - 1 + 1) + 1;
-        if(obtainRandomNumber == 1){
-            mp = MediaPlayer.create(this, R.raw.alterego);
-        }
-        if(obtainRandomNumber == 2){
-            mp = MediaPlayer.create(this, R.raw.oblivion);
-        }
-        if(obtainRandomNumber == 3){
-            mp = MediaPlayer.create(this, R.raw.yolo);
-        }
-        mp.start();
     }
 
     public String getDifficulty() {
