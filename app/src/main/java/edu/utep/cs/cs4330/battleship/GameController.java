@@ -72,7 +72,7 @@ public class GameController extends AppCompatActivity {
         eightBitFont.changeFont(this, counter); // Change font
         countShots = 0;
         setCountShots(0);
-
+        final Context activityContext = this;
         // Listen for the user input
         boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
@@ -83,66 +83,66 @@ public class GameController extends AppCompatActivity {
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
                 if(isItAHit(aircraft.getCoordinates(), x, y)){
-                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
+                    shipSound.makeExplosionSound(activityContext);
                     aircraft.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(aircraft.getHit() == 5){
                         toast("Aircraft SUNK");
-                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
+                        shipSound.makeLouderExplosion(activityContext);
                     }
                 }
                 else if(isItAHit(battleship.getCoordinates(), x, y)) {
-                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
+                    shipSound.makeExplosionSound(activityContext);
                     battleship.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(battleship.getHit() == 4){
                         toast("Battleship SUNK");
-                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
+                        shipSound.makeLouderExplosion(activityContext);
                     }
                 }
 
                 else if(isItAHit(destroyer.getCoordinates(), x, y)){
-                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
+                    shipSound.makeExplosionSound(activityContext);
                     destroyer.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(destroyer.getHit() == 3){
                         toast("Destroyer SUNK");
-                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
+                        shipSound.makeLouderExplosion(activityContext);
                     }
                 }
                 else if(isItAHit(submarine.getCoordinates(), x, y)) {
-                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
+                    shipSound.makeExplosionSound(activityContext);
                     submarine.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(submarine.getHit() == 3){
                         toast("Submarine SUNK");
-                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
+                        shipSound.makeLouderExplosion(activityContext);
                     }
                 }
                 else if(isItAHit(patrol.getCoordinates(), x, y)) {
-                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
+                    shipSound.makeExplosionSound(activityContext);
                     patrol.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(patrol.getHit() == 2){
                         toast("Patrol SUNK");
-                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
+                        shipSound.makeLouderExplosion(activityContext);
                     }
                 }
                 else{
                     boardView.setxMiss(x);
                     boardView.setyMiss(y);
                     toast("That was close!");
-                    shipSound.makeMissedSound(getApplication().getApplicationContext());
+                    shipSound.makeMissedSound(activityContext);
                 }
             }
         });
