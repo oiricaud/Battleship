@@ -16,7 +16,6 @@ import java.util.Random;
  */
 
 public class LaunchView extends AppCompatActivity {
-
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
     private Music gamePlayMusic = new Music();
     private String difficulty;

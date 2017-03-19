@@ -26,6 +26,7 @@ public class GameController extends AppCompatActivity {
     private MediaPlayer mp;
     private TextView counter;
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
+    private Music shipSound = new Music();
     /** This is the main controller class and handles the creation of multiple ships and board.
      //    *  @see Ship.java
      //   *  @see BoardView.java
@@ -83,66 +84,66 @@ public class GameController extends AppCompatActivity {
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
                 if(isItAHit(aircraft.getCoordinates(), x, y)){
-                    makeExplosionSound();
+                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
                     aircraft.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(aircraft.getHit() == 5){
                         toast("Aircraft SUNK");
-                        makeLouderExplosion();
+                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
                     }
                 }
                 else if(isItAHit(battleship.getCoordinates(), x, y)) {
-                    makeExplosionSound();
+                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
                     battleship.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(battleship.getHit() == 4){
                         toast("Battleship SUNK");
-                        makeLouderExplosion();
+                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
                     }
                 }
 
                 else if(isItAHit(destroyer.getCoordinates(), x, y)){
-                    makeExplosionSound();
+                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
                     destroyer.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(destroyer.getHit() == 3){
                         toast("Destroyer SUNK");
-                        makeLouderExplosion();
+                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
                     }
                 }
                 else if(isItAHit(submarine.getCoordinates(), x, y)) {
-                    makeExplosionSound();
+                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
                     submarine.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(submarine.getHit() == 3){
                         toast("Submarine SUNK");
-                        makeLouderExplosion();
+                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
                     }
                 }
                 else if(isItAHit(patrol.getCoordinates(), x, y)) {
-                    makeExplosionSound();
+                    shipSound.makeExplosionSound(getApplication().getApplicationContext());
                     patrol.hit();
                     boardView.setxHit(x);
                     boardView.setyHit(y);
                     toast("KA-POW");
                     if(patrol.getHit() == 2){
                         toast("Patrol SUNK");
-                        makeLouderExplosion();
+                        shipSound.makeLouderExplosion(getApplication().getApplicationContext());
                     }
                 }
                 else{
                     boardView.setxMiss(x);
                     boardView.setyMiss(y);
                     toast("That was close!");
-                    makeMissedSound();
+                    shipSound.makeMissedSound(getApplication().getApplicationContext());
                 }
             }
         });
@@ -234,41 +235,6 @@ public class GameController extends AppCompatActivity {
         return false;
     }
 
-    /**
-     * Makes a swish noise when the player misses a shot.
-     */
-    private void makeMissedSound() {
-        if (mp!=null) {
-            mp.stop();
-            mp.release();
-        }
-        mp = MediaPlayer.create(this, R.raw.missed);
-        mp.start();
-    }
-
-    /**
-     * Makes an explosion sound if the user hits a boat.
-     */
-    private void makeExplosionSound() {
-        if (mp!=null) {
-            mp.stop();
-            mp.release();
-        }
-        mp = MediaPlayer.create(this, R.raw.torpedo);
-        mp.start();
-    }
-
-    /**
-     * Makes a louder explosion as the latter method.
-     */
-    private void makeLouderExplosion() {
-        if (mp!=null) {
-            mp.stop();
-            mp.release();
-        }
-        mp = MediaPlayer.create(this, R.raw.sunk);
-        mp.start();
-    }
 
     /** Show a toast message. */
     protected  void toast(String msg) {
