@@ -140,20 +140,6 @@ public class GameController extends AppCompatActivity {
             }
         });
     }
-    /** Where the magic happens. Aka the function that allows the human to place boats on board view.
-     *  s0->s1->s2
-     *  @see PlaceShips for more details.
-     */
-    private void humanPlaceBoatsView() {
-        // The following is how you send data to other classes.
-        Intent intent = new Intent(GameController.this, PlaceShips.class);
-        String level_of_difficulty = String.valueOf(getDifficulty());
-        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
-        intent.putExtra("userType", "human");
-        GameController.this.startActivity(intent);
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
     /** s0->s1->s2->s3
      *
      * Changes the content view to a more grey, unnerving background. Also changes the song to more
@@ -169,6 +155,19 @@ public class GameController extends AppCompatActivity {
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("userType", "computer");
+        GameController.this.startActivity(intent);
+        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+    /** Where the magic happens. Aka the function that allows the human to place boats on board view.
+     *  s0->s1->s2
+     *  @see PlaceShips for more details.
+     */
+    private void humanPlaceBoatsView() {
+        // The following is how you send data to other classes.
+        Intent intent = new Intent(GameController.this, PlaceShips.class);
+        String level_of_difficulty = String.valueOf(getDifficulty());
+        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        intent.putExtra("userType", "human");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }

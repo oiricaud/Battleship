@@ -170,78 +170,16 @@ public class PlaceShips extends Activity {
         // s3 now points to s2, s3->s2, where the user is able to place new ships.
         // Start a new game when clicked button
         Button newButton = (Button) findViewById(R.id.newButton);
-        newButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Alert Dialogue
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure you want to start a new Game?");
-                builder.setCancelable(true);
-                builder.setPositiveButton(
-                        "Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                toast("New Game successfully created!");
-                                restartActivity();
-                                Intent intent = new Intent(PlaceShips.this, PlaceShips.class);
-                                PlaceShips.this.startActivity(intent);
-                                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                            }
-                        });
+        newActivity(newButton, this);
 
-                builder.setNegativeButton(
-                        "No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
 
         // s3 -> s0
         // Takes the user back to the starting state
         Button quitButton = (Button) findViewById(R.id.quitButton);
-        quitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Alert Dialogue
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure you want to quit?");
-                builder.setCancelable(true);
-
-                builder.setPositiveButton(
-                        "Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                toast("Quiting Game!");
-                                Intent intent = new Intent(PlaceShips.this, GameController.class);
-                                PlaceShips.this.startActivity(intent);
-                                /** Fading Transition Effect */
-                                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                finish();
-                                dialog.cancel();
-                            }
-                        });
-
-                builder.setNegativeButton(
-                        "No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert11 = builder.create();
-                alert11.show();
-            }
-        });
+        quitActivity(quitButton, context);
         eightBitFont.changeFont(this, newButton);
         eightBitFont.changeFont(this, quitButton);
     }
-
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
      */
@@ -257,18 +195,7 @@ public class PlaceShips extends Activity {
         // SET BUTTONS
         hasHumanPlacedAllBoats(); // Hide the "NEXT" button by default
         quit = (Button) findViewById(R.id.quitB);
-
-        // Quit and go to the Launch View aka Home.
-        quit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PlaceShips.this, GameController.class);
-                PlaceShips.this.startActivity(intent);
-                /** Fading Transition Effect */
-                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
-        });
-
+        quitActivity(quit, this);
         // Displays all 5 boats on UI & sets up the images to be able to drag and drop method
         // that is later used.
         rootLayout = (RelativeLayout) findViewById(R.id.defaultBoatsView);
@@ -435,6 +362,74 @@ public class PlaceShips extends Activity {
         finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
+    }
+    public void quitActivity(Button quitButton, final Context context){
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Alert Dialogue
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Are you sure you want to quit?");
+                builder.setCancelable(true);
+
+                builder.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                toast("Quiting Game!");
+                                Intent intent = new Intent(PlaceShips.this, GameController.class);
+                                PlaceShips.this.startActivity(intent);
+                                /** Fading Transition Effect */
+                                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                finish();
+                                dialog.cancel();
+                            }
+                        });
+
+                builder.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+    }
+    private void newActivity(Button newButton, final Context context) {
+        newButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Alert Dialogue
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Are you sure you want to start a new Game?");
+                builder.setCancelable(true);
+                builder.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                toast("New Game successfully created!");
+                                restartActivity();
+                                Intent intent = new Intent(PlaceShips.this, PlaceShips.class);
+                                PlaceShips.this.startActivity(intent);
+                                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            }
+                        });
+
+                builder.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 }
 
