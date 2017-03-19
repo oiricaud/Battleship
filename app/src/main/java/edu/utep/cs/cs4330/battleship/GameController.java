@@ -1,17 +1,12 @@
 package edu.utep.cs.cs4330.battleship;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 // Controller
 /**
@@ -127,31 +122,31 @@ public class GameController extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setDifficulty("easy");
-                humanPlaceBoatsView();  // Takes the user to @see Place_Ship to place ships on the grid.
+                humanPlaceBoatsView();  // Takes the user to @see PlaceShips to place ships on the grid.
             }
         });
         medium.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 setDifficulty("medium");
-                humanPlaceBoatsView(); // Takes the user to @see Place_Ship to place ships on the grid.
+                humanPlaceBoatsView(); // Takes the user to @see PlaceShips to place ships on the grid.
             }
         });
         hard.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 setDifficulty("hard");
-                humanPlaceBoatsView(); // Takes the user to @see Place_Ship to place ships on the grid.
+                humanPlaceBoatsView(); // Takes the user to @see PlaceShips to place ships on the grid.
             }
         });
     }
     /** Where the magic happens. Aka the function that allows the human to place boats on board view.
      *  s0->s1->s2
-     *  @see Place_Ship for more details.
+     *  @see PlaceShips for more details.
      */
     private void humanPlaceBoatsView() {
         // The following is how you send data to other classes.
-        Intent intent = new Intent(GameController.this, Place_Ship.class);
+        Intent intent = new Intent(GameController.this, PlaceShips.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("userType", "human");
@@ -170,7 +165,7 @@ public class GameController extends AppCompatActivity {
      */
     private void computerPlaceBoatsView() {
         // The following is how you send data to other classes.
-        Intent intent = new Intent(GameController.this, Place_Ship.class);
+        Intent intent = new Intent(GameController.this, PlaceShips.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("userType", "computer");

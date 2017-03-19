@@ -21,7 +21,7 @@ import android.widget.Toast;
  * This activity will allow the user to place boats. @see activity_place_ship
  */
 
-public class Place_Ship extends Activity {
+public class PlaceShips extends Activity {
     private TextView title;
     private Button quit;
     private RelativeLayout rootLayout;
@@ -183,9 +183,9 @@ public class Place_Ship extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("New Game successfully created!");
                                 restartActivity();
-                                Intent intent = new Intent(Place_Ship.this, Place_Ship.class);
-                                Place_Ship.this.startActivity(intent);
-                                Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                Intent intent = new Intent(PlaceShips.this, PlaceShips.class);
+                                PlaceShips.this.startActivity(intent);
+                                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             }
                         });
 
@@ -217,10 +217,10 @@ public class Place_Ship extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("Quiting Game!");
-                                Intent intent = new Intent(Place_Ship.this, GameController.class);
-                                Place_Ship.this.startActivity(intent);
+                                Intent intent = new Intent(PlaceShips.this, GameController.class);
+                                PlaceShips.this.startActivity(intent);
                                 /** Fading Transition Effect */
-                                Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                 finish();
                                 dialog.cancel();
                             }
@@ -262,10 +262,10 @@ public class Place_Ship extends Activity {
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Place_Ship.this, GameController.class);
-                Place_Ship.this.startActivity(intent);
+                Intent intent = new Intent(PlaceShips.this, GameController.class);
+                PlaceShips.this.startActivity(intent);
                 /** Fading Transition Effect */
-                Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 
@@ -324,11 +324,11 @@ public class Place_Ship extends Activity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(Place_Ship.this, edu.utep.cs.cs4330.battleship.GameController.class);
+                    Intent intent = new Intent(PlaceShips.this, edu.utep.cs.cs4330.battleship.GameController.class);
                     intent.putExtra("methodName", "computerPlaceBoatsView");
-                    Place_Ship.this.startActivity(intent);
+                    PlaceShips.this.startActivity(intent);
                     /** Fading Transition Effect */
-                    Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             });
         } else { // By default hide the next button and don't let the user advance until all boats have
