@@ -148,6 +148,7 @@ public class GameController extends AppCompatActivity {
      * Also it is the function where the computer places the boats on the grid at random.
      * Currently I would personally say that it is easy. Most of the times the boats will
      * be adjacent to each other.
+     * @see PlaceShips for more details.
      */
     private void computerPlaceBoatsView() {
         // The following is how you send data to other classes.

@@ -82,7 +82,6 @@ public class PlaceShips extends Activity {
             }
             if (typeOfUserKey.equals("computer")) {
                 setEverythingForComputer();
-                //setEverything(); // The creation of this activity
             }
         }
     }
