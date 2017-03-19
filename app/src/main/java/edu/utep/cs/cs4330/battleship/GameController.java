@@ -15,14 +15,12 @@ import android.widget.TextView;
  * Last update: 02/23/2017
  */
 public class GameController extends AppCompatActivity {
-    private BoardView boardView;
-
-    private MediaPlayer mp;
     //private TextView counter;
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
-    private Music shipSound = new Music();
     private Music gamePlayMusic = new Music();
     private String difficulty;
+    private boolean isComputerReady;
+    private boolean isHumanReady;
 
     /** Setters and Getters
      * @return this returns the difficulty the user chose, which is later retrieved to be displayed
@@ -62,7 +60,9 @@ public class GameController extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             if (extras == null)
             {
-                launchView(); // Launch the first activity, the starting state, s0.
+                launchHomeView(); // Launch the first activity, the starting state, s0.
+                setComputerReady(false);
+                setHumanReady(false);
             }else{
                 String method = extras.getString("methodName");
 
@@ -70,6 +70,8 @@ public class GameController extends AppCompatActivity {
                 {
                     computerPlaceBoatsView(); // This means that the human has already placed the boats
                                             // and chosen a difficulty level
+                    setHumanReady(true);
+                    setComputerReady(true);
                 }
             }
         }
@@ -85,7 +87,7 @@ public class GameController extends AppCompatActivity {
      * button the state diagram looks like the following: s0->s1, where s1 awaits for the user
      * input to choose a level of difficulty for the upcoming game.
      */
-    private void launchView(){
+    private void launchHomeView(){
         setContentView(R.layout.home);
         gamePlayMusic.playMusic(this);
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
@@ -97,14 +99,14 @@ public class GameController extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chooseLevelView(); // Ask the user what Level of difficulty do they want to play on.
+                humanChooseLevelView(); // Ask the user what Level of difficulty do they want to play on.
             }
         });
     }
     /** s1, Changes the current view where the user is able to choose from 3 buttons the following:
      *  easy, medium or hard, @see layout/activity_level for more details.
      */
-    private void chooseLevelView() {
+    private void humanChooseLevelView() {
         setContentView(R.layout.activity_level);
         Button easy = (Button) findViewById(R.id.easy);
         Button medium = (Button) findViewById(R.id.medium);
@@ -152,6 +154,7 @@ public class GameController extends AppCompatActivity {
      */
     private void computerPlaceBoatsView() {
         // The following is how you send data to other classes.
+        setComputerReady(true);
         Intent intent = new Intent(GameController.this, PlaceShips.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
@@ -171,6 +174,22 @@ public class GameController extends AppCompatActivity {
         intent.putExtra("userType", "human");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    public boolean isComputerReady() {
+        return isComputerReady;
+    }
+
+    public void setComputerReady(boolean computerReady) {
+        isComputerReady = computerReady;
+    }
+
+    public boolean isHumanReady() {
+        return isHumanReady;
+    }
+
+    public void setHumanReady(boolean humanReady) {
+        isHumanReady = humanReady;
     }
 }
 
