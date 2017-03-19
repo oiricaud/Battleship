@@ -43,6 +43,7 @@ public class GameController extends AppCompatActivity {
      *  and colors a red circle the position of the boats, else colors a white circle indicating the
      *  user missed.
      *
+     *
      * @param savedInstanceState is the starting state.
      */
     @Override
@@ -133,6 +134,7 @@ public class GameController extends AppCompatActivity {
         });
     }
     /** Where the magic happens. Aka the function that allows the human to place boats on board view.
+     *  s0->s1->s2
      *  @see Place_Ship for more details.
      */
     private void humanPlaceBoatsView() {
@@ -158,7 +160,8 @@ public class GameController extends AppCompatActivity {
         this.difficulty = difficulty;
     }
 
-    /**
+    /** s0->s1->s2->s3
+     *
      * Changes the content view to a more grey, unnerving background. Also changes the song to more
      * melancholy while attempting to petrify the user.
      *
@@ -263,8 +266,9 @@ public class GameController extends AppCompatActivity {
             }
         });
 
-        final Context context = this;
+        final Context context = this; // Needed for the alert dialogue builder
 
+        // s3 now points to s2, s3->s2, where the user is able to place new ships.
         // Start a new game when clicked button
         Button newButton = (Button) findViewById(R.id.newButton);
         newButton.setOnClickListener(new View.OnClickListener() {
@@ -298,6 +302,8 @@ public class GameController extends AppCompatActivity {
             }
         });
 
+        // s3 -> s0
+        // Takes the user back to the starting state
         Button quitButton = (Button) findViewById(R.id.quitButton);
         quitButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -337,7 +343,6 @@ public class GameController extends AppCompatActivity {
         eightBitFont.changeFont(this, newButton);
         eightBitFont.changeFont(this, quitButton);
     }
-
     /**
      * @param coordinates are the coordinates from the user.
      * @param x is the number of rows - 1.
