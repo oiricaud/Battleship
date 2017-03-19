@@ -98,12 +98,14 @@ public class PlaceShips extends Activity {
             String levelOfDifficultyKey = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
             String typeOfUserKey = extras.getString("userType");
             String startGame = extras.getString("shouldWeStartGame");
+
             if (typeOfUserKey.equals("human")) {
                 level_of_difficulty_placeHolder.setText(levelOfDifficultyKey);
                 setEverythingForHuman(); // The creation of this activity
             }
-            if (typeOfUserKey.equals("computer")) {
-                setCoordinatesForAllBoatsAI(setEverythingForComputer());
+            else if (typeOfUserKey.equals("computer")) {
+                Log.w(" Here", "1Here");
+                setEverythingForComputer();
             }
             if(startGame.equals("true")){
                 beginGame(getCoordinatesForAllBoatsAI(), getCoordinatesForAllBoatsHuman());
@@ -112,7 +114,7 @@ public class PlaceShips extends Activity {
     }
 
     private LinkedList<Integer> setEverythingForComputer() {
-       // setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_game);
         Board board = new Board(10);
         computerBoardView = (BoardView) findViewById(R.id.boardView);
         computerBoardView.setBoard(board);
@@ -125,6 +127,7 @@ public class PlaceShips extends Activity {
         final Ship patrol = new Ship(2, "patrol", "Computer");
 
         LinkedList<Integer> computerBoatsCoordinates = new LinkedList<Integer>();
+        Log.w(" Here", "2Here");
 
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
         eightBitFont.changeFont(this, battleshipLabel); // Change font
@@ -307,7 +310,7 @@ public class PlaceShips extends Activity {
     private void beginGame(LinkedList<Integer> coordinatesForAllBoatsAI, LinkedList<Integer> coordinatesForAllBoatsHuman) {
         setContentView(R.layout.current_game);
         Log.w("coordinates4AllBoatsAI", coordinatesForAllBoatsAI.toString());
-        /*
+
         Board humanBoard = new Board(10);
         BoardView humanBoardView = (BoardView) findViewById(R.id.humanBoard);
         humanBoardView.setBoard(humanBoard);
@@ -315,7 +318,7 @@ public class PlaceShips extends Activity {
         Board computerBoard = new Board(10);
         BoardView computerBoardView = (BoardView) findViewById(R.id.computerBoard);
         computerBoardView.setBoard(computerBoard);
-        */
+
     }
 
     /**

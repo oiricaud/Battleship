@@ -74,28 +74,20 @@ public class GameController extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null)
-        {
+        if(savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if (extras == null)
-            {
+            if (extras == null) {
                 launchHomeView(); // Launch the first activity, the starting state, s0.
-                setComputerReady(false);
-                setHumanReady(false);
-            }else{
+            } else{
                 String method = extras.getString("methodName");
-
-                if (method.equals("computerPlaceBoatsView"))
-                {
+                if (method.equals("computerPlaceBoatsView")) {
                     computerPlaceBoatsView(); // This means that the human has already placed the boats
                                             // and chosen a difficulty level
-                    setHumanReady(true);
-                    setComputerReady(true);
-                }
-                if(isHumanReady && isComputerReady){
-                    startGameView();
                 }
             }
+        }
+        if(isHumanReady && isComputerReady){
+            startGameView();
         }
     }
 
@@ -112,6 +104,8 @@ public class GameController extends AppCompatActivity {
      * input to choose a level of difficulty for the upcoming game.
      */
     private void launchHomeView(){
+        setComputerReady(false);
+        setHumanReady(false);
         setContentView(R.layout.home);
         gamePlayMusic.playMusic(this);
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
@@ -136,6 +130,7 @@ public class GameController extends AppCompatActivity {
         Button medium = (Button) findViewById(R.id.medium);
         Button hard = (Button) findViewById(R.id.hard);
         TextView chooseLevel = (TextView) findViewById(R.id.chooseDifficulty);
+
 
         // Change font to a cooler 8-bit font.
         eightBitFont.changeFont(this, easy);
@@ -193,6 +188,7 @@ public class GameController extends AppCompatActivity {
      */
     private void humanPlaceBoatsView() {
         // The following is how you send data to other classes.
+        setHumanReady(true);
         Intent intent = new Intent(GameController.this, PlaceShips.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
