@@ -22,6 +22,8 @@ import android.widget.Toast;
  */
 
 public class PlaceShips extends Activity {
+
+    /* Begin Fields for Human */
     private TextView title;
     private Button quit;
     private RelativeLayout rootLayout;
@@ -32,32 +34,43 @@ public class PlaceShips extends Activity {
     private Ship destroyer = new Ship(3, "destroyer", "Human");
     private Ship submarine = new Ship(3, "submarine", "Human");
     private Ship patrol = new Ship(2, "patrol", "Human");
+    /* End Fields for Human */
 
-    /* Fields for AI */
+    /* Begin Fields for AI */
     private int countShots = 0;
     private TextView counter;
     private Music shipSound = new Music();
-    /**
-     * @return the number of shots the user has shot
-     */
+    /* End Fields for AI */
+
+    /* Begin Setters and Getters */
+        /**
+         * @return the number of shots the user has shot at boats
+         */
     public int getCountShots() {
         return countShots;
     }
-
-    /**
-     * @param countShots this method is only used when the program is in the starting state.
-     *                   By default this number of shots = 0.
-     */
+        /**
+         * @param countShots set the count of shots each time the user fires.
+         */
     public void setCountShots(int countShots) {
         this.countShots = countShots;
     }
+    /* End Setters and Getters */
 
+
+    /**
+     * @param savedInstanceState This class gets called from @see GameController
+     *                           also receiving level_of_difficulty from the human.
+     *                           It then sets everything for the human and computer.
+     *                           For example the computer based on level of difficulty must place
+     *                           boats at random. The human in the other hand must manually place
+     *                           the objects (boat images) on the board.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_ship);
 
-        // Receiving level_of_difficulty from @see GameController
         if (getIntent().getExtras() != null) {
             TextView level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
             Bundle extras = getIntent().getExtras();
