@@ -22,10 +22,11 @@ public class GameController extends AppCompatActivity {
     private boolean isComputerReady;
     private boolean isHumanReady;
 
-    /** Setters and Getters
-     * @return this returns the difficulty the user chose, which is later retrieved to be displayed
-     * on the android phone.
-     */
+    /* Begin Setters and Getters */
+        /**
+         * @return this returns the difficulty the user chose, which is later retrieved to be displayed
+         * on the android phone.
+         */
     public String getDifficulty() {
         return difficulty;
     }
@@ -33,6 +34,24 @@ public class GameController extends AppCompatActivity {
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
+
+    public boolean isComputerReady() {
+        return isComputerReady;
+    }
+
+    public void setComputerReady(boolean computerReady) {
+        isComputerReady = computerReady;
+    }
+
+    public boolean isHumanReady() {
+        return isHumanReady;
+    }
+
+    public void setHumanReady(boolean humanReady) {
+        isHumanReady = humanReady;
+    }
+    /* End Setters and Getters */
+
 
     /** This is the main controller class and handles the creation of multiple ships and board.
      //    *  @see Ship.java
@@ -174,22 +193,6 @@ public class GameController extends AppCompatActivity {
         intent.putExtra("userType", "human");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    public boolean isComputerReady() {
-        return isComputerReady;
-    }
-
-    public void setComputerReady(boolean computerReady) {
-        isComputerReady = computerReady;
-    }
-
-    public boolean isHumanReady() {
-        return isHumanReady;
-    }
-
-    public void setHumanReady(boolean humanReady) {
-        isHumanReady = humanReady;
     }
 }
 

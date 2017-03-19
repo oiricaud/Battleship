@@ -15,7 +15,7 @@ public class Ship {
         if(typeOfUser.equals("Computer")){
             setSize(size);
             setName(nameofship);
-            setCoordinates();
+            computerSetCoordinates();
             setSink(false);
         }
         if(typeOfUser.equals("Human")){
@@ -25,7 +25,7 @@ public class Ship {
         }
     }
 
-    public void setCoordinates() {
+    public void computerSetCoordinates() {
         int coordinatesRange = (map.length - getSize());
         int randomx = (int) (Math.random() * coordinatesRange);
         int randomy = (int) (Math.random() * coordinatesRange);
@@ -46,6 +46,7 @@ public class Ship {
     public int[][] getCoordinates(){
         return map;
     }
+
     public int getSize() {
         return size;
     }

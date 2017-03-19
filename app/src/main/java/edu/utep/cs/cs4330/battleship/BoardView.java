@@ -205,7 +205,6 @@ public class BoardView extends View {
         }
     }
 
-
     /** Draw horizontal and vertical lines. */
     private void drawGrid(Canvas canvas) {
         final float maxCoord = maxCoord();
