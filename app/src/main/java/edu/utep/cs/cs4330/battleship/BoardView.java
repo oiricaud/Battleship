@@ -120,18 +120,15 @@ public class BoardView extends View {
     {
         whitePaint.setColor(whiteColor);
     }
-    /** Board grid line color. */
-    private final int boardLineColor = Color.WHITE;
 
     /** Board grid line paint. */
     private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
+        /* Board grid line color. */
+        int boardLineColor = Color.WHITE;
         boardLinePaint.setColor(boardLineColor);
         boardLinePaint.setStrokeWidth(3);
     }
-
-    /** Board to be displayed by this view. */
-    private Board board;
 
     /** Size of the board. */
     private int boardSize;
@@ -153,7 +150,7 @@ public class BoardView extends View {
 
     /** Set the board to to be displayed by this view. */
     public void setBoard(Board board) {
-        this.board = board;
+        /* Board to be displayed by this view. */
         this.boardSize = board.size();
     }
 

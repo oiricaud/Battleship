@@ -20,7 +20,6 @@ import android.widget.Toast;
  * Last update: 02/23/2017
  */
 public class GameController extends AppCompatActivity {
-    private Board board;
     private BoardView boardView;
     private int countShots = 0;
     private MediaPlayer mp;
@@ -67,7 +66,6 @@ public class GameController extends AppCompatActivity {
             }
         }
     }
-
     /**
      * This is state 0, I will represent states such as s0, s1, s2, ... sn. Hopefully this makes it
      * easier to understand.
@@ -144,7 +142,6 @@ public class GameController extends AppCompatActivity {
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         GameController.this.startActivity(intent);
 
-        /** Fading Transition Effect */
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         //computerPlaceBoatsView();
     }
@@ -171,7 +168,7 @@ public class GameController extends AppCompatActivity {
      */
     private void computerPlaceBoatsView() {
         setContentView(R.layout.activity_game);
-        board = new Board(10);
+        Board board = new Board(10);
         boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
 
@@ -315,7 +312,9 @@ public class GameController extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("Quiting Game!");
-                                Intent intent = getIntent();
+                                Intent intent = new Intent(GameController.this, GameController.class);
+                                GameController.this.startActivity(intent);
+                                GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                 finish();
                                 startActivity(intent);
                                 GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -346,10 +345,7 @@ public class GameController extends AppCompatActivity {
      * @return  If the user hits a boat return true else false.
      */
     private boolean isItAHit(int[][] coordinates, int x, int y) {
-        if(coordinates[x][y] == 1){
-            return true;
-        }
-        return false;
+        return coordinates[x][y] == 1;
     }
     /** Show a toast message. */
     protected  void toast(String msg) {

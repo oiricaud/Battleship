@@ -17,16 +17,10 @@ import android.widget.TextView;
 
 public class Place_Ship extends Activity {
     private TextView title;
-    private Button next;
     private Button quit;
     private RelativeLayout rootLayout;
-    private int _xDelta;
-    private int _yDelta;
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
-    // Set the board view so boats can be placed on the grid
-    private Board board;
     private BoardView boardView;
-    private TextView level_of_difficulty_placeHolder;
     private Ship aircraft = new Ship (5, "aircraft", "Human");
     private Ship battleship = new Ship(4, "battleship", "Human");
     private Ship destroyer = new Ship(3, "destroyer", "Human");
@@ -39,11 +33,13 @@ public class Place_Ship extends Activity {
         setContentView(R.layout.activity_place_ship);
         setEverything(); // The creation of this activity
 
-        // Receiving level_of_difficulty from @see LaunchView
-         level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
-        Bundle extras = getIntent().getExtras();
-        String levelOfDifficulty = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
-        level_of_difficulty_placeHolder.setText(levelOfDifficulty);
+        // Receiving level_of_difficulty from @see GameController
+        if( getIntent().getExtras() != null) {
+            TextView level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
+            Bundle extras = getIntent().getExtras();
+            String levelOfDifficulty = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
+            level_of_difficulty_placeHolder.setText(levelOfDifficulty);
+        }
     }
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
@@ -57,14 +53,14 @@ public class Place_Ship extends Activity {
 
     private void setBoard() {
         // Set the board view so boats can be placed on the grid
-        board = new Board(10);
+        Board board = new Board(10);
         boardView = (BoardView) findViewById(R.id.boardView);
         boardView.setBoard(board);
     }
     /**
      *  The user needs to be able to traverse to next or quit, hence the maker creates buttons.
      */
-    private void setButtons() {
+        private void setButtons() {
         haveAllBoatsBeenPlaced(); // Hide the "NEXT" button by default
         quit =(Button) findViewById(R.id.quitB);
 
@@ -125,7 +121,7 @@ public class Place_Ship extends Activity {
      * on the board grid.
      */
     public void haveAllBoatsBeenPlaced(){
-        next = (Button) findViewById(R.id.next);
+        Button next = (Button) findViewById(R.id.next);
         eightBitFont.changeFont(this, next);
 
         // Once the user has place all ships on grid, advance to the next activity
@@ -160,8 +156,8 @@ public class Place_Ship extends Activity {
 
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
-                    _xDelta = X;
-                    _yDelta = Y;
+                    int _xDelta = X;
+                    int _yDelta = Y;
                     break;
                 case MotionEvent.ACTION_UP:
                     break;

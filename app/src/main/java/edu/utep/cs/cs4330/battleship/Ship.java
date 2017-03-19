@@ -7,7 +7,6 @@ public class Ship {
     private int[][] map = new int[10][10]; // size of the grid
     private int size;
     private String name;
-    private String position;
     private boolean sink;
     private int hit;
     private boolean isPlaced;
@@ -64,7 +63,7 @@ public class Ship {
     }
 
     public void setPosition(String position) {
-        this.position = position;
+        String position1 = position;
     }
 
     public boolean isSink() {
