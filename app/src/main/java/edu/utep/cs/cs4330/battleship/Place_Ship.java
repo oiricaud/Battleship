@@ -72,7 +72,7 @@ public class Place_Ship extends Activity {
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Place_Ship.this, LaunchView.class);
+                Intent intent = new Intent(Place_Ship.this, GameController.class);
                 Place_Ship.this.startActivity(intent);
                 /** Fading Transition Effect */
                 Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -135,7 +135,8 @@ public class Place_Ship extends Activity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(Place_Ship.this, GameController.class);
+                    Intent intent = new Intent(Place_Ship.this, edu.utep.cs.cs4330.battleship.GameController.class);
+                    intent.putExtra("methodName", "computerPlaceBoatsView");
                     Place_Ship.this.startActivity(intent);
                     /** Fading Transition Effect */
                     Place_Ship.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

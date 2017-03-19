@@ -27,6 +27,9 @@ public class GameController extends AppCompatActivity {
     private TextView counter;
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
     private Music shipSound = new Music();
+
+    private Music gamePlayMusic = new Music();
+    private String difficulty;
     /** This is the main controller class and handles the creation of multiple ships and board.
      //    *  @see Ship.java
      //   *  @see BoardView.java
@@ -46,11 +49,100 @@ public class GameController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // We can modify this to verify if the AI and user are ready to begin the game, if so begin.
-        setComputerShips();
+
+        if(savedInstanceState == null)
+        {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null)
+            {
+                launchView(); // Launch the home activity
+            }else{
+                String method = extras.getString("methodName");
+
+                if (method.equals("computerPlaceBoatsView"))
+                {
+                    computerPlaceBoatsView(); // This means that the human has already placed the boats
+                                            // and chosen a difficulty level
+                }
+            }
+        }
+    }
+    private void launchView(){
+        setContentView(R.layout.home);
+        gamePlayMusic.playMusic(this);
+        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
+        eightBitFont.changeFont(this, battleshipLabel);
+
+        // Begin to the next activity, placing boats on the map
+        Button startButton = (Button) findViewById(R.id.start);
+        eightBitFont.changeFont(this, startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseLevelView(); // Ask the user what Level of difficulty do they want to play on.
+            }
+        });
+    }
+    /** Changes the current view, @see layout/home to a view where the user can choose
+     *  the game play difficulty level, @see  layout/activity_level
+     */
+    private void chooseLevelView() {
+        setContentView(R.layout.activity_level);
+        Button easy = (Button) findViewById(R.id.easy);
+        Button medium = (Button) findViewById(R.id.medium);
+        Button hard = (Button) findViewById(R.id.hard);
+        TextView chooseLevel = (TextView) findViewById(R.id.chooseDifficulty);
+
+        // Change font to a cooler 8 bit font.
+        eightBitFont.changeFont(this, easy);
+        eightBitFont.changeFont(this, medium);
+        eightBitFont.changeFont(this, hard);
+        eightBitFont.changeFont(this, chooseLevel);
+
+        easy.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                setDifficulty("easy");
+                humanPlaceBoatsView();  // Takes the user to @see Place_Ship to place ships on the grid.
+            }
+        });
+        medium.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                setDifficulty("medium");
+                humanPlaceBoatsView(); // Takes the user to @see Place_Ship to place ships on the grid.
+            }
+        });
+        hard.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                setDifficulty("hard");
+                humanPlaceBoatsView(); // Takes the user to @see Place_Ship to place ships on the grid.
+            }
+        });
     }
 
-    private void setComputerShips() {
+    /**
+     * Takes the user to @see Place_Ship to place ships on the grid.
+     */
+    private void humanPlaceBoatsView() {
+        Intent intent = new Intent(GameController.this, Place_Ship.class);
+        String level_of_difficulty = String.valueOf(getDifficulty());
+        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        GameController.this.startActivity(intent);
+        /** Fading Transition Effect */
+        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        //computerPlaceBoatsView();
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+    private void computerPlaceBoatsView() {
         setContentView(R.layout.activity_game);
         board = new Board(10);
         boardView = (BoardView) findViewById(R.id.boardView);
@@ -197,9 +289,9 @@ public class GameController extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("Quiting Game!");
+                                Intent intent = getIntent();
                                 finish();
-                                Intent intent = new Intent(GameController.this, LaunchView.class);
-                                GameController.this.startActivity(intent);
+                                startActivity(intent);
                                 GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                 dialog.cancel();
                             }
