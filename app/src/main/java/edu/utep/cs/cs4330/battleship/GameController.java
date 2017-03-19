@@ -21,14 +21,26 @@ import android.widget.Toast;
  */
 public class GameController extends AppCompatActivity {
     private BoardView boardView;
-    private int countShots = 0;
+
     private MediaPlayer mp;
-    private TextView counter;
+    //private TextView counter;
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
     private Music shipSound = new Music();
-
     private Music gamePlayMusic = new Music();
     private String difficulty;
+
+    /** Setters and Getters
+     * @return this returns the difficulty the user chose, which is later retrieved to be displayed
+     * on the android phone.
+     */
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
     /** This is the main controller class and handles the creation of multiple ships and board.
      //    *  @see Ship.java
      //   *  @see BoardView.java
@@ -142,22 +154,9 @@ public class GameController extends AppCompatActivity {
         Intent intent = new Intent(GameController.this, Place_Ship.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        intent.putExtra("userType", "human");
         GameController.this.startActivity(intent);
-
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        //computerPlaceBoatsView();
-    }
-
-    /**
-     * @return this returns the difficulty the user chose, which is later retrieved to be displayed
-     * on the android phone.
-     */
-    public String getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
     }
 
     /** s0->s1->s2->s3
@@ -170,225 +169,13 @@ public class GameController extends AppCompatActivity {
      * be adjacent to each other.
      */
     private void computerPlaceBoatsView() {
-        setContentView(R.layout.activity_game);
-        Board board = new Board(10);
-        boardView = (BoardView) findViewById(R.id.boardView);
-        boardView.setBoard(board);
-
-        // Below we define the boats that will be placed on the board
-        final Ship aircraft = new Ship(5, "aircraft", "Computer");
-        final Ship battleship = new Ship(4, "battleship", "Computer");
-        final Ship destroyer = new Ship(3, "destroyer", "Computer");
-        final Ship submarine = new Ship(3, "submarine", "Computer");
-        final Ship patrol = new Ship(2, "patrol", "Computer");
-
-        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
-        eightBitFont.changeFont(this, battleshipLabel); // Change font
-
-        // The counter displays the number of shots in the UI, the user has tapped on the board.
-        counter = (TextView) findViewById(R.id.countOfHits);
-        eightBitFont.changeFont(this, counter); // Change font
-        countShots = 0;
-        setCountShots(0);
-        final Context activityContext = this;
-
-        // Listen for the user input
-        boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-            @Override
-            public void onTouch(int x, int y) {
-                setCountShots(countShots+1);
-                counter.setText(String.valueOf("Number of Shots: " + getCountShots()));
-
-                // Compare the coordinates the user just touched with any of the boats that are placed
-                // on the board. Then either play a missed or explosion sound. When the boat sinks
-                // play a louder explosion.
-                if(isItAHit(aircraft.getCoordinates(), x, y)){
-                    shipSound.makeExplosionSound(activityContext);
-                    aircraft.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
-                    toast("KA-POW");
-                    if(aircraft.getHit() == 5){
-                        toast("Aircraft SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
-                    }
-                }
-                else if(isItAHit(battleship.getCoordinates(), x, y)) {
-                    shipSound.makeExplosionSound(activityContext);
-                    battleship.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
-                    toast("KA-POW");
-                    if(battleship.getHit() == 4){
-                        toast("Battleship SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
-                    }
-                }
-                else if(isItAHit(destroyer.getCoordinates(), x, y)){
-                    shipSound.makeExplosionSound(activityContext);
-                    destroyer.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
-                    toast("KA-POW");
-                    if(destroyer.getHit() == 3){
-                        toast("Destroyer SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
-                    }
-                }
-                else if(isItAHit(submarine.getCoordinates(), x, y)) {
-                    shipSound.makeExplosionSound(activityContext);
-                    submarine.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
-                    toast("KA-POW");
-                    if(submarine.getHit() == 3){
-                        toast("Submarine SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
-                    }
-                }
-                else if(isItAHit(patrol.getCoordinates(), x, y)) {
-                    shipSound.makeExplosionSound(activityContext);
-                    patrol.hit();
-                    boardView.setxHit(x);
-                    boardView.setyHit(y);
-                    toast("KA-POW");
-                    if(patrol.getHit() == 2){
-                        toast("Patrol SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
-                    }
-                }
-                else{
-                    boardView.setxMiss(x);
-                    boardView.setyMiss(y);
-                    toast("That was close!");
-                    shipSound.makeMissedSound(activityContext);
-                }
-            }
-        });
-
-        final Context context = this; // Needed for the alert dialogue builder
-
-        // s3 now points to s2, s3->s2, where the user is able to place new ships.
-        // Start a new game when clicked button
-        Button newButton = (Button) findViewById(R.id.newButton);
-        newButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Alert Dialogue
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure you want to start a new Game?");
-                builder.setCancelable(true);
-                builder.setPositiveButton(
-                        "Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                toast("New Game successfully created!");
-                                restartActivity();
-                                Intent intent = new Intent(GameController.this, Place_Ship.class);
-                                GameController.this.startActivity(intent);
-                                GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                            }
-                        });
-
-                builder.setNegativeButton(
-                        "No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
-
-        // s3 -> s0
-        // Takes the user back to the starting state
-        Button quitButton = (Button) findViewById(R.id.quitButton);
-        quitButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                // Alert Dialogue
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure you want to quit?");
-                builder.setCancelable(true);
-
-                builder.setPositiveButton(
-                        "Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                toast("Quiting Game!");
-                                Intent intent = new Intent(GameController.this, GameController.class);
-                                GameController.this.startActivity(intent);
-                                GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                finish();
-                                startActivity(intent);
-                                GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                dialog.cancel();
-                            }
-                        });
-
-                builder.setNegativeButton(
-                        "No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert11 = builder.create();
-                alert11.show();
-            }
-        });
-        eightBitFont.changeFont(this, newButton);
-        eightBitFont.changeFont(this, quitButton);
-    }
-    /**
-     * @param coordinates are the coordinates from the user.
-     * @param x is the number of rows - 1.
-     * @param y is the number of columns - 1.
-     * @return  If the user hits a boat return true else false.
-     */
-    private boolean isItAHit(int[][] coordinates, int x, int y) {
-        return coordinates[x][y] == 1;
-    }
-    /** Show a toast message. */
-    protected  void toast(String msg) {
-        final Toast toast = Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT);
-        toast.show();
-        new CountDownTimer(500, 1000) {
-            public void onTick(long millisUntilFinished) {
-                toast.show();
-            }
-
-            public void onFinish() {
-                toast.cancel();
-            }
-        }.start();
-    }
-    /**
-     * Restarts the activity
-     */
-    public void restartActivity(){
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-        overridePendingTransition(0, 0);
-        startActivity(intent);
-    }
-    /**
-     * @return the number of shots the user has shot
-     */
-    public int getCountShots() {
-        return countShots;
-    }
-    /**
-     * @param countShots this method is only used when the program is in the starting state.
-     *                   By default this number of shots = 0.
-     */
-    public void setCountShots(int countShots) {
-        this.countShots = countShots;
+        // The following is how you send data to other classes.
+        Intent intent = new Intent(GameController.this, Place_Ship.class);
+        String level_of_difficulty = String.valueOf(getDifficulty());
+        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        intent.putExtra("userType", "computer");
+        GameController.this.startActivity(intent);
+        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }
 
