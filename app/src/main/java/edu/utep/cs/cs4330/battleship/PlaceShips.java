@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.LinkedList;
+
 /**
  * Created by oscarricaud on 3/12/17.
  * This activity will allow the user to place boats. @see activity_place_ship
@@ -34,12 +36,14 @@ public class PlaceShips extends Activity {
     private Ship destroyer = new Ship(3, "destroyer", "Human");
     private Ship submarine = new Ship(3, "submarine", "Human");
     private Ship patrol = new Ship(2, "patrol", "Human");
+    private LinkedList<Integer> coordinatesForAllBoatsHuman = new LinkedList<Integer>();
     /* End Fields for Human */
 
     /* Begin Fields for AI */
     private int countShots = 0;
     private TextView counter;
     private Music shipSound = new Music();
+    private LinkedList<Integer> coordinatesForAllBoatsAI = new LinkedList<Integer>();
     /* End Fields for AI */
 
     /* Begin Setters and Getters */
@@ -55,8 +59,24 @@ public class PlaceShips extends Activity {
     public void setCountShots(int countShots) {
         this.countShots = countShots;
     }
-    /* End Setters and Getters */
 
+    public LinkedList<Integer> getCoordinatesForAllBoatsAI() {
+        return coordinatesForAllBoatsAI;
+    }
+
+    public void setCoordinatesForAllBoatsAI(LinkedList<Integer> coordinatesForAllBoatsAI) {
+        this.coordinatesForAllBoatsAI = coordinatesForAllBoatsAI;
+    }
+
+    public LinkedList<Integer> getCoordinatesForAllBoatsHuman() {
+        return coordinatesForAllBoatsHuman;
+    }
+
+    public void setCoordinatesForAllBoatsHuman(LinkedList<Integer> coordinatesForAllBoatsHuman) {
+        this.coordinatesForAllBoatsHuman = coordinatesForAllBoatsHuman;
+    }
+
+    /* End Setters and Getters */
 
     /**
      * @param savedInstanceState This class gets called from @see GameController
@@ -76,17 +96,21 @@ public class PlaceShips extends Activity {
             Bundle extras = getIntent().getExtras();
             String levelOfDifficultyKey = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
             String typeOfUserKey = extras.getString("userType");
+            String startGame = extras.getString("shouldWeStartGame");
             if (typeOfUserKey.equals("human")) {
                 level_of_difficulty_placeHolder.setText(levelOfDifficultyKey);
                 setEverythingForHuman(); // The creation of this activity
             }
             if (typeOfUserKey.equals("computer")) {
-                setEverythingForComputer();
+                setCoordinatesForAllBoatsAI(setEverythingForComputer());
+            }
+            if(startGame.equals("true")){
+                beginGame(getCoordinatesForAllBoatsAI(), getCoordinatesForAllBoatsHuman());
             }
         }
     }
 
-    private void setEverythingForComputer() {
+    private LinkedList<Integer> setEverythingForComputer() {
         setContentView(R.layout.activity_game);
         Board board = new Board(10);
         boardView = (BoardView) findViewById(R.id.boardView);
@@ -98,6 +122,8 @@ public class PlaceShips extends Activity {
         final Ship destroyer = new Ship(3, "destroyer", "Computer");
         final Ship submarine = new Ship(3, "submarine", "Computer");
         final Ship patrol = new Ship(2, "patrol", "Computer");
+
+        LinkedList<Integer> computerBoatsCoordinates = new LinkedList<Integer>();
 
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
         eightBitFont.changeFont(this, battleshipLabel); // Change font
@@ -119,7 +145,7 @@ public class PlaceShips extends Activity {
                 // Compare the coordinates the user just touched with any of the boats that are placed
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
-                if (isItAHit(aircraft.getCoordinates(), x, y)) {
+                if (isItAHit(aircraft.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     aircraft.hit();
                     boardView.setxHit(x);
@@ -129,7 +155,7 @@ public class PlaceShips extends Activity {
                         toast("Aircraft SUNK");
                         shipSound.makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(battleship.getCoordinates(), x, y)) {
+                } else if (isItAHit(battleship.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     battleship.hit();
                     boardView.setxHit(x);
@@ -139,7 +165,7 @@ public class PlaceShips extends Activity {
                         toast("Battleship SUNK");
                         shipSound.makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(destroyer.getCoordinates(), x, y)) {
+                } else if (isItAHit(destroyer.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     destroyer.hit();
                     boardView.setxHit(x);
@@ -149,7 +175,7 @@ public class PlaceShips extends Activity {
                         toast("Destroyer SUNK");
                         shipSound.makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(submarine.getCoordinates(), x, y)) {
+                } else if (isItAHit(submarine.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     submarine.hit();
                     boardView.setxHit(x);
@@ -159,7 +185,7 @@ public class PlaceShips extends Activity {
                         toast("Submarine SUNK");
                         shipSound.makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(patrol.getCoordinates(), x, y)) {
+                } else if (isItAHit(patrol.getComputerCordinates(), x, y)) {
                     shipSound.makeExplosionSound(activityContext);
                     patrol.hit();
                     boardView.setxHit(x);
@@ -191,6 +217,7 @@ public class PlaceShips extends Activity {
         quitActivity(quitButton, context);
         eightBitFont.changeFont(this, newButton);
         eightBitFont.changeFont(this, quitButton);
+        return computerBoatsCoordinates;
     }
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
@@ -274,6 +301,18 @@ public class PlaceShips extends Activity {
             // been placed on the grid.
             next.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void beginGame(LinkedList<Integer> coordinatesForAllBoatsAI, LinkedList<Integer> coordinatesForAllBoatsHuman) {
+        setContentView(R.layout.current_game);
+
+        Board humanBoard = new Board(10);
+        BoardView humanBoardView = (BoardView) findViewById(R.id.humanBoard);
+        humanBoardView.setBoard(humanBoard);
+
+        Board computerBoard = new Board(10);
+        BoardView computerBoardView = (BoardView) findViewById(R.id.computerBoard);
+        computerBoardView.setBoard(computerBoard);
     }
 
     /**

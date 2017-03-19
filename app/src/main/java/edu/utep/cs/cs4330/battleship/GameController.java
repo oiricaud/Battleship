@@ -92,9 +92,14 @@ public class GameController extends AppCompatActivity {
                     setHumanReady(true);
                     setComputerReady(true);
                 }
+                if(isHumanReady && isComputerReady){
+                    startGameView();
+                }
             }
         }
     }
+
+
     /**
      * This is state 0, I will represent states such as s0, s1, s2, ... sn. Hopefully this makes it
      * easier to understand.
@@ -191,6 +196,15 @@ public class GameController extends AppCompatActivity {
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("userType", "human");
+        GameController.this.startActivity(intent);
+        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+    private void startGameView() {
+        // The following is how you send data to other classes.
+        Intent intent = new Intent(GameController.this, PlaceShips.class);
+        String level_of_difficulty = String.valueOf(getDifficulty());
+        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        intent.putExtra("shouldWeStartGame", "true");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }

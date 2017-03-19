@@ -12,17 +12,17 @@
             android:id="@+id/BattleShip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="@string/battleship"
-            android:textColor="@android:color/holo_orange_dark"
-            android:textSize="28sp"
-            android:layout_alignTop="@+id/humanBoard"
-            android:layout_alignRight="@+id/computerBoard"
             android:layout_alignEnd="@+id/computerBoard"
             android:layout_alignLeft="@+id/humanBoard"
+            android:layout_alignRight="@+id/computerBoard"
             android:layout_alignStart="@+id/humanBoard"
+            android:layout_alignTop="@+id/humanBoard"
             android:layout_marginLeft="166dp"
-            android:layout_marginStart="166dp" />
+            android:layout_marginStart="166dp"
+            android:text="@string/battleship"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="28sp" />
 
             <Button
                 android:id="@+id/quitButton"

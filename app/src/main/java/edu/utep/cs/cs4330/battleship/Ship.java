@@ -43,7 +43,7 @@ public class Ship {
             }
         }
     }
-    public int[][] getCoordinates(){
+    public int[][] getComputerCordinates(){
         return map;
     }
 
