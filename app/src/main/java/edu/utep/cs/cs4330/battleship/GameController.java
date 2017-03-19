@@ -183,6 +183,7 @@ public class GameController extends AppCompatActivity {
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("userType", "computer");
+        intent.putExtra("shouldWeStartGame", "false");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -196,6 +197,7 @@ public class GameController extends AppCompatActivity {
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("userType", "human");
+        intent.putExtra("shouldWeStartGame", "false");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -204,6 +206,7 @@ public class GameController extends AppCompatActivity {
         Intent intent = new Intent(GameController.this, PlaceShips.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        intent.putExtra("userType", "null");
         intent.putExtra("shouldWeStartGame", "true");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
