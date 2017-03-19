@@ -79,7 +79,6 @@ public class GameController extends AppCompatActivity {
             public void onTouch(int x, int y) {
                 setCountShots(countShots+1);
                 counter.setText(String.valueOf("Number of Shots: " + getCountShots()));
-
                 // Compare the coordinates the user just touched with any of the boats that are placed
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
