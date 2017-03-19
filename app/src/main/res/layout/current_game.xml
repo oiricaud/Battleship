@@ -5,7 +5,48 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/gamebackground">
+
+        <TextView
+            android:id="@+id/BattleShip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/battleship"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="28sp"
+            android:layout_alignTop="@+id/humanBoard"
+            android:layout_alignRight="@+id/computerBoard"
+            android:layout_alignEnd="@+id/computerBoard"
+            android:layout_alignLeft="@+id/humanBoard"
+            android:layout_alignStart="@+id/humanBoard"
+            android:layout_marginLeft="166dp"
+            android:layout_marginStart="166dp" />
+
+            <Button
+                android:id="@+id/quitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_red_light"
+                android:text="Quit"
+                android:textStyle="bold"
+                android:layout_marginTop="38dp"
+                android:layout_below="@+id/newButton"
+                android:layout_alignLeft="@+id/newButton"
+                android:layout_alignStart="@+id/newButton" />
+            <Button
+                android:id="@+id/newButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_green_light"
+                android:text="@string/new_button_label"
+                android:layout_marginLeft="22dp"
+                android:layout_marginStart="22dp"
+                android:layout_below="@+id/BattleShip"
+                android:layout_alignLeft="@+id/BattleShip"
+                android:layout_alignStart="@+id/BattleShip"
+                android:layout_marginTop="18dp" />
 
         <edu.utep.cs.cs4330.battleship.BoardView
             android:id="@+id/humanBoard"
