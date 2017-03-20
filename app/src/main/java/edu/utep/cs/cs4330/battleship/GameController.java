@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -84,11 +85,13 @@ public class GameController extends AppCompatActivity {
                     computerPlaceBoatsView(); // This means that the human has already placed the boats
                                             // and chosen a difficulty level
                 }
+                if (method.equals("startGameView")) {
+                    Log.w(" Here", "3Here");
+                    startGameView();
+                }
             }
         }
-        if(isHumanReady && isComputerReady){
-            startGameView();
-        }
+
     }
 
 

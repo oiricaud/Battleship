@@ -113,8 +113,8 @@ public class PlaceShips extends Activity {
         }
     }
 
-    private LinkedList<Integer> setEverythingForComputer() {
-        setContentView(R.layout.activity_game);
+    private void setEverythingForComputer() {
+       // setContentView(R.layout.activity_game);
         Board board = new Board(10);
         computerBoardView = (BoardView) findViewById(R.id.boardView);
         computerBoardView.setBoard(board);
@@ -129,12 +129,12 @@ public class PlaceShips extends Activity {
         LinkedList<Integer> computerBoatsCoordinates = new LinkedList<Integer>();
         Log.w(" Here", "2Here");
 
-        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
-        eightBitFont.changeFont(this, battleshipLabel); // Change font
+//        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
+//        eightBitFont.changeFont(this, battleshipLabel); // Change font
 
         // The counter displays the number of shots in the UI, the user has tapped on the board.
-        counter = (TextView) findViewById(R.id.countOfHits);
-        eightBitFont.changeFont(this, counter); // Change font
+//        counter = (TextView) findViewById(R.id.countOfHits);
+//        eightBitFont.changeFont(this, counter); // Change font
         countShots = 0;
         setCountShots(0);
         final Context activityContext = this;
@@ -211,17 +211,24 @@ public class PlaceShips extends Activity {
 
         // s3 now points to s2, s3->s2, where the user is able to place new ships.
         // Start a new game when clicked button
-        Button newButton = (Button) findViewById(R.id.newButton);
-        newActivity(newButton, this);
-
+     //   Button newButton = (Button) findViewById(R.id.newButton);
+     //   newActivity(newButton, this);
 
         // s3 -> s0
         // Takes the user back to the starting state
-        Button quitButton = (Button) findViewById(R.id.quitButton);
-        quitActivity(quitButton, context);
-        eightBitFont.changeFont(this, newButton);
-        eightBitFont.changeFont(this, quitButton);
-        return computerBoatsCoordinates;
+    //    Button quitButton = (Button) findViewById(R.id.quitButton);
+     //   quitActivity(quitButton, context);
+    //    eightBitFont.changeFont(this, newButton);
+     //   eightBitFont.changeFont(this, quitButton);
+
+        Intent intent = new Intent(PlaceShips.this, edu.utep.cs.cs4330.battleship.GameController.class);
+        intent.putExtra("methodName", "startGameView");
+        PlaceShips.this.startActivity(intent);
+        /** Fading Transition Effect */
+        PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+
+       // beginGame(getCoordinatesForAllBoatsAI(), getCoordinatesForAllBoatsHuman());
     }
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
