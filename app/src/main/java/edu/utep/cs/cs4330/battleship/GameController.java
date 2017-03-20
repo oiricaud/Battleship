@@ -59,7 +59,7 @@ public class GameController extends AppCompatActivity  {
         gameModel.setComputerStatus(false);
         gameModel.setUserStatus(false);
         gameModel.updateView(this, "launchHomeView", "false"); // (view we launch, shouldWeStartGame?)
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        fadingTransition();
     }
     /** This controller calls the view, where the user is able to choose the level of difficulty
      *  easy, medium or hard, @see layout/activity_level for more details.
@@ -67,7 +67,7 @@ public class GameController extends AppCompatActivity  {
     public void humanChooseLevelController() {
         gameModel.setUserStatus(true);
         gameModel.updateView( this, "humanChooseLevelView", "false"); // (view we launch, shouldWeStartGame?)
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        fadingTransition();
     }
     /**
      * This controller handles the coordinates of the boats at random
@@ -77,8 +77,7 @@ public class GameController extends AppCompatActivity  {
         // The following is how you send data to other classes.
         gameModel.setComputerStatus(true);
         gameModel.updateView(this, "startGameView", "true");
-        /** Fading Transition Effect */
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        fadingTransition();
     }
     /**
      * This controller gets called once the user & AI has placed all boats on the grid.
@@ -86,13 +85,19 @@ public class GameController extends AppCompatActivity  {
     public void startGameController() {
         // The following is how you send data to other classes
         gameModel.updateView( this, "startGameView", "true"); // (view we launch, shouldWeStartGame?)
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        fadingTransition();
     }
     public void humansTurnController() {
     }
 
     public void computersTurnController() {
     }
+
+    private void fadingTransition() {
+        /** Fading Transition Effect */
+        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
 }
 
 
