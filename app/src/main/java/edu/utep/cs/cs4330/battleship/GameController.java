@@ -32,9 +32,14 @@ public class GameController extends AppCompatActivity  {
                 launchHomeController();
             } else{
                 String controller = extras.getString("controllerName");
+
                 // Gets called when the user begins the game
                 if (controller.equals("humanChooseLevelController")) {
                     humanChooseLevelController();
+                }
+                if (controller.equals("humanPlaceBoatsController")) {
+                    String difficulty = extras.getString("difficulty");
+                    humanPlaceBoatsController(difficulty);
                 }
                 // This controller handles the placement of random boats for the computer
                 if (controller.equals("computerPlaceBoatsController")) {
@@ -55,6 +60,11 @@ public class GameController extends AppCompatActivity  {
                 }
             }
         }
+    }
+
+    private void humanPlaceBoatsController(String difficulty) {
+        gameModel.setDifficulty(difficulty);
+        gameModel.updateView(this, "humanPlaceBoatsView", "false");
     }
 
     /**

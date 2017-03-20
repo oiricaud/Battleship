@@ -39,7 +39,6 @@ public class GameView extends Activity {
         private Ship destroyer = new Ship(3, "destroyer", "Human");
         private Ship submarine = new Ship(3, "submarine", "Human");
         private Ship patrol = new Ship(2, "patrol", "Human");
-        private String difficulty;
     /* End Fields for Human */
 
     /* Begin Fields for AI */
@@ -60,14 +59,6 @@ public class GameView extends Activity {
              */
         public void setCountShots(int countShots) {
             this.countShots = countShots;
-        }
-
-        public String getDifficulty() {
-            return difficulty;
-        }
-
-        public void setDifficulty(String difficulty) {
-            this.difficulty = difficulty;
         }
 
         public String getFontPath() {
@@ -94,14 +85,16 @@ public class GameView extends Activity {
         // The following loads the corresponding views. This class gets called from @see GameController.
         if (getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
-            // Look for YOUR KEY, variable you're receiving
-            String viewToLaunch = extras.getString("viewWeWantToLaunch");
-
+            String viewToLaunch = extras.getString("viewWeWantToLaunch"); // Look for YOUR KEY, variable you're receiving
+            String difficulty = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
             if(viewToLaunch.equals("launchHomeView")){
                 launchHomeView();
             }
             if (viewToLaunch.equals("humanChooseLevelView")) {
                 humanChooseLevelView(); // The creation of this activity
+            }
+            if (viewToLaunch.equals("humanPlaceBoatsView")) {
+                humanPlaceBoatsView(difficulty); // The creation of this activity
             }
             if(viewToLaunch.equals("startGameView")){
                 startGameView();
@@ -126,25 +119,24 @@ public class GameView extends Activity {
         easy.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                setDifficulty("easy");
-                humanPlaceBoatsView(getDifficulty());  // Takes the user to @see GameView to place ships on the grid.
+                callTheController("humanPlaceBoatsController", "easy");
             }
         });
         medium.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                setDifficulty("medium");
-                humanPlaceBoatsView(getDifficulty()); // Takes the user to @see GameView to place ships on the grid.
+                callTheController("humanPlaceBoatsController", "medium");
             }
         });
         hard.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                setDifficulty("hard");
-                humanPlaceBoatsView(getDifficulty()); // Takes the user to @see GameView to place ships on the grid.
+                callTheController("humanPlaceBoatsController", "hard");
             }
         });
     }
+
+
 
     private void launchHomeView() {
         setContentView(R.layout.home);
@@ -250,6 +242,13 @@ public class GameView extends Activity {
     private void callTheController(String whatControllerAreWeCalling) {
         Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
         intent.putExtra("controllerName", whatControllerAreWeCalling);
+        GameView.this.startActivity(intent);
+        fadingTransition(); // Fading Transition Effect
+    }
+    private void callTheController(String whatControllerAreWeCalling, String difficulty) {
+        Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
+        intent.putExtra("controllerName", whatControllerAreWeCalling);
+        intent.putExtra("difficulty", difficulty);
         GameView.this.startActivity(intent);
         fadingTransition(); // Fading Transition Effect
     }

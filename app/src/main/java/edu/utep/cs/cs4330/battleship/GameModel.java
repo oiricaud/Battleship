@@ -53,5 +53,4 @@ public class GameModel  {
         intent.putExtra("viewWeWantToLaunch", viewWeWantToLaunch);
         context.startActivity(intent);
     }
-    /* End Setters and Getters */
 }
