@@ -71,10 +71,9 @@ public class GameView extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_place_ship);
 
+        // The following loads the corresponding views.
         if (getIntent().getExtras() != null) {
-            TextView level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
             Bundle extras = getIntent().getExtras();
             String levelOfDifficultyKey = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
             String viewToLaunch = extras.getString("viewWeWantToLaunch");
@@ -83,7 +82,7 @@ public class GameView extends Activity {
                 launchHomeView();
             }
             if (viewToLaunch.equals("humanPlaceBoatsView")) {
-                humanPlaceBoatsView(level_of_difficulty_placeHolder, levelOfDifficultyKey); // The creation of this activity
+                humanPlaceBoatsView(levelOfDifficultyKey); // The creation of this activity
             }
             if(viewToLaunch.equals("startGameView")){
                 startGameView();
@@ -104,7 +103,7 @@ public class GameView extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
-                intent.putExtra("methodName", "humanChooseLevelView");
+                intent.putExtra("controllerName", "humanChooseLevelController");
                 GameView.this.startActivity(intent);
                 /** Fading Transition Effect */
                 GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -114,10 +113,13 @@ public class GameView extends Activity {
 
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
+     * @param levelOfDifficultyKey
      */
-    private void humanPlaceBoatsView(TextView level_of_difficulty_placeHolder, String difficulty) {
-        title = (TextView) findViewById(R.id.placeboats); // PLACE BOATS
-        level_of_difficulty_placeHolder.setText(difficulty);
+    private void humanPlaceBoatsView(String levelOfDifficultyKey) {
+        setContentView(R.layout.activity_place_ship);
+       TextView title = (TextView) findViewById(R.id.placeboats); // PLACE BOATS
+       TextView level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
+        level_of_difficulty_placeHolder.setText(levelOfDifficultyKey);
         // SET BOARD
         // Set the board view so boats can be placed on the grid
         Board board = new Board(10);
@@ -184,7 +186,7 @@ public class GameView extends Activity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
-                    intent.putExtra("methodName", "computerPlaceBoatsView");
+                    intent.putExtra("controllerName", "startGameController");
                     GameView.this.startActivity(intent);
                     /** Fading Transition Effect */
                     GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

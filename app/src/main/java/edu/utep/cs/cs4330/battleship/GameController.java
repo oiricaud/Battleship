@@ -79,16 +79,15 @@ public class GameController extends AppCompatActivity {
             if (extras == null) {
                 launchHomeController(); // Launch the first activity, the starting state, s0.
             } else{
-                String method = extras.getString("methodName");
-                if (method.equals("computerPlaceBoatsView")) {
-                    callComputerPlaceBoatsView(); // This means that the human has already placed the boats
+                String controller = extras.getString("controllerName");
+                if (controller.equals("computerPlaceBoatsController")) {
+                    computerPlaceBoatsController(); // This means that the human has already placed the boats
                                             // and chosen a difficulty level
                 }
-                if (method.equals("startGameView")) {
-                    Log.w(" Here", "3Here");
-                    callStartGameView();
+                if (controller.equals("startGameController")) {
+                    startGameController();
                 }
-                if (method.equals("humanChooseLevelView")) {
+                if (controller.equals("humanChooseLevelController")) {
                     humanChooseLevelController();
                 }
             }
@@ -182,17 +181,16 @@ public class GameController extends AppCompatActivity {
      * be adjacent to each other.
      * @see GameView for more details.
      */
-    private void callComputerPlaceBoatsView() {
+    private void computerPlaceBoatsController() {
         // The following is how you send data to other classes.
         setComputerReady(true);
         Intent intent = new Intent(GameController.this, edu.utep.cs.cs4330.battleship.GameController.class);
-        intent.putExtra("methodName", "startGameView");
+        intent.putExtra("controllerName", "startGameView");
         GameController.this.startActivity(intent);
         /** Fading Transition Effect */
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-
-    private void callStartGameView() {
+    private void startGameController() {
         // The following is how you send data to other classes.
         Intent intent = new Intent(GameController.this, GameView.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
