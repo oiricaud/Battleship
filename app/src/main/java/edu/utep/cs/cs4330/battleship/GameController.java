@@ -10,41 +10,9 @@ import android.support.v7.app.AppCompatActivity;
  * @version 1.0
  * Last update: 02/23/2017
  */
-public class GameController extends AppCompatActivity implements GameModel {
-    private String difficulty;
-    private boolean computerStatus;
-    private boolean userStatus;
+public class GameController extends AppCompatActivity  {
 
-
-    /* Begin Setters and Getters */
-        /**
-         * @return this returns the difficulty the user chose, which is later retrieved to be displayed
-         * on the android phone.
-         */
-        public String getDifficulty() {
-            return difficulty;
-        }
-
-        public void setDifficulty(String difficulty) {
-            this.difficulty = difficulty;
-        }
-
-        public boolean getComputerStatus() {
-            return computerStatus;
-        }
-
-        public void setComputerStatus(boolean computerReady) {
-            computerStatus = computerReady;
-        }
-
-        public boolean getUserStatus() {
-            return userStatus;
-        }
-
-        public void setUserStatus(boolean humanReady) {
-            userStatus = humanReady;
-        }
-    /* End Setters and Getters */
+    private GameModel gameModel = new GameModel();
 
     /** This is the main controller class and handles the creation of multiple views.
      * @param savedInstanceState is the starting state.
@@ -89,10 +57,10 @@ public class GameController extends AppCompatActivity implements GameModel {
      * It does not call the next controller until the user clicks on the start button.
      */
     public void launchHomeController(){
-        setComputerStatus(false);
-        setUserStatus(false);
+        gameModel.setComputerStatus(false);
+        gameModel.setUserStatus(false);
         Intent intent = new Intent(GameController.this, GameView.class);
-        String level_of_difficulty = String.valueOf(getDifficulty());
+        String level_of_difficulty = String.valueOf(gameModel.getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("shouldWeStartGame", "false");
         intent.putExtra("viewWeWantToLaunch", "launchHomeView");
@@ -105,13 +73,13 @@ public class GameController extends AppCompatActivity implements GameModel {
     public void humanChooseLevelController() {
         // The following is how you send data to other classes.
         Intent intent = new Intent(GameController.this, GameView.class);
-        String level_of_difficulty = String.valueOf(getDifficulty());
+        String level_of_difficulty = String.valueOf(gameModel.getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("shouldWeStartGame", "false");
         intent.putExtra("viewWeWantToLaunch", "humanChooseLevelView");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        setUserStatus(true);
+        gameModel.setUserStatus(true);
     }
     /**
      * This controller handles the coordinates of the boats at random
@@ -119,7 +87,7 @@ public class GameController extends AppCompatActivity implements GameModel {
      */
     public void computerPlaceBoatsController() {
         // The following is how you send data to other classes.
-        setComputerStatus(true);
+        gameModel.setComputerStatus(true);
         Intent intent = new Intent(GameController.this, edu.utep.cs.cs4330.battleship.GameController.class);
         intent.putExtra("controllerName", "startGameView");
         GameController.this.startActivity(intent);
@@ -133,7 +101,7 @@ public class GameController extends AppCompatActivity implements GameModel {
     public void startGameController() {
         // The following is how you send data to other classes
         Intent intent = new Intent(GameController.this, GameView.class);
-        String level_of_difficulty = String.valueOf(getDifficulty());
+        String level_of_difficulty = String.valueOf(gameModel.getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("viewWeWantToLaunch", "startGameView");
         intent.putExtra("shouldWeStartGame", "true");
