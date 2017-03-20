@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * @author Oscar Ivan Ricaud
  * @version 1.0
- * Last update: 02/23/2017
+ * Last update: 03/20/2017
  */
 public class GameController extends AppCompatActivity  {
     private GameModel gameModel = new GameModel();
@@ -50,24 +50,23 @@ public class GameController extends AppCompatActivity  {
         }
     }
     /**
-     * The following controller is the beginning to this mobile application. It launches the home screen
-     * and allows the user to begin a new game.
+     * The following controller is the beginning to this mobile application. It launches the home
+     * screen and allows the user to begin a new game by first updating the @see GameModel to the
+     * starting state, s0.
      *
-     * It does not call the next controller until the user clicks on the start button.
      */
     public void launchHomeController(){
         gameModel.setComputerStatus(false);
         gameModel.setUserStatus(false);
         gameModel.updateView(this, "launchHomeView", "false"); // (view we launch, shouldWeStartGame?)
-        fadingTransition();
     }
-    /** This controller calls the view, where the user is able to choose the level of difficulty
-     *  easy, medium or hard, @see layout/activity_level for more details.
+    /**
+     * The following controller updates the @see GameModel to state 1. State 1 allows the user to
+     * choose the level of difficulty for the upcoming game.
      */
     public void humanChooseLevelController() {
         gameModel.setUserStatus(true);
         gameModel.updateView( this, "humanChooseLevelView", "false"); // (view we launch, shouldWeStartGame?)
-        fadingTransition();
     }
     /**
      * This controller handles the coordinates of the boats at random
@@ -77,15 +76,13 @@ public class GameController extends AppCompatActivity  {
         // The following is how you send data to other classes.
         gameModel.setComputerStatus(true);
         gameModel.updateView(this, "startGameView", "true");
-        fadingTransition();
+
     }
     /**
-     * This controller gets called once the user & AI has placed all boats on the grid.
+     * This controller is s3, where state 3 is the state where the user is able to play with the computer.
      */
     public void startGameController() {
-        // The following is how you send data to other classes
-        gameModel.updateView( this, "startGameView", "true"); // (view we launch, shouldWeStartGame?)
-        fadingTransition();
+        gameModel.updateView(this, "startGameView", "true"); // (view we launch, shouldWeStartGame?)
     }
     public void humansTurnController() {
     }
@@ -93,10 +90,7 @@ public class GameController extends AppCompatActivity  {
     public void computersTurnController() {
     }
 
-    private void fadingTransition() {
-        /** Fading Transition Effect */
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
+
 
 }
 

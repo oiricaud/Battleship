@@ -149,11 +149,13 @@ public class GameView extends Activity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                callTheController("humanChooseLevelController");
+                /*
                 Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
                 intent.putExtra("controllerName", "humanChooseLevelController");
                 GameView.this.startActivity(intent);
-                /** Fading Transition Effect */
-                GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                */
+
             }
         });
     }
@@ -231,11 +233,7 @@ public class GameView extends Activity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
-                    intent.putExtra("controllerName", "startGameController");
-                    GameView.this.startActivity(intent);
-                    /** Fading Transition Effect */
-                    GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    callTheController("startGameController");
                 }
             });
         } else { // By default hide the next button and don't let the user advance until all boats have
@@ -243,6 +241,23 @@ public class GameView extends Activity {
             next.setVisibility(View.INVISIBLE);
         }
     }
+    /**
+     * @param whatControllerAreWeCalling is the argument we are taking to obtain the corresponding
+     *                                   controller @see GameController
+     */
+    private void callTheController(String whatControllerAreWeCalling) {
+        Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
+        intent.putExtra("controllerName", whatControllerAreWeCalling);
+        GameView.this.startActivity(intent);
+        fadingTransition(); // Fading Transition Effect
+    }
+    /**
+     * Fading Transition Effect
+     */
+    private void fadingTransition() {
+        GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
     /**
      *  At random, ships are placed either horizontally or vertically on a 10x10 board.
      *  The user is able to interact with this board and creates (x,y) coordinates.
@@ -480,8 +495,7 @@ public class GameView extends Activity {
                                 toast("Quiting Game!");
                                 Intent intent = new Intent(GameView.this, GameController.class);
                                 GameView.this.startActivity(intent);
-                                /** Fading Transition Effect */
-                                GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                fadingTransition(); // Fading Transition Effect
                                 finish();
                                 dialog.cancel();
                             }
@@ -513,11 +527,13 @@ public class GameView extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("New Game successfully created!");
+                                callTheController("humanChooseLevelController");
+                                /*
                                 Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
                                 intent.putExtra("controllerName", "humanChooseLevelController");
                                 GameView.this.startActivity(intent);
-                                /** Fading Transition Effect */
-                                GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                */
+                                fadingTransition(); // Fading Transition Effect
                             }
                         });
 
