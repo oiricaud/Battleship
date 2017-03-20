@@ -24,7 +24,7 @@ import java.util.LinkedList;
  */
 
 public class GameView extends Activity {
-
+        private Music gamePlayMusic = new Music();
     /* Begin Fields for Human */
         private TextView title;
         private Button quit;
@@ -36,7 +36,6 @@ public class GameView extends Activity {
         private Ship destroyer = new Ship(3, "destroyer", "Human");
         private Ship submarine = new Ship(3, "submarine", "Human");
         private Ship patrol = new Ship(2, "patrol", "Human");
-        private LinkedList<Integer> coordinatesForAllBoatsHuman = new LinkedList<Integer>();
     /* End Fields for Human */
 
     /* Begin Fields for AI */
@@ -44,7 +43,6 @@ public class GameView extends Activity {
         private int countShots = 0;
         private TextView counter;
         private Music shipSound = new Music();
-        private LinkedList<Integer> coordinatesForAllBoatsAI = new LinkedList<Integer>();
     /* End Fields for AI */
 
     /* Begin Setters and Getters */
@@ -59,22 +57,6 @@ public class GameView extends Activity {
              */
         public void setCountShots(int countShots) {
             this.countShots = countShots;
-        }
-
-        public LinkedList<Integer> getCoordinatesForAllBoatsAI() {
-            return coordinatesForAllBoatsAI;
-        }
-
-        public void setCoordinatesForAllBoatsAI(LinkedList<Integer> coordinatesForAllBoatsAI) {
-            this.coordinatesForAllBoatsAI = coordinatesForAllBoatsAI;
-        }
-
-        public LinkedList<Integer> getCoordinatesForAllBoatsHuman() {
-            return coordinatesForAllBoatsHuman;
-        }
-
-        public void setCoordinatesForAllBoatsHuman(LinkedList<Integer> coordinatesForAllBoatsHuman) {
-            this.coordinatesForAllBoatsHuman = coordinatesForAllBoatsHuman;
         }
     /* End Setters and Getters */
 
@@ -95,34 +77,47 @@ public class GameView extends Activity {
             TextView level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
             Bundle extras = getIntent().getExtras();
             String levelOfDifficultyKey = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
-            String typeOfUserKey = extras.getString("userType");
-            String startGame = extras.getString("shouldWeStartGame");
+            String viewToLaunch = extras.getString("viewWeWantToLaunch");
 
-            if (typeOfUserKey.equals("human")) {
-                level_of_difficulty_placeHolder.setText(levelOfDifficultyKey);
-                setEverythingForHuman(); // The creation of this activity
+            if(viewToLaunch.equals("launchHomeView")){
+                launchHomeView();
             }
-            else if (typeOfUserKey.equals("computer")) { // Takes you back to the GameController
+            if (viewToLaunch.equals("humanPlaceBoatsView")) {
+                humanPlaceBoatsView(level_of_difficulty_placeHolder, levelOfDifficultyKey); // The creation of this activity
+            }
+            if(viewToLaunch.equals("startGameView")){
+                startGameView();
+            }
+        }
+    }
+
+    private void launchHomeView() {
+        setContentView(R.layout.home);
+        gamePlayMusic.playMusic(this);
+        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
+        eightBitFont.changeFont(this, battleshipLabel);
+
+        // Begin to the next activity, placing boats on the map
+        Button startButton = (Button) findViewById(R.id.start);
+        eightBitFont.changeFont(this, startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
-                intent.putExtra("methodName", "startGameView");
+                intent.putExtra("methodName", "humanChooseLevelView");
                 GameView.this.startActivity(intent);
                 /** Fading Transition Effect */
                 GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
-            if(startGame.equals("true")){
-                beginGame();
-            }
-        }
-        else{
-            setEverythingForHuman();
-        }
+        });
     }
+
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
      */
-    private void setEverythingForHuman() {
+    private void humanPlaceBoatsView(TextView level_of_difficulty_placeHolder, String difficulty) {
         title = (TextView) findViewById(R.id.placeboats); // PLACE BOATS
-
+        level_of_difficulty_placeHolder.setText(difficulty);
         // SET BOARD
         // Set the board view so boats can be placed on the grid
         Board board = new Board(10);
@@ -201,7 +196,7 @@ public class GameView extends Activity {
         }
     }
 
-    private void beginGame() {
+    private void startGameView() {
         setContentView(R.layout.current_game);
 
         /* Begin Human Board */

@@ -17,7 +17,7 @@ import android.widget.TextView;
 public class GameController extends AppCompatActivity {
     //private TextView counter;
     private Font eightBitFont = new Font("fonts/eightbit.TTF");
-    private Music gamePlayMusic = new Music();
+
     private String difficulty;
     private boolean isComputerReady;
     private boolean isHumanReady;
@@ -77,23 +77,24 @@ public class GameController extends AppCompatActivity {
         if(savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
-                launchHomeView(); // Launch the first activity, the starting state, s0.
+                launchHomeController(); // Launch the first activity, the starting state, s0.
             } else{
                 String method = extras.getString("methodName");
                 if (method.equals("computerPlaceBoatsView")) {
-                    computerPlaceBoatsView(); // This means that the human has already placed the boats
+                    callComputerPlaceBoatsView(); // This means that the human has already placed the boats
                                             // and chosen a difficulty level
                 }
                 if (method.equals("startGameView")) {
                     Log.w(" Here", "3Here");
-                    startGameView();
+                    callStartGameView();
+                }
+                if (method.equals("humanChooseLevelView")) {
+                    humanChooseLevelController();
                 }
             }
         }
 
     }
-
-
     /**
      * This is state 0, I will represent states such as s0, s1, s2, ... sn. Hopefully this makes it
      * easier to understand.
@@ -105,34 +106,28 @@ public class GameController extends AppCompatActivity {
      * button the state diagram looks like the following: s0->s1, where s1 awaits for the user
      * input to choose a level of difficulty for the upcoming game.
      */
-    private void launchHomeView(){
+    private void launchHomeController(){
         setComputerReady(false);
         setHumanReady(false);
-        setContentView(R.layout.home);
-        gamePlayMusic.playMusic(this);
-        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
-        eightBitFont.changeFont(this, battleshipLabel);
-
-        // Begin to the next activity, placing boats on the map
-        Button startButton = (Button) findViewById(R.id.start);
-        eightBitFont.changeFont(this, startButton);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                humanChooseLevelView(); // Ask the user what Level of difficulty do they want to play on.
-            }
-        });
+        Intent intent = new Intent(GameController.this, GameView.class);
+        String level_of_difficulty = String.valueOf(getDifficulty());
+        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        intent.putExtra("userType", "null");
+        intent.putExtra("shouldWeStartGame", "false");
+        intent.putExtra("viewWeWantToLaunch", "launchHomeView");
+        GameController.this.startActivity(intent);
+        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
     /** s1, Changes the current view where the user is able to choose from 3 buttons the following:
      *  easy, medium or hard, @see layout/activity_level for more details.
      */
-    private void humanChooseLevelView() {
+    private void humanChooseLevelController() {
         setContentView(R.layout.activity_level);
         Button easy = (Button) findViewById(R.id.easy);
         Button medium = (Button) findViewById(R.id.medium);
         Button hard = (Button) findViewById(R.id.hard);
         TextView chooseLevel = (TextView) findViewById(R.id.chooseDifficulty);
-        
+
         // Change font to a cooler 8-bit font.
         eightBitFont.changeFont(this, easy);
         eightBitFont.changeFont(this, medium);
@@ -144,23 +139,38 @@ public class GameController extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setDifficulty("easy");
-                humanPlaceBoatsView();  // Takes the user to @see GameView to place ships on the grid.
+                callHumanPlaceBoatsView();  // Takes the user to @see GameView to place ships on the grid.
             }
         });
         medium.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 setDifficulty("medium");
-                humanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
+                callHumanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
             }
         });
         hard.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 setDifficulty("hard");
-                humanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
+                callHumanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
             }
         });
+    }
+    /** Where the magic happens. Aka the function that allows the human to place boats on board view.
+     *  s0->s1->s2
+     *  @see GameView for more details.
+     */
+    private void callHumanPlaceBoatsView() {
+        // The following is how you send data to other classes.
+        setHumanReady(true);
+        Intent intent = new Intent(GameController.this, GameView.class);
+        String level_of_difficulty = String.valueOf(getDifficulty());
+        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        intent.putExtra("viewWeWantToLaunch", "humanPlaceBoatsView");
+        intent.putExtra("shouldWeStartGame", "false");
+        GameController.this.startActivity(intent);
+        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
     /** s0->s1->s2->s3
      *
@@ -172,38 +182,22 @@ public class GameController extends AppCompatActivity {
      * be adjacent to each other.
      * @see GameView for more details.
      */
-    private void computerPlaceBoatsView() {
+    private void callComputerPlaceBoatsView() {
         // The following is how you send data to other classes.
         setComputerReady(true);
-        Intent intent = new Intent(GameController.this, GameView.class);
-        String level_of_difficulty = String.valueOf(getDifficulty());
-        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
-        intent.putExtra("userType", "computer");
-        intent.putExtra("shouldWeStartGame", "false");
+        Intent intent = new Intent(GameController.this, edu.utep.cs.cs4330.battleship.GameController.class);
+        intent.putExtra("methodName", "startGameView");
         GameController.this.startActivity(intent);
+        /** Fading Transition Effect */
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-    /** Where the magic happens. Aka the function that allows the human to place boats on board view.
-     *  s0->s1->s2
-     *  @see GameView for more details.
-     */
-    private void humanPlaceBoatsView() {
-        // The following is how you send data to other classes.
-        setHumanReady(true);
-        Intent intent = new Intent(GameController.this, GameView.class);
-        String level_of_difficulty = String.valueOf(getDifficulty());
-        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
-        intent.putExtra("userType", "human");
-        intent.putExtra("shouldWeStartGame", "false");
-        GameController.this.startActivity(intent);
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-    private void startGameView() {
+
+    private void callStartGameView() {
         // The following is how you send data to other classes.
         Intent intent = new Intent(GameController.this, GameView.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
-        intent.putExtra("userType", "null");
+        intent.putExtra("viewWeWantToLaunch", "startGameView");
         intent.putExtra("shouldWeStartGame", "true");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
