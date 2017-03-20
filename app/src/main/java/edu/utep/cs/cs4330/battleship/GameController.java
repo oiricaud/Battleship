@@ -76,13 +76,10 @@ public class GameController extends AppCompatActivity  {
     public void computerPlaceBoatsController() {
         // The following is how you send data to other classes.
         gameModel.setComputerStatus(true);
-        Intent intent = new Intent(GameController.this, edu.utep.cs.cs4330.battleship.GameController.class);
-        intent.putExtra("controllerName", "startGameView");
-        GameController.this.startActivity(intent);
+        gameModel.updateView(this, "startGameView", "true");
         /** Fading Transition Effect */
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-
     /**
      * This controller gets called once the user & AI has placed all boats on the grid.
      */
