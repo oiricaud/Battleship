@@ -20,9 +20,9 @@
             android:layout_marginLeft="166dp"
             android:layout_marginStart="166dp"
             android:text="@string/battleship"
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/holo_orange_dark"
-            android:textSize="28sp" />
+            android:textSize="22sp" />
 
             <Button
                 android:id="@+id/quitButton"

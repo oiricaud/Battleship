@@ -26,57 +26,56 @@ import java.util.LinkedList;
 public class PlaceShips extends Activity {
 
     /* Begin Fields for Human */
-    private TextView title;
-    private Button quit;
-    private RelativeLayout rootLayout;
-    private Font eightBitFont = new Font("fonts/eightbit.TTF");
-    private BoardView humanBoardView;
-    private Ship aircraft = new Ship(5, "aircraft", "Human");
-    private Ship battleship = new Ship(4, "battleship", "Human");
-    private Ship destroyer = new Ship(3, "destroyer", "Human");
-    private Ship submarine = new Ship(3, "submarine", "Human");
-    private Ship patrol = new Ship(2, "patrol", "Human");
-    private LinkedList<Integer> coordinatesForAllBoatsHuman = new LinkedList<Integer>();
+        private TextView title;
+        private Button quit;
+        private RelativeLayout rootLayout;
+        private Font eightBitFont = new Font("fonts/eightbit.TTF");
+        private BoardView humanBoardView;
+        private Ship aircraft = new Ship(5, "aircraft", "Human");
+        private Ship battleship = new Ship(4, "battleship", "Human");
+        private Ship destroyer = new Ship(3, "destroyer", "Human");
+        private Ship submarine = new Ship(3, "submarine", "Human");
+        private Ship patrol = new Ship(2, "patrol", "Human");
+        private LinkedList<Integer> coordinatesForAllBoatsHuman = new LinkedList<Integer>();
     /* End Fields for Human */
 
     /* Begin Fields for AI */
-    private BoardView computerBoardView;
-    private int countShots = 0;
-    private TextView counter;
-    private Music shipSound = new Music();
-    private LinkedList<Integer> coordinatesForAllBoatsAI = new LinkedList<Integer>();
+        private BoardView computerBoardView;
+        private int countShots = 0;
+        private TextView counter;
+        private Music shipSound = new Music();
+        private LinkedList<Integer> coordinatesForAllBoatsAI = new LinkedList<Integer>();
     /* End Fields for AI */
 
     /* Begin Setters and Getters */
-        /**
-         * @return the number of shots the user has shot at boats
-         */
-    public int getCountShots() {
-        return countShots;
-    }
-        /**
-         * @param countShots set the count of shots each time the user fires.
-         */
-    public void setCountShots(int countShots) {
-        this.countShots = countShots;
-    }
+            /**
+             * @return the number of shots the user has shot at boats
+             */
+        public int getCountShots() {
+            return countShots;
+        }
+            /**
+             * @param countShots set the count of shots each time the user fires.
+             */
+        public void setCountShots(int countShots) {
+            this.countShots = countShots;
+        }
 
-    public LinkedList<Integer> getCoordinatesForAllBoatsAI() {
-        return coordinatesForAllBoatsAI;
-    }
+        public LinkedList<Integer> getCoordinatesForAllBoatsAI() {
+            return coordinatesForAllBoatsAI;
+        }
 
-    public void setCoordinatesForAllBoatsAI(LinkedList<Integer> coordinatesForAllBoatsAI) {
-        this.coordinatesForAllBoatsAI = coordinatesForAllBoatsAI;
-    }
+        public void setCoordinatesForAllBoatsAI(LinkedList<Integer> coordinatesForAllBoatsAI) {
+            this.coordinatesForAllBoatsAI = coordinatesForAllBoatsAI;
+        }
 
-    public LinkedList<Integer> getCoordinatesForAllBoatsHuman() {
-        return coordinatesForAllBoatsHuman;
-    }
+        public LinkedList<Integer> getCoordinatesForAllBoatsHuman() {
+            return coordinatesForAllBoatsHuman;
+        }
 
-    public void setCoordinatesForAllBoatsHuman(LinkedList<Integer> coordinatesForAllBoatsHuman) {
-        this.coordinatesForAllBoatsHuman = coordinatesForAllBoatsHuman;
-    }
-
+        public void setCoordinatesForAllBoatsHuman(LinkedList<Integer> coordinatesForAllBoatsHuman) {
+            this.coordinatesForAllBoatsHuman = coordinatesForAllBoatsHuman;
+        }
     /* End Setters and Getters */
 
     /**
@@ -111,8 +110,11 @@ public class PlaceShips extends Activity {
                 PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
             if(startGame.equals("true")){
-                beginGame(getCoordinatesForAllBoatsAI(), getCoordinatesForAllBoatsHuman());
+                beginGame();
             }
+        }
+        else{
+            setEverythingForHuman();
         }
     }
     /**
@@ -199,14 +201,13 @@ public class PlaceShips extends Activity {
         }
     }
 
-    private void beginGame(LinkedList<Integer> coordinatesForAllBoatsAI, LinkedList<Integer> coordinatesForAllBoatsHuman) {
+    private void beginGame() {
         setContentView(R.layout.current_game);
-        Log.w("coordinates4AllBoatsAI", coordinatesForAllBoatsAI.toString());
 
         /* Begin Human Board */
-        Board humanBoard = new Board(10);
-        BoardView humanBoardView = (BoardView) findViewById(R.id.humanBoard);
-        humanBoardView.setBoard(humanBoard);
+            Board humanBoard = new Board(10);
+            humanBoardView = (BoardView) findViewById(R.id.humanBoard);
+            humanBoardView.setBoard(humanBoard);
         /* End Human Board */
 
         /* Begin Computer Stuff Game */
@@ -222,24 +223,28 @@ public class PlaceShips extends Activity {
             final Ship submarine = new Ship(3, "submarine", "Computer");
             final Ship patrol = new Ship(2, "patrol", "Computer");
 
+            // Define buttons and text views here
+            TextView battleshipTitle = (TextView) findViewById(R.id.BattleShip);
+            counter = (TextView) findViewById(R.id.countOfHits);
             Button newButton = (Button) findViewById(R.id.newButton);
             Button quitButton = (Button) findViewById(R.id.quitButton);
 
+            // Change font
             eightBitFont.changeFont(this, newButton);
             eightBitFont.changeFont(this, quitButton);
+            eightBitFont.changeFont(this, battleshipTitle);
+            eightBitFont.changeFont(this, counter);
 
-            newActivity(newButton, this);
+            // The predefined methods that allow the user to quit or start a new game
+            newActivity(newButton, activityContext);
             quitActivity(quitButton, activityContext);
 
+            // The counter displays the number of shots in the UI, the user has tapped on the board.
             countShots = 0;
             setCountShots(0);
         /* End Computer Stuff Game*/
 
-
-        // The counter displays the number of shots in the UI, the user has tapped on the board.
-        counter = (TextView) findViewById(R.id.countOfHits);
-        eightBitFont.changeFont(this, counter); // Change font
-
+        // Call the GameController to see whose turn it is.
         // Listen for the user input
         computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
