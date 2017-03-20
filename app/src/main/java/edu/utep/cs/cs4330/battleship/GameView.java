@@ -261,7 +261,16 @@ public class GameView extends Activity {
             next.setVisibility(View.INVISIBLE);
         }
     }
-
+    /**
+     *  At random, ships are placed either horizontally or vertically on a 10x10 board.
+     *  The user is able to interact with this board and creates (x,y) coordinates.
+     *  The user coordinates are compared to the coordinates from all boats that are randomly placed
+     *  on the board. If the user hits a boat the method onDraw is invoked from the
+     *  @see BoardView.java
+     *  and colors a red circle the position of the boats, else colors a white circle indicating the
+     *  user missed.
+     *
+     */
     private void startGameView() {
         setContentView(R.layout.current_game);
 

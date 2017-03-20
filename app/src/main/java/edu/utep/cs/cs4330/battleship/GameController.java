@@ -15,7 +15,6 @@ import android.widget.TextView;
  * Last update: 02/23/2017
  */
 public class GameController extends AppCompatActivity {
-    private Font eightBitFont = new Font("fonts/eightbit.TTF");
     private String difficulty;
     private boolean isComputerReady;
     private boolean isHumanReady;
@@ -50,20 +49,7 @@ public class GameController extends AppCompatActivity {
         }
     /* End Setters and Getters */
 
-    /** This is the main controller class and handles the creation of multiple ships and board.
-     //    *  @see Ship.java
-     //   *  @see BoardView.java
-     //   *  @see Board.java
-     *  for more information.
-     *
-     *  At random, ships are placed either horizontally or vertically on a 10x10 board.
-     *  The user is able to interact with this board and creates (x,y) coordinates.
-     *  The user coordinates are compared to the coordinates from all boats that are randomly placed
-     *  on the board. If the user hits a boat the method onDraw is invoked from the
-     //   *  @see BoardView.java
-     *  and colors a red circle the position of the boats, else colors a white circle indicating the
-     *  user missed.
-     *
+    /** This is the main controller class and handles the creation of multiple views.
      * @param savedInstanceState is the starting state.
      */
     @Override
@@ -74,19 +60,19 @@ public class GameController extends AppCompatActivity {
         if(savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
-                launchHomeController(); // By default this controller is called
+                // By default this is the first controller is called when the activity is created.
+                launchHomeController();
             } else{
                 String controller = extras.getString("controllerName");
-
                 // Gets called when the user begins the game
                 if (controller.equals("humanChooseLevelController")) {
                     humanChooseLevelController();
                 }
-                // At random place boats for the computer
+                // This controller handles the placement of random boats for the computer
                 if (controller.equals("computerPlaceBoatsController")) {
                     computerPlaceBoatsController();
                 }
-                // Gets called once the user and AI has placed the boats.
+                // This controller handles the creation of the Battleship Game view.
                 if (controller.equals("startGameController")) {
                     startGameController();
                 }
@@ -94,15 +80,10 @@ public class GameController extends AppCompatActivity {
         }
     }
     /**
-     * This is state 0, I will represent states such as s0, s1, s2, ... sn. Hopefully this makes it
-     * easier to understand.
-     *
-     * The launch view is the beginning to this mobile application. It launches the home screen
+     * The following controller is the beginning to this mobile application. It launches the home screen
      * and allows the user to begin a new game.
      *
-     * s0 waits until the user clicks on the start button if the user clicks on the start
-     * button the state diagram looks like the following: s0->s1, where s1 awaits for the user
-     * input to choose a level of difficulty for the upcoming game.
+     * It does not call the next controller until the user clicks on the start button.
      */
     private void launchHomeController(){
         setComputerReady(false);
@@ -115,7 +96,7 @@ public class GameController extends AppCompatActivity {
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-    /** s1, Changes the current view where the user is able to choose from 3 buttons the following:
+    /** This controller calls the view, where the user is able to choose the level of difficulty
      *  easy, medium or hard, @see layout/activity_level for more details.
      */
     private void humanChooseLevelController() {
@@ -129,15 +110,8 @@ public class GameController extends AppCompatActivity {
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setHumanReady(true);
     }
-
-    /** s0->s1->s2->s3
-     *
-     * Changes the content view to a more grey, unnerving background. Also changes the song to more
-     * melancholy while attempting to petrify the user.
-     *
-     * Also it is the function where the computer places the boats on the grid at random.
-     * Currently I would personally say that it is easy. Most of the times the boats will
-     * be adjacent to each other.
+    /**
+     * This controller handles the coordinates of the boats at random
      * @see GameView for more details.
      */
     private void computerPlaceBoatsController() {
@@ -149,6 +123,10 @@ public class GameController extends AppCompatActivity {
         /** Fading Transition Effect */
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
+    /**
+     * This controller gets called once the user & AI has placed all boats on the grid.
+     */
     private void startGameController() {
         // The following is how you send data to other classes.
         Intent intent = new Intent(GameController.this, GameView.class);
@@ -159,6 +137,7 @@ public class GameController extends AppCompatActivity {
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
 }
 
 
