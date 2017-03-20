@@ -35,31 +35,46 @@
                 android:layout_below="@+id/newButton"
                 android:layout_alignLeft="@+id/newButton"
                 android:layout_alignStart="@+id/newButton" />
-            <Button
-                android:id="@+id/newButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/holo_green_light"
-                android:text="@string/new_button_label"
-                android:layout_marginLeft="22dp"
-                android:layout_marginStart="22dp"
-                android:layout_below="@+id/BattleShip"
-                android:layout_alignLeft="@+id/BattleShip"
-                android:layout_alignStart="@+id/BattleShip"
-                android:layout_marginTop="18dp" />
 
+        <Button
+            android:id="@+id/newButton"
+            android:layout_toRightOf="@+id/humanBoard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/BattleShip"
+            android:layout_alignStart="@+id/BattleShip"
+            android:layout_below="@+id/BattleShip"
+            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="18dp"
+            android:background="@android:color/holo_green_light"
+            android:text="@string/new_button_label" />
+
+        <TextView
+            android:id="@+id/countOfHits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="250dp"
+            android:fontFamily="casual"
+            android:text="@string/number_of_shots_0"
+            android:textColor="?attr/actionModeSplitBackground"
+            android:textSize="12sp"
+            android:textStyle="normal|bold" />
         <edu.utep.cs.cs4330.battleship.BoardView
             android:id="@+id/humanBoard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="false"
-            android:layout_marginBottom="321dp"
-            android:layout_marginEnd="158dp"
-            android:layout_marginRight="148dp"
+            android:layout_marginBottom="106dp"
+            android:layout_marginEnd="172dp"
+            android:layout_marginRight="172dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:layout_alignLeft="@+id/computerBoard"
-            android:layout_alignStart="@+id/computerBoard" />
+            android:layout_alignStart="@+id/computerBoard"
+            android:layout_alignBottom="@+id/countOfHits"
+            android:layout_alignRight="@+id/computerBoard"
+            android:layout_alignEnd="@+id/computerBoard" />
 
         <edu.utep.cs.cs4330.battleship.BoardView
             android:id="@+id/computerBoard"
