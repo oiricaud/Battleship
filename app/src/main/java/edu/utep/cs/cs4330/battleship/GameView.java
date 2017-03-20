@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -26,11 +27,12 @@ import java.util.LinkedList;
 
 public class GameView extends Activity {
     private MediaPlayer mp;
+    private String fontPath;
+
     /* Begin Fields for Human */
         private TextView title;
         private Button quit;
         private RelativeLayout rootLayout;
-        private Font eightBitFont = new Font("fonts/eightbit.TTF");
         private BoardView humanBoardView;
         private Ship aircraft = new Ship(5, "aircraft", "Human");
         private Ship battleship = new Ship(4, "battleship", "Human");
@@ -44,7 +46,6 @@ public class GameView extends Activity {
         private BoardView computerBoardView;
         private int countShots = 0;
         private TextView counter;
-
     /* End Fields for AI */
 
     /* Begin Setters and Getters */
@@ -69,6 +70,13 @@ public class GameView extends Activity {
             this.difficulty = difficulty;
         }
 
+        public String getFontPath() {
+            return fontPath;
+        }
+
+        public void setFontPath(String fontPath) {
+            this.fontPath = fontPath;
+        }
     /* End Setters and Getters */
 
     /**
@@ -82,7 +90,7 @@ public class GameView extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setFontPath("fonts/eightbit.TTF");
         // The following loads the corresponding views. This class gets called from @see GameController.
         if (getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
@@ -109,10 +117,10 @@ public class GameView extends Activity {
         TextView chooseLevel = (TextView) findViewById(R.id.chooseDifficulty);
 
         // Change font to a cooler 8-bit font.
-        eightBitFont.changeFont(this, easy);
-        eightBitFont.changeFont(this, medium);
-        eightBitFont.changeFont(this, hard);
-        eightBitFont.changeFont(this, chooseLevel);
+        changeFont(this, easy);
+        changeFont(this, medium);
+        changeFont(this, hard);
+        changeFont(this, chooseLevel);
 
         // Wait for the user input
         easy.setOnClickListener(new View.OnClickListener(){
@@ -141,11 +149,11 @@ public class GameView extends Activity {
     private void launchHomeView() {
         setContentView(R.layout.home);
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
-        eightBitFont.changeFont(this, battleshipLabel);
+        changeFont(this, battleshipLabel);
 
         // Begin to the next activity, placing boats on the map
         Button startButton = (Button) findViewById(R.id.start);
-        eightBitFont.changeFont(this, startButton);
+        changeFont(this, startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,8 +216,8 @@ public class GameView extends Activity {
         patrolImage.setOnTouchListener(new ChoiceToucheListener());
 
         // Change font
-        eightBitFont.changeFont(this, title);
-        eightBitFont.changeFont(this, quit);
+        changeFont(this, title);
+        changeFont(this, quit);
     }
 
     /**
@@ -218,7 +226,7 @@ public class GameView extends Activity {
      */
     public void hasHumanPlacedAllBoats() {
         Button next = (Button) findViewById(R.id.next);
-        eightBitFont.changeFont(this, next);
+        changeFont(this, next);
 
         // Once the user has place all ships on grid, advance to the next activity
         if (aircraft.isPlaced() && battleship.isPlaced() && destroyer.isPlaced() &&
@@ -290,10 +298,10 @@ public class GameView extends Activity {
             Button quitButton = (Button) findViewById(R.id.quitButton);
 
             // Change font
-            eightBitFont.changeFont(this, newButton);
-            eightBitFont.changeFont(this, quitButton);
-            eightBitFont.changeFont(this, battleshipTitle);
-            eightBitFont.changeFont(this, counter);
+            changeFont(this, newButton);
+            changeFont(this, quitButton);
+            changeFont(this, battleshipTitle);
+            changeFont(this, counter);
 
             // The predefined methods that allow the user to quit or start a new game
             newActivity(newButton, activityContext);
@@ -574,6 +582,11 @@ public class GameView extends Activity {
         }
         mp = MediaPlayer.create(context, R.raw.sunk);
         mp.start();
+    }
+
+    public void changeFont(Context context, TextView textView){
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(), getFontPath());
+        textView.setTypeface(typeface);
     }
 }
 
