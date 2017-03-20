@@ -1,8 +1,12 @@
 package edu.utep.cs.cs4330.battleship;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import java.util.Random;
 
 // Controller
 /**
@@ -12,18 +16,18 @@ import android.support.v7.app.AppCompatActivity;
  */
 public class GameController extends AppCompatActivity  {
     private GameModel gameModel = new GameModel();
-
+    private MediaPlayer mp;
     /** This is the main controller class and handles the creation of multiple views.
      * @param savedInstanceState is the starting state.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Call the corresponding controller methods
         if(savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
+                playMusic(this);
                 // By default this is the first controller is called when the activity is created.
                 launchHomeController();
             } else{
@@ -46,8 +50,20 @@ public class GameController extends AppCompatActivity  {
                 if(controller.equals("computersTurnController")){
                     computersTurnController();
                 }
+                if(controller.equals("quitController")){
+                    quitController();
+                }
             }
         }
+    }
+
+    /**
+     * When the user decides to quit the application it takes the user back to the launching
+     * activity
+     */
+    private void quitController() {
+        finish();
+        launchHomeController();
     }
     /**
      * The following controller is the beginning to this mobile application. It launches the home
@@ -89,9 +105,25 @@ public class GameController extends AppCompatActivity  {
 
     public void computersTurnController() {
     }
-
-
-
+    public void playMusic(Context context) {
+        if (mp!=null) {
+            mp.stop();
+            mp.release();
+        }
+        // Play one of these random songs in the background.
+        Random random = new Random();
+        int obtainRandomNumber = random.nextInt(3 - 1 + 1) + 1;
+        if(obtainRandomNumber == 1){
+            mp = MediaPlayer.create(context, R.raw.alterego);
+        }
+        if(obtainRandomNumber == 2){
+            mp = MediaPlayer.create(context, R.raw.oblivion);
+        }
+        if(obtainRandomNumber == 3){
+            mp = MediaPlayer.create(context, R.raw.yolo);
+        }
+        mp.start();
+    }
 }
 
 

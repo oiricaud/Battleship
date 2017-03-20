@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -24,7 +25,7 @@ import java.util.LinkedList;
  */
 
 public class GameView extends Activity {
-        private Music gamePlayMusic = new Music();
+    private MediaPlayer mp;
     /* Begin Fields for Human */
         private TextView title;
         private Button quit;
@@ -43,7 +44,7 @@ public class GameView extends Activity {
         private BoardView computerBoardView;
         private int countShots = 0;
         private TextView counter;
-        private Music shipSound = new Music();
+
     /* End Fields for AI */
 
     /* Begin Setters and Getters */
@@ -139,7 +140,6 @@ public class GameView extends Activity {
 
     private void launchHomeView() {
         setContentView(R.layout.home);
-        gamePlayMusic.playMusic(this);
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
         eightBitFont.changeFont(this, battleshipLabel);
 
@@ -150,12 +150,6 @@ public class GameView extends Activity {
             @Override
             public void onClick(View view) {
                 callTheController("humanChooseLevelController");
-                /*
-                Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
-                intent.putExtra("controllerName", "humanChooseLevelController");
-                GameView.this.startActivity(intent);
-                */
-
             }
         });
     }
@@ -257,7 +251,6 @@ public class GameView extends Activity {
     private void fadingTransition() {
         GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-
     /**
      *  At random, ships are placed either horizontally or vertically on a 10x10 board.
      *  The user is able to interact with this board and creates (x,y) coordinates.
@@ -323,60 +316,60 @@ public class GameView extends Activity {
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
                 if (isItAHit(aircraft.getComputerCordinates(), x, y)) {
-                    shipSound.makeExplosionSound(activityContext);
+                    makeExplosionSound(activityContext);
                     aircraft.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (aircraft.getHit() == 5) {
                         toast("Aircraft SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
+                        makeLouderExplosion(activityContext);
                     }
                 } else if (isItAHit(battleship.getComputerCordinates(), x, y)) {
-                    shipSound.makeExplosionSound(activityContext);
+                    makeExplosionSound(activityContext);
                     battleship.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (battleship.getHit() == 4) {
                         toast("Battleship SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
+                        makeLouderExplosion(activityContext);
                     }
                 } else if (isItAHit(destroyer.getComputerCordinates(), x, y)) {
-                    shipSound.makeExplosionSound(activityContext);
+                    makeExplosionSound(activityContext);
                     destroyer.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (destroyer.getHit() == 3) {
                         toast("Destroyer SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
+                        makeLouderExplosion(activityContext);
                     }
                 } else if (isItAHit(submarine.getComputerCordinates(), x, y)) {
-                    shipSound.makeExplosionSound(activityContext);
+                    makeExplosionSound(activityContext);
                     submarine.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (submarine.getHit() == 3) {
                         toast("Submarine SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
+                        makeLouderExplosion(activityContext);
                     }
                 } else if (isItAHit(patrol.getComputerCordinates(), x, y)) {
-                    shipSound.makeExplosionSound(activityContext);
+                    makeExplosionSound(activityContext);
                     patrol.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
                     if (patrol.getHit() == 2) {
                         toast("Patrol SUNK");
-                        shipSound.makeLouderExplosion(activityContext);
+                        makeLouderExplosion(activityContext);
                     }
                 } else {
                     computerBoardView.setxMiss(x);
                     computerBoardView.setyMiss(y);
                     toast("That was close!");
-                    shipSound.makeMissedSound(activityContext);
+                    makeMissedSound(activityContext);
                 }
             }
         });
@@ -493,10 +486,8 @@ public class GameView extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("Quiting Game!");
-                                Intent intent = new Intent(GameView.this, GameController.class);
-                                GameView.this.startActivity(intent);
+                                callTheController("quitController");
                                 fadingTransition(); // Fading Transition Effect
-                                finish();
                                 dialog.cancel();
                             }
                         });
@@ -528,11 +519,6 @@ public class GameView extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("New Game successfully created!");
                                 callTheController("humanChooseLevelController");
-                                /*
-                                Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
-                                intent.putExtra("controllerName", "humanChooseLevelController");
-                                GameView.this.startActivity(intent);
-                                */
                                 fadingTransition(); // Fading Transition Effect
                             }
                         });
@@ -548,6 +534,46 @@ public class GameView extends Activity {
                 alert.show();
             }
         });
+    }
+
+    /** Plays at random 3 default game songs.
+     * @param context is the activity context
+     */
+    /**
+     * Makes a swish noise when the player misses a shot.
+     * @param context is the activity context
+     */
+    public void makeMissedSound(Context context) {
+        if (mp!=null) {
+            mp.stop();
+            mp.release();
+        }
+        mp = MediaPlayer.create(context, R.raw.missed);
+        mp.start();
+    }
+    /**
+     * Makes an explosion sound if the user hits a boat.
+     * @param context is the activity context
+     */
+    public void makeExplosionSound(Context context) {
+        if (mp!=null) {
+            mp.stop();
+            mp.release();
+        }
+        mp = MediaPlayer.create(context, R.raw.torpedo);
+        mp.start();
+    }
+    /**
+     * Makes a louder explosion as the latter method.
+     * @param context is the activity context
+     */
+    public void makeLouderExplosion(Context context) {
+        if (mp!=null) {
+            mp.stop();
+            mp.release();
+        }
+        mp = MediaPlayer.create(context, R.raw.sunk);
+        mp.start();
     }
 }
 
