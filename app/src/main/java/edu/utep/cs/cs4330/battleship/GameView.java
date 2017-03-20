@@ -36,6 +36,7 @@ public class GameView extends Activity {
         private Ship destroyer = new Ship(3, "destroyer", "Human");
         private Ship submarine = new Ship(3, "submarine", "Human");
         private Ship patrol = new Ship(2, "patrol", "Human");
+        private String difficulty;
     /* End Fields for Human */
 
     /* Begin Fields for AI */
@@ -58,6 +59,15 @@ public class GameView extends Activity {
         public void setCountShots(int countShots) {
             this.countShots = countShots;
         }
+
+        public String getDifficulty() {
+            return difficulty;
+        }
+
+        public void setDifficulty(String difficulty) {
+            this.difficulty = difficulty;
+        }
+
     /* End Setters and Getters */
 
     /**
@@ -72,14 +82,18 @@ public class GameView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // The following loads the corresponding views.
+        // The following loads the corresponding views. This class gets called from @see GameController.
         if (getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
-            String levelOfDifficultyKey = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
+            // Look for YOUR KEY, variable you're receiving
+            String levelOfDifficultyKey = extras.getString("level_of_difficulty");
             String viewToLaunch = extras.getString("viewWeWantToLaunch");
 
             if(viewToLaunch.equals("launchHomeView")){
                 launchHomeView();
+            }
+            if (viewToLaunch.equals("humanChooseLevelView")) {
+                humanChooseLevelView(); // The creation of this activity
             }
             if (viewToLaunch.equals("humanPlaceBoatsView")) {
                 humanPlaceBoatsView(levelOfDifficultyKey); // The creation of this activity
@@ -88,6 +102,56 @@ public class GameView extends Activity {
                 startGameView();
             }
         }
+    }
+
+    private void humanChooseLevelView() {
+        setContentView(R.layout.activity_level);
+        Button easy = (Button) findViewById(R.id.easy);
+        Button medium = (Button) findViewById(R.id.medium);
+        Button hard = (Button) findViewById(R.id.hard);
+        TextView chooseLevel = (TextView) findViewById(R.id.chooseDifficulty);
+
+        // Change font to a cooler 8-bit font.
+        eightBitFont.changeFont(this, easy);
+        eightBitFont.changeFont(this, medium);
+        eightBitFont.changeFont(this, hard);
+        eightBitFont.changeFont(this, chooseLevel);
+
+        // Wait for the user input
+        easy.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                setDifficulty("easy");
+                callHumanPlaceBoatsView();  // Takes the user to @see GameView to place ships on the grid.
+            }
+        });
+        medium.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                setDifficulty("medium");
+                callHumanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
+            }
+        });
+        hard.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                setDifficulty("hard");
+                callHumanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
+            }
+        });
+    }
+    /** Where the magic happens. Aka the function that allows the human to place boats on board view.
+     *  s0->s1->s2
+     *  @see GameView for more details.
+     */
+    private void callHumanPlaceBoatsView() {
+        Intent intent = new Intent(GameView.this, GameView.class);
+        String level_of_difficulty = String.valueOf(getDifficulty());
+        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
+        intent.putExtra("viewWeWantToLaunch", "humanPlaceBoatsView");
+        intent.putExtra("shouldWeStartGame", "false");
+        GameView.this.startActivity(intent);
+        GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void launchHomeView() {
@@ -117,8 +181,8 @@ public class GameView extends Activity {
      */
     private void humanPlaceBoatsView(String levelOfDifficultyKey) {
         setContentView(R.layout.activity_place_ship);
-       TextView title = (TextView) findViewById(R.id.placeboats); // PLACE BOATS
-       TextView level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
+        TextView title = (TextView) findViewById(R.id.placeboats); // PLACE BOATS
+        TextView level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
         level_of_difficulty_placeHolder.setText(levelOfDifficultyKey);
         // SET BOARD
         // Set the board view so boats can be placed on the grid
@@ -311,7 +375,8 @@ public class GameView extends Activity {
             }
         });
     }
-    /**
+
+/**
      * The drag and drop feature
      */
     private final class ChoiceToucheListener implements View.OnTouchListener {
@@ -381,7 +446,6 @@ public class GameView extends Activity {
     private boolean isItAHit(int[][] coordinates, int x, int y) {
         return coordinates[x][y] == 1;
     }
-
     /**
      * Show a toast message.
      */
@@ -398,7 +462,6 @@ public class GameView extends Activity {
             }
         }.start();
     }
-
     /**
      * Restarts the activity
      */

@@ -70,7 +70,7 @@ public class GameController extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Calls the corresponding controllers
+        // Call the corresponding controller methods
         if(savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
@@ -78,14 +78,17 @@ public class GameController extends AppCompatActivity {
             } else{
                 String controller = extras.getString("controllerName");
 
+                // Gets called when the user begins the game
+                if (controller.equals("humanChooseLevelController")) {
+                    humanChooseLevelController();
+                }
+                // At random place boats for the computer
                 if (controller.equals("computerPlaceBoatsController")) {
                     computerPlaceBoatsController();
                 }
+                // Gets called once the user and AI has placed the boats.
                 if (controller.equals("startGameController")) {
                     startGameController();
-                }
-                if (controller.equals("humanChooseLevelController")) {
-                    humanChooseLevelController();
                 }
             }
         }
