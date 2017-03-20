@@ -103,52 +103,17 @@ public class PlaceShips extends Activity {
                 level_of_difficulty_placeHolder.setText(levelOfDifficultyKey);
                 setEverythingForHuman(); // The creation of this activity
             }
-            else if (typeOfUserKey.equals("computer")) {
-                Log.w(" Here", "1Here");
-                setEverythingForComputer();
+            else if (typeOfUserKey.equals("computer")) { // Takes you back to the GameController
+                Intent intent = new Intent(PlaceShips.this, edu.utep.cs.cs4330.battleship.GameController.class);
+                intent.putExtra("methodName", "startGameView");
+                PlaceShips.this.startActivity(intent);
+                /** Fading Transition Effect */
+                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
             if(startGame.equals("true")){
                 beginGame(getCoordinatesForAllBoatsAI(), getCoordinatesForAllBoatsHuman());
             }
         }
-    }
-
-    private void setEverythingForComputer() {
-       // setContentView(R.layout.activity_game);
-       // computerBoardView = (BoardView) findViewById(R.id.boardView);
-       // computerBoardView.setBoard(computerBoard);
-
-//        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip);
-//        eightBitFont.changeFont(this, battleshipLabel); // Change font
-
-
-        countShots = 0;
-        setCountShots(0);
-
-
-
-        final Context context = this; // Needed for the alert dialogue builder
-
-        // s3 now points to s2, s3->s2, where the user is able to place new ships.
-        // Start a new game when clicked button
-     //   Button newButton = (Button) findViewById(R.id.newButton);
-     //   newActivity(newButton, this);
-
-        // s3 -> s0
-        // Takes the user back to the starting state
-    //    Button quitButton = (Button) findViewById(R.id.quitButton);
-     //   quitActivity(quitButton, context);
-    //    eightBitFont.changeFont(this, newButton);
-     //   eightBitFont.changeFont(this, quitButton);
-
-        Intent intent = new Intent(PlaceShips.this, edu.utep.cs.cs4330.battleship.GameController.class);
-        intent.putExtra("methodName", "startGameView");
-        PlaceShips.this.startActivity(intent);
-        /** Fading Transition Effect */
-        PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-
-       // beginGame(getCoordinatesForAllBoatsAI(), getCoordinatesForAllBoatsHuman());
     }
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
@@ -244,20 +209,33 @@ public class PlaceShips extends Activity {
         humanBoardView.setBoard(humanBoard);
         /* End Human Board */
 
-        /* Begin Computer Game */
-        Board computerBoard = new Board(10);
-        computerBoardView = (BoardView) findViewById(R.id.computerBoard);
-        computerBoardView.setBoard(computerBoard);
-        // Below we define the boats that will be placed on the board
-        final Ship aircraft = new Ship(5, "aircraft", "Computer");
-        final Ship battleship = new Ship(4, "battleship", "Computer");
-        final Ship destroyer = new Ship(3, "destroyer", "Computer");
-        final Ship submarine = new Ship(3, "submarine", "Computer");
-        final Ship patrol = new Ship(2, "patrol", "Computer");
-        /* End Computer Board Game*/
-        countShots = 0;
-        setCountShots(0);
-        final Context activityContext = this;
+        /* Begin Computer Stuff Game */
+            final Context activityContext = this;
+            Board computerBoard = new Board(10);
+            computerBoardView = (BoardView) findViewById(R.id.computerBoard);
+            computerBoardView.setBoard(computerBoard);
+
+            // Below we define the boats that will be placed on the board
+            final Ship aircraft = new Ship(5, "aircraft", "Computer");
+            final Ship battleship = new Ship(4, "battleship", "Computer");
+            final Ship destroyer = new Ship(3, "destroyer", "Computer");
+            final Ship submarine = new Ship(3, "submarine", "Computer");
+            final Ship patrol = new Ship(2, "patrol", "Computer");
+
+            Button newButton = (Button) findViewById(R.id.newButton);
+            Button quitButton = (Button) findViewById(R.id.quitButton);
+
+            eightBitFont.changeFont(this, newButton);
+            eightBitFont.changeFont(this, quitButton);
+
+            newActivity(newButton, this);
+            quitActivity(quitButton, activityContext);
+
+            countShots = 0;
+            setCountShots(0);
+        /* End Computer Stuff Game*/
+
+
         // The counter displays the number of shots in the UI, the user has tapped on the board.
         counter = (TextView) findViewById(R.id.countOfHits);
         eightBitFont.changeFont(this, counter); // Change font
@@ -331,7 +309,6 @@ public class PlaceShips extends Activity {
             }
         });
     }
-
     /**
      * The drag and drop feature
      */
