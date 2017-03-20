@@ -23,7 +23,7 @@ import java.util.LinkedList;
  * This activity will allow the user to place boats. @see activity_place_ship
  */
 
-public class PlaceShips extends Activity {
+public class GameView extends Activity {
 
     /* Begin Fields for Human */
         private TextView title;
@@ -103,11 +103,11 @@ public class PlaceShips extends Activity {
                 setEverythingForHuman(); // The creation of this activity
             }
             else if (typeOfUserKey.equals("computer")) { // Takes you back to the GameController
-                Intent intent = new Intent(PlaceShips.this, edu.utep.cs.cs4330.battleship.GameController.class);
+                Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
                 intent.putExtra("methodName", "startGameView");
-                PlaceShips.this.startActivity(intent);
+                GameView.this.startActivity(intent);
                 /** Fading Transition Effect */
-                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
             if(startGame.equals("true")){
                 beginGame();
@@ -188,11 +188,11 @@ public class PlaceShips extends Activity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(PlaceShips.this, edu.utep.cs.cs4330.battleship.GameController.class);
+                    Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
                     intent.putExtra("methodName", "computerPlaceBoatsView");
-                    PlaceShips.this.startActivity(intent);
+                    GameView.this.startActivity(intent);
                     /** Fading Transition Effect */
-                    PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             });
         } else { // By default hide the next button and don't let the user advance until all boats have
@@ -427,10 +427,10 @@ public class PlaceShips extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("Quiting Game!");
-                                Intent intent = new Intent(PlaceShips.this, GameController.class);
-                                PlaceShips.this.startActivity(intent);
+                                Intent intent = new Intent(GameView.this, GameController.class);
+                                GameView.this.startActivity(intent);
                                 /** Fading Transition Effect */
-                                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                 finish();
                                 dialog.cancel();
                             }
@@ -463,9 +463,9 @@ public class PlaceShips extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("New Game successfully created!");
                                 restartActivity();
-                                Intent intent = new Intent(PlaceShips.this, PlaceShips.class);
-                                PlaceShips.this.startActivity(intent);
-                                PlaceShips.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                Intent intent = new Intent(GameView.this, GameView.class);
+                                GameView.this.startActivity(intent);
+                                GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             }
                         });
 

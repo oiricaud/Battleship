@@ -1,7 +1,6 @@
 package edu.utep.cs.cs4330.battleship;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -133,8 +132,7 @@ public class GameController extends AppCompatActivity {
         Button medium = (Button) findViewById(R.id.medium);
         Button hard = (Button) findViewById(R.id.hard);
         TextView chooseLevel = (TextView) findViewById(R.id.chooseDifficulty);
-
-
+        
         // Change font to a cooler 8-bit font.
         eightBitFont.changeFont(this, easy);
         eightBitFont.changeFont(this, medium);
@@ -146,21 +144,21 @@ public class GameController extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setDifficulty("easy");
-                humanPlaceBoatsView();  // Takes the user to @see PlaceShips to place ships on the grid.
+                humanPlaceBoatsView();  // Takes the user to @see GameView to place ships on the grid.
             }
         });
         medium.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 setDifficulty("medium");
-                humanPlaceBoatsView(); // Takes the user to @see PlaceShips to place ships on the grid.
+                humanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
             }
         });
         hard.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 setDifficulty("hard");
-                humanPlaceBoatsView(); // Takes the user to @see PlaceShips to place ships on the grid.
+                humanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
             }
         });
     }
@@ -172,12 +170,12 @@ public class GameController extends AppCompatActivity {
      * Also it is the function where the computer places the boats on the grid at random.
      * Currently I would personally say that it is easy. Most of the times the boats will
      * be adjacent to each other.
-     * @see PlaceShips for more details.
+     * @see GameView for more details.
      */
     private void computerPlaceBoatsView() {
         // The following is how you send data to other classes.
         setComputerReady(true);
-        Intent intent = new Intent(GameController.this, PlaceShips.class);
+        Intent intent = new Intent(GameController.this, GameView.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("userType", "computer");
@@ -187,12 +185,12 @@ public class GameController extends AppCompatActivity {
     }
     /** Where the magic happens. Aka the function that allows the human to place boats on board view.
      *  s0->s1->s2
-     *  @see PlaceShips for more details.
+     *  @see GameView for more details.
      */
     private void humanPlaceBoatsView() {
         // The following is how you send data to other classes.
         setHumanReady(true);
-        Intent intent = new Intent(GameController.this, PlaceShips.class);
+        Intent intent = new Intent(GameController.this, GameView.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("userType", "human");
@@ -202,7 +200,7 @@ public class GameController extends AppCompatActivity {
     }
     private void startGameView() {
         // The following is how you send data to other classes.
-        Intent intent = new Intent(GameController.this, PlaceShips.class);
+        Intent intent = new Intent(GameController.this, GameView.class);
         String level_of_difficulty = String.valueOf(getDifficulty());
         intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
         intent.putExtra("userType", "null");

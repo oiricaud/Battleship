@@ -21,6 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlaceShips"></activity>
+        <activity android:name=".GameView"></activity>
     </application>
 </manifest>
