@@ -76,6 +76,12 @@ public class GameController extends AppCompatActivity {
                 if (controller.equals("startGameController")) {
                     startGameController();
                 }
+                if(controller.equals("humansTurnController")){
+                    humansTurnController();
+                }
+                if(controller.equals("computersTurnController")){
+                    computersTurnController();
+                }
             }
         }
     }
@@ -136,6 +142,11 @@ public class GameController extends AppCompatActivity {
         intent.putExtra("shouldWeStartGame", "true");
         GameController.this.startActivity(intent);
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+    private void humansTurnController() {
+    }
+
+    private void computersTurnController() {
     }
 
 }
