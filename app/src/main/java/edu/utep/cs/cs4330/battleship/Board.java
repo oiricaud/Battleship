@@ -28,25 +28,4 @@ public class Board{
         return size;
     }
 
-    // Suggestions:
-    // 1. Consider using the Observer design pattern so that a client,
-    //    say a BoardView, can observe changes on a board, e.g.,
-    //    hitting a place, sinking a ship, and game over.
-
-    // 2. Introduce methods including the following:
-    //    public boolean placeShip(Ship ship, int x, int y, boolean dir)
-    //    public void hit(Place place)
-    //    public Place at(int x, int y)
-    //    public Place[] places()
-    //    public int numOfShots()
-    //    public boolean isGameOver()
-    //    ...
-
-    public int numOfShots(){
-        return 0;
-    }
-    public boolean isGameOver(){
-        return true;
-    }
-
 }

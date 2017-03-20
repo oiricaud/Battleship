@@ -86,7 +86,6 @@ public class GameView extends Activity {
         if (getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
             // Look for YOUR KEY, variable you're receiving
-            String levelOfDifficultyKey = extras.getString("level_of_difficulty");
             String viewToLaunch = extras.getString("viewWeWantToLaunch");
 
             if(viewToLaunch.equals("launchHomeView")){
@@ -94,9 +93,6 @@ public class GameView extends Activity {
             }
             if (viewToLaunch.equals("humanChooseLevelView")) {
                 humanChooseLevelView(); // The creation of this activity
-            }
-            if (viewToLaunch.equals("humanPlaceBoatsView")) {
-                humanPlaceBoatsView(levelOfDifficultyKey); // The creation of this activity
             }
             if(viewToLaunch.equals("startGameView")){
                 startGameView();
@@ -122,36 +118,23 @@ public class GameView extends Activity {
             @Override
             public void onClick(View view) {
                 setDifficulty("easy");
-                callHumanPlaceBoatsView();  // Takes the user to @see GameView to place ships on the grid.
+                humanPlaceBoatsView(getDifficulty());  // Takes the user to @see GameView to place ships on the grid.
             }
         });
         medium.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 setDifficulty("medium");
-                callHumanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
+                humanPlaceBoatsView(getDifficulty()); // Takes the user to @see GameView to place ships on the grid.
             }
         });
         hard.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 setDifficulty("hard");
-                callHumanPlaceBoatsView(); // Takes the user to @see GameView to place ships on the grid.
+                humanPlaceBoatsView(getDifficulty()); // Takes the user to @see GameView to place ships on the grid.
             }
         });
-    }
-    /** Where the magic happens. Aka the function that allows the human to place boats on board view.
-     *  s0->s1->s2
-     *  @see GameView for more details.
-     */
-    private void callHumanPlaceBoatsView() {
-        Intent intent = new Intent(GameView.this, GameView.class);
-        String level_of_difficulty = String.valueOf(getDifficulty());
-        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
-        intent.putExtra("viewWeWantToLaunch", "humanPlaceBoatsView");
-        intent.putExtra("shouldWeStartGame", "false");
-        GameView.this.startActivity(intent);
-        GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void launchHomeView() {
@@ -181,16 +164,15 @@ public class GameView extends Activity {
      */
     private void humanPlaceBoatsView(String levelOfDifficultyKey) {
         setContentView(R.layout.activity_place_ship);
-        TextView title = (TextView) findViewById(R.id.placeboats); // PLACE BOATS
+        TextView title = (TextView) findViewById(R.id.placeboats); // PLACE BOATS TITLE
         TextView level_of_difficulty_placeHolder = (TextView) findViewById(R.id.level_of_difficulty_placeHolder);
-        level_of_difficulty_placeHolder.setText(levelOfDifficultyKey);
-        // SET BOARD
+        level_of_difficulty_placeHolder.setText(levelOfDifficultyKey); // LEVEL OF DIFFICULTY TEXT
+
         // Set the board view so boats can be placed on the grid
         Board board = new Board(10);
         humanBoardView = (BoardView) findViewById(R.id.boardView);
         humanBoardView.setBoard(board);
 
-        // SET BUTTONS
         hasHumanPlacedAllBoats(); // Hide the "NEXT" button by default
         quit = (Button) findViewById(R.id.quitB);
         quitActivity(quit, this);
@@ -531,9 +513,10 @@ public class GameView extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("New Game successfully created!");
-                                restartActivity();
-                                Intent intent = new Intent(GameView.this, GameView.class);
+                                Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
+                                intent.putExtra("controllerName", "humanChooseLevelController");
                                 GameView.this.startActivity(intent);
+                                /** Fading Transition Effect */
                                 GameView.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             }
                         });
