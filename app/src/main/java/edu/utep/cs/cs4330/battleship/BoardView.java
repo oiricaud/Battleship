@@ -33,6 +33,9 @@ public class BoardView extends View implements Serializable {
     public LinkedList<Integer> xCoordinate = new LinkedList<>();
     public LinkedList<Integer> yCoordinate = new LinkedList<>();
 
+    private LinkedList<Integer> whiteXhuman= new LinkedList<>();
+    private LinkedList<Integer> whiteYhuman = new LinkedList<>();
+
     private LinkedList<Integer> xHit = new LinkedList<>();
     private LinkedList<Integer> yHit = new LinkedList<>();
 
@@ -105,6 +108,23 @@ public class BoardView extends View implements Serializable {
         yCoordinate.add(y);
     }
 
+    public LinkedList<Integer> getWhiteXhuman() {
+        return whiteXhuman;
+    }
+
+    public void setWhiteXhuman(int t) {
+        whiteXhuman.add(t);
+    }
+
+    public LinkedList<Integer> getWhiteYhuman() {
+        return whiteYhuman;
+    }
+
+    public void setWhiteYhuman(int o) {
+        whiteYhuman.add(o);
+    }
+
+
     /**
      * Callback interface to listen for board touches.
      */
@@ -135,6 +155,10 @@ public class BoardView extends View implements Serializable {
      * Red color circle
      **/
     private final int redColor = Color.rgb(255, 69, 0);
+    /**
+     * Black color circle
+     **/
+    private final int blackColor = Color.rgb(0, 0, 0);
 
     /**
      * White color circle
@@ -158,7 +182,14 @@ public class BoardView extends View implements Serializable {
     {
         redPaint.setColor(redColor);
     }
+    /**
+     * Black background paint
+     */
+    private final Paint blackPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
+    {
+        blackPaint.setColor(blackColor);
+    }
     /**
      * White background paint
      */
@@ -248,10 +279,19 @@ public class BoardView extends View implements Serializable {
         super.onDraw(canvas);
         drawGrid(canvas);
         drawPlaces(canvas);
-        Log.w("1Woo", "woo");
         if(!xCoordinate.isEmpty() && !yCoordinate.isEmpty()){
             drawHumanBoardPlaces(canvas);
-            Log.w("2Woo", "woo");
+        }
+        drawForHuman(canvas);
+
+    }
+
+    private void drawForHuman(Canvas canvas) {
+        for (int k = 0; k < getWhiteXhuman().size(); k++) {
+            Log.w("22Here", "here");
+            float xMiss = (getWhiteXhuman().get(k) * lineGap()) + (lineGap() / 2);
+            float yMiss = (getWhiteYhuman().get(k) * lineGap()) + (lineGap() / 2);
+            canvas.drawCircle(xMiss, yMiss, (lineGap() / 2), whitePaint);
         }
     }
 
@@ -259,7 +299,7 @@ public class BoardView extends View implements Serializable {
         for (int k = 0; k < xCoordinate.size(); k++) {
             float drawX = (xCoordinate.get(k) * lineGap()) + (lineGap() / 2);
             float drawY = (yCoordinate.get(k) * lineGap()) + (lineGap() / 2);
-            canvas.drawCircle(drawX, drawY, (lineGap() / 2), redPaint);
+            canvas.drawCircle(drawX, drawY, (lineGap() / 2), blackPaint);
         }
     }
 
