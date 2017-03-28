@@ -86,6 +86,7 @@ public class GameView extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFontPath("fonts/eightbit.TTF");
+
         // The following loads the corresponding views. This class gets called from @see GameController.
         if (getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
@@ -172,73 +173,116 @@ public class GameView extends ActionBarActivity {
         aircraft.setPlaced(false);
         battleship.setPlaced(false);
         destroyer.setPlaced(false);
+        submarine.setPlaced(false);
+        patrol.setPlaced(false);
 
          if(item.getItemId() == R.id.itemAircraft) {
             getSupportActionBar().setTitle("Tap on Grid to Place Aircraft");
-            humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-                @Override
-                public void onTouch(int x, int y) {
-                    if (aircraft.isPlaced()) {
-                        clearCoordinates(aircraft);
-                    }
-                    addCoordinates(aircraft, x, y);
-                    aircraft.setPlaced(true);
-                }
-            });
+                 humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+                     int clickOnlyOnce = 0;
+                     @Override
+                     public void onTouch(int x, int y) {
+                         if (clickOnlyOnce == 0) {
+                             if (aircraft.isPlaced()) {
+                                 clearCoordinates(aircraft);
+                             }
+                             addCoordinates(aircraft, x, y);
+                             aircraft.setPlaced(true);
+                             clickOnlyOnce++;
+                         }
+                     }
+                 });
          }
        if(item.getItemId() == R.id.itemBattleship){
             getSupportActionBar().setTitle("Tap on Grid to Place Battleship");
             humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+                int clickOnlyOnce = 0;
                 @Override
                 public void onTouch(int x, int y) {
-                    if (battleship.isPlaced()) {
-                        clearCoordinates(battleship);
+                    if (clickOnlyOnce == 0) {
+                        if (battleship.isPlaced()) {
+                            clearCoordinates(battleship);
+                        }
+                        addCoordinates(battleship, x, y);
+                        battleship.setPlaced(true);
+                        clickOnlyOnce++;
                     }
-                    addCoordinates(battleship, x, y);
-                    battleship.setPlaced(true);
                 }
             });
         }
         if(item.getItemId() == R.id.itemDestroyer) {
             getSupportActionBar().setTitle("Tap on Grid to Place Destroyer");
             humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+                int clickOnlyOnce = 0;
                 @Override
                 public void onTouch(int x, int y) {
-                    if (destroyer.isPlaced()) {
-                        clearCoordinates(destroyer);
+                    if (clickOnlyOnce == 0) {
+                        if (destroyer.isPlaced()) {
+                            clearCoordinates(destroyer);
+                        }
+                        addCoordinates(destroyer, x, y);
+                        destroyer.setPlaced(true);
+                        clickOnlyOnce++;
                     }
-                    addCoordinates(destroyer, x, y);
-                    destroyer.setPlaced(true);
                 }
             });
         }
         if(item.getItemId() == R.id.itemSubmarine) {
             getSupportActionBar().setTitle("Tap on Grid to Place Submarine");
+            humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+                int clickOnlyOnce = 0;
+                @Override
+                public void onTouch(int x, int y) {
+                    if (clickOnlyOnce == 0) {
+                        if (submarine.isPlaced()) {
+                            clearCoordinates(submarine);
+                        }
+                        addCoordinates(submarine, x, y);
+                        submarine.setPlaced(true);
+                        clickOnlyOnce++;
+                    }
+                }
+            });
         }
         if(item.getItemId() == R.id.itemPatrol) {
             getSupportActionBar().setTitle("Tap on Grid to Place Patrol");
+            humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+                int clickOnlyOnce = 0;
+                @Override
+                public void onTouch(int x, int y) {
+                    if (clickOnlyOnce == 0) {
+                        if (patrol.isPlaced()) {
+                            clearCoordinates(patrol);
+                        }
+                        addCoordinates(patrol, x, y);
+                        patrol.setPlaced(true);
+                        clickOnlyOnce++;
+                    }
+                }
+            });
         }
         return true;
     }
 
     private void addCoordinates(Ship ship, int x, int y) {
-        Log.w("name of ship", ship.getName() + ", size: " + ship.getSize());
-        ship.humanSetCoordinates(ship.getSize(), x, y);
-        int temp[][] = ship.gethumanSetCoordinates();
-        for(int i = 0 ; i < temp.length; i++){
-            for(int j = 0; j < temp.length; j++){
-                if(temp[i][j] == 1){
-                    humanBoardView.xCoordinate.add(i);
-                    humanBoardView.yCoordinate.add(j);
+            Log.w("name of ship", ship.getName() + ", size: " + ship.getSize());
+            Log.w("ship placed", String.valueOf(ship.isPlaced()));
+            ship.humanSetCoordinates(ship.getSize(), x, y);
+            int temp[][] = ship.gethumanSetCoordinates();
+            for (int i = 0; i < temp.length; i++) {
+                for (int j = 0; j < temp.length; j++) {
+                    if (temp[i][j] == 1) {
+                        humanBoardView.xCoordinate.add(i);
+                        humanBoardView.yCoordinate.add(j);
+                    }
                 }
-            }
         }
     }
 
     private void clearCoordinates(Ship ship) {
         ship.clearContents();
-      //  humanBoardView.xCoordinate.clear();
-     //   humanBoardView.yCoordinate.clear();
+        humanBoardView.xCoordinate.clear();
+        humanBoardView.yCoordinate.clear();
     }
 
     /**
