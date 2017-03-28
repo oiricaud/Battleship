@@ -2,21 +2,45 @@ package edu.utep.cs.cs4330.battleship;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 /**
  * Created by oscarricaud on 3/19/17.
  */
 
 public class GameModel  {
-    private String difficulty;
-    private boolean computerStatus;
-    private boolean userStatus;
-    public GameModel(){
 
+    private String difficulty;
+    private boolean gameStatus;
+    private boolean playerReady;
+    private boolean[][] map = new boolean[10][10]; // size of the grid
+
+    public GameModel(){
     }
-    /* Begin Setters and Getters */
+
+    public boolean areYouPlaying() {
+        return gameStatus;
+    }
+
+    public void areYouPlaying(boolean status) {
+        this.gameStatus = status;
+    }
+
+    public boolean isPlayerReady() {
+        return playerReady;
+    }
+
+    public void setPlayerReady(boolean playerReady) {
+        this.playerReady = playerReady;
+    }
+
+    public boolean[][] getAll_X_Y() {
+        return map;
+    }
+
+    public void putX_Y_On_Map(int x, int y) {
+        map[x][y] = true;
+    }
     /**
      * @return this returns the difficulty the user chose, which is later retrieved to be displayed
      * on the android phone.
@@ -29,27 +53,8 @@ public class GameModel  {
         this.difficulty = difficulty;
     }
 
-    public boolean getComputerStatus() {
-        return computerStatus;
-    }
-
-    public void setComputerStatus(boolean computerReady) {
-        computerStatus = computerReady;
-    }
-
-    public boolean getUserStatus() {
-        return userStatus;
-    }
-
-    public void setUserStatus(boolean humanReady) {
-        userStatus = humanReady;
-    }
-
-    public void updateView(Context context, String viewWeWantToLaunch, String shouldWeStartGame) {
+    public void updateModel(Context context, String viewWeWantToLaunch) {
         Intent intent = new Intent(context, GameView.class);
-        String level_of_difficulty = String.valueOf(getDifficulty());
-        intent.putExtra("level_of_difficulty", level_of_difficulty); // YOUR key, variable you are passing
-        intent.putExtra("shouldWeStartGame", shouldWeStartGame);
         intent.putExtra("viewWeWantToLaunch", viewWeWantToLaunch);
         context.startActivity(intent);
     }

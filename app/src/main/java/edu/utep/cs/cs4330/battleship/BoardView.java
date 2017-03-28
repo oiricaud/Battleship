@@ -1,6 +1,7 @@
 package edu.utep.cs.cs4330.battleship;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +10,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -23,7 +26,11 @@ import static edu.utep.cs.cs4330.battleship.R.attr.height;
  * @see Board
  */
 public class BoardView extends View {
+
     private int[][] allBoats = new int[10][10];
+
+    public LinkedList<Integer> xCoordinate = new LinkedList<>();
+    public LinkedList<Integer> yCoordinate = new LinkedList<>();
 
     private LinkedList<Integer> xHit = new LinkedList<>();
     private LinkedList<Integer> yHit = new LinkedList<>();
@@ -60,6 +67,7 @@ public class BoardView extends View {
     public LinkedList<Integer> getyHit() {
         return yHit;
     }
+
     public void setyHit(int i) {
         yHit.add(i);
     }
@@ -77,10 +85,28 @@ public class BoardView extends View {
     }
 
     public void setyMiss(int i) {
-         setyMiss.add(i);
+        setyMiss.add(i);
     }
 
-    /** Callback interface to listen for board touches. */
+    public LinkedList<Integer> getxCoordinate() {
+        return xCoordinate;
+    }
+
+    public void setxCoordinate(int x) {
+        xCoordinate.add(x);
+    }
+
+    public LinkedList<Integer> getyCoordinate() {
+        return yCoordinate;
+    }
+
+    public void setyCoordinate(int y) {
+        yCoordinate.add(y);
+    }
+
+    /**
+     * Callback interface to listen for board touches.
+     */
     public interface BoardTouchListener {
 
         /**
@@ -91,37 +117,58 @@ public class BoardView extends View {
          * @param y 0-based row index of the touched place
          */
         void onTouch(int x, int y);
+
     }
 
-    /** Listeners to be notified upon board touches. */
+    /**
+     * Listeners to be notified upon board touches.
+     */
     private final List<BoardTouchListener> listeners = new ArrayList<>();
 
-    /** Board background color. */
+    /**
+     * Board background color.
+     */
     private final int boardColor = Color.argb(0, 255, 255, 255); // Transparent
 
-    /** Red color circle **/
-    private final int redColor = Color.rgb(255,69,0);
+    /**
+     * Red color circle
+     **/
+    private final int redColor = Color.rgb(255, 69, 0);
 
-    /** White color circle **/
-    private final int whiteColor = Color.rgb(255,255,255);
+    /**
+     * White color circle
+     **/
+    private final int whiteColor = Color.rgb(255, 255, 255);
 
-    /** Board background paint. */
+    /**
+     * Board background paint.
+     */
     private final Paint boardPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
     {
         boardPaint.setColor(boardColor);
     }
-    /** Red background paint */
+
+    /**
+     * Red background paint
+     */
     private final Paint redPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
     {
         redPaint.setColor(redColor);
     }
-    /** White background paint */
+
+    /**
+     * White background paint
+     */
     private final Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
         whitePaint.setColor(whiteColor);
     }
 
-    /** Board grid line paint. */
+    /**
+     * Board grid line paint.
+     */
     private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
         /* Board grid line color. */
@@ -130,25 +177,35 @@ public class BoardView extends View {
         boardLinePaint.setStrokeWidth(3);
     }
 
-    /** Size of the board. */
+    /**
+     * Size of the board.
+     */
     private int boardSize;
 
-    /** Create a new board view to be run in the given context. */
+    /**
+     * Create a new board view to be run in the given context.
+     */
     public BoardView(Context context) {
         super(context);
     }
 
-    /** Create a new board view with the given attribute set. */
+    /**
+     * Create a new board view with the given attribute set.
+     */
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    /** Create a new board view with the given attribute set and style. */
+    /**
+     * Create a new board view with the given attribute set and style.
+     */
     public BoardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    /** Set the board to to be displayed by this view. */
+    /**
+     * Set the board to to be displayed by this view.
+     */
     public void setBoard(Board board) {
         /* Board to be displayed by this view. */
         this.boardSize = board.size();
@@ -181,31 +238,48 @@ public class BoardView extends View {
         return true;
     }
 
-    /** Overridden here to draw a 2-D representation of the board. */
+
+    /**
+     * Overridden here to draw a 2-D representation of the board.
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawGrid(canvas); // Draw blue
-        drawPlaces(canvas); // Draw red
+        drawGrid(canvas);
+        drawPlaces(canvas);
+        if(!xCoordinate.isEmpty() && !yCoordinate.isEmpty()){
+            drawHumanBoardPlaces(canvas);
+        }
     }
 
-    /** Draw all the places of the board. */
+    private void drawHumanBoardPlaces(Canvas canvas) {
+        for (int k = 0; k < xCoordinate.size(); k++) {
+            float drawX = (xCoordinate.get(k) * lineGap()) + (lineGap() / 2);
+            float drawY = (yCoordinate.get(k) * lineGap()) + (lineGap() / 2);
+            canvas.drawCircle(drawX, drawY, (lineGap() / 2), redPaint);
+        }
+    }
+
+    /**
+     * Draw all the places of the board.
+     */
     private void drawPlaces(Canvas canvas) {
 
-        for(int i = 0 ; i < getxMiss().size(); i++){
-            float xMiss = (getxMiss().get(i) * lineGap()) + (lineGap()/2);
-            float yMiss = (getyMiss().get(i) * lineGap()) + (lineGap()/2);
+        for (int i = 0; i < getxMiss().size(); i++) {
+            float xMiss = (getxMiss().get(i) * lineGap()) + (lineGap() / 2);
+            float yMiss = (getyMiss().get(i) * lineGap()) + (lineGap() / 2);
             canvas.drawCircle(xMiss, yMiss, (lineGap() / 2), whitePaint);
         }
-
-        for(int j = 0 ; j < getxHit().size(); j++){
-            float xHit = (getxHit().get(j) * lineGap()) + (lineGap()/2);
+        for (int j = 0; j < getxHit().size(); j++) {
+            float xHit = (getxHit().get(j) * lineGap()) + (lineGap() / 2);
             float yHit = (getyHit().get(j) * lineGap()) + (lineGap() / 2);
-            canvas.drawCircle(xHit, yHit, (lineGap() / 2    ), redPaint);
+            canvas.drawCircle(xHit, yHit, (lineGap() / 2), redPaint);
         }
     }
 
-    /** Draw horizontal and vertical lines. */
+    /**
+     * Draw horizontal and vertical lines.
+     */
     private void drawGrid(Canvas canvas) {
         final float maxCoord = maxCoord();
         final float placeSize = lineGap();
@@ -217,17 +291,23 @@ public class BoardView extends View {
         }
     }
 
-    /** Calculate the gap between two horizontal/vertical lines. */
+    /**
+     * Calculate the gap between two horizontal/vertical lines.
+     */
     protected float lineGap() {
         return Math.min(getMeasuredWidth(), getMeasuredHeight()) / (float) boardSize;
     }
 
-    /** Calculate the number of horizontal/vertical lines. */
+    /**
+     * Calculate the number of horizontal/vertical lines.
+     */
     private int numOfLines() {
         return boardSize + 1;
     }
 
-    /** Calculate the maximum screen coordinate. */
+    /**
+     * Calculate the maximum screen coordinate.
+     */
     protected float maxCoord() {
         return lineGap() * (numOfLines() - 1);
     }
@@ -239,7 +319,6 @@ public class BoardView extends View {
      * The returned coordinates are encoded as <code>x*100 + y</code>.
      */
     public int locatePlace(float x, float y) {
-
         if (x <= maxCoord() && y <= maxCoord()) {
             final float placeSize = lineGap();
             int ix = (int) (x / placeSize);
@@ -250,22 +329,46 @@ public class BoardView extends View {
         return -1;
     }
 
-    /** Register the given listener. */
+    public int locatePlaceForX(float x) {
+        if (x <= maxCoord()) {
+            final float placeSize = lineGap();
+            int ix = (int) (x / placeSize);
+            return ix;
+        }
+        return -1;
+    }
+    public int locatePlaceForY(float y) {
+        if (y <= maxCoord()) {
+            final float placeSize = lineGap();
+            int iy = (int) (y / placeSize);
+            return iy;
+        }
+        return -1;
+    }
+
+    /**
+     * Register the given listener.
+     */
     public void addBoardTouchListener(BoardTouchListener listener) {
         if (!listeners.contains(listener)) {
             listeners.add(listener);
         }
     }
 
-    /** Unregister the given listener. */
+    /**
+     * Unregister the given listener.
+     */
     public void removeBoardTouchListener(BoardTouchListener listener) {
         listeners.remove(listener);
     }
 
-    /** Notify all registered listeners. */
+    /**
+     * Notify all registered listeners.
+     */
     public void notifyBoardTouch(int x, int y) {
-        for (BoardTouchListener listener: listeners) {
+        for (BoardTouchListener listener : listeners) {
             listener.onTouch(x, y);
         }
     }
 }
+

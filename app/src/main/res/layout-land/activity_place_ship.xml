@@ -72,9 +72,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
-        android:layout_toEndOf="@+id/submarine"
-        android:layout_toRightOf="@+id/submarine">
+        android:layout_marginStart="17dp">
 
         <ImageView
             android:id="@+id/frigate"

@@ -15,7 +15,8 @@ import java.util.Random;
  * Last update: 03/20/2017
  */
 public class GameController extends AppCompatActivity  {
-    private GameModel gameModel = new GameModel();
+    private GameModel computerPlayer = new GameModel();
+    private GameModel humanPlayer = new GameModel();
     private MediaPlayer mp;
     /** This is the main controller class and handles the creation of multiple views.
      * @param savedInstanceState is the starting state.
@@ -23,97 +24,67 @@ public class GameController extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Call the corresponding controller methods
+        // Call the corresponding controller methodsvi
         if(savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
                 playMusic(this);
                 // By default this is the first controller is called when the activity is created.
                 launchHomeController();
+
+                computerPlayer.setPlayerReady(false);
+                computerPlayer.areYouPlaying(false);
+
+                humanPlayer.setPlayerReady(false);
+                humanPlayer.areYouPlaying(true);
+
             } else{
                 String controller = extras.getString("controllerName");
+                String player = extras.getString("player");
 
                 // Gets called when the user begins the game
                 if (controller.equals("humanChooseLevelController")) {
-                    humanChooseLevelController();
+                    humanPlayer.updateModel(this, "humanChooseLevelView"); // (view we launch, shouldWeStartGame?)
                 }
-                if (controller.equals("humanPlaceBoatsController")) {
+                if (controller.equals("placeBoatsController")) {
                     String difficulty = extras.getString("difficulty");
-                    humanPlaceBoatsController(difficulty);
+                    computerPlayer.setDifficulty(difficulty);
+                    humanPlayer.updateModel(this, "humanPlaceBoatsView");
                 }
-                // This controller handles the placement of random boats for the computer
-                if (controller.equals("computerPlaceBoatsController")) {
-                    computerPlaceBoatsController();
+                if(controller.equals("startGameView")){
+                    humanPlayer.updateModel(this, "startGameView");
                 }
-                // This controller handles the creation of the Battleship Game view.
-                if (controller.equals("startGameController")) {
-                    startGameController();
+                if (controller.equals("updateBoat") && player.equals("human")) {
+                    //int x = extras.getInt("x");
+                    //int y = extras.getInt("y");
+                   // humanPlayer.putX_Y_On_Map(x, y);
+                    humanPlayer.setPlayerReady(true);
+                    humanPlayer.updateModel(this, "startGameView");
                 }
-                if(controller.equals("humansTurnController")){
-                    humansTurnController();
-                }
-                if(controller.equals("computersTurnController")){
-                    computersTurnController();
+                if (controller.equals("updateBoat") && player.equals("computer")) {
+                  //  computerPlayer.putX_Y_On_Map(x, y);
+                    computerPlayer.updateModel(this, "startGameView");
                 }
                 if(controller.equals("quitController")){
-                    quitController();
+                    finish();
+                    launchHomeController();
                 }
             }
         }
     }
 
-    private void humanPlaceBoatsController(String difficulty) {
-        gameModel.setDifficulty(difficulty);
-        gameModel.updateView(this, "humanPlaceBoatsView", "false");
-    }
-
-    /**
-     * When the user decides to quit the application it takes the user back to the launching
-     * activity
-     */
-    private void quitController() {
-        finish();
-        launchHomeController();
-    }
     /**
      * The following controller is the beginning to this mobile application. It launches the home
      * screen and allows the user to begin a new game by first updating the @see GameModel to the
      * starting state, s0.
-     *
      */
     public void launchHomeController(){
-        gameModel.setComputerStatus(false);
-        gameModel.setUserStatus(false);
-        gameModel.updateView(this, "launchHomeView", "false"); // (view we launch, shouldWeStartGame?)
-    }
-    /**
-     * The following controller updates the @see GameModel to state 1. State 1 allows the user to
-     * choose the level of difficulty for the upcoming game.
-     */
-    public void humanChooseLevelController() {
-        gameModel.setUserStatus(true);
-        gameModel.updateView( this, "humanChooseLevelView", "false"); // (view we launch, shouldWeStartGame?)
-    }
-    /**
-     * This controller handles the coordinates of the boats at random
-     * @see GameView for more details.
-     */
-    public void computerPlaceBoatsController() {
-        // The following is how you send data to other classes.
-        gameModel.setComputerStatus(true);
-        gameModel.updateView(this, "startGameView", "true");
-
-    }
-    /**
-     * This controller is s3, where state 3 is the state where the user is able to play with the computer.
-     */
-    public void startGameController() {
-        gameModel.updateView(this, "startGameView", "true"); // (view we launch, shouldWeStartGame?)
-    }
-    public void humansTurnController() {
-    }
-
-    public void computersTurnController() {
+        if(!humanPlayer.areYouPlaying() && !computerPlayer.areYouPlaying()){
+            humanPlayer.areYouPlaying(true);
+            humanPlayer.updateModel(this, "launchHomeView");
+        }
+        //humanPlayer.updatePlayers(this, computerPlayer, humanPlayer);
+     //   gameModel.updateView(this, "launchHomeView", "false"); // (view we launch, shouldWeStartGame?)
     }
     public void playMusic(Context context) {
         if (mp!=null) {

@@ -24,7 +24,21 @@ public class Ship {
             setSink(false);
         }
     }
-
+    public int[][] clearContents(){
+        // Clear all elements since the user wants to place boat elsewhere
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map.length; j++) {
+                map[i][j] = -1;
+            }
+        }
+        return map;
+    }
+    public void humanSetCoordinates(int size, int x, int y){
+        // Boat has not been placed, therefore save user coordinates
+        for (int i = 0; i < size; i++) {
+            map[i + x][y] = 1;
+        }
+    }
     public void computerSetCoordinates() {
         int coordinatesRange = (map.length - getSize());
         int randomx = (int) (Math.random() * coordinatesRange);
@@ -43,6 +57,10 @@ public class Ship {
             }
         }
     }
+    public int[][] gethumanSetCoordinates(){
+        return map;
+    }
+
     public int[][] getComputerCordinates(){
         return map;
     }
