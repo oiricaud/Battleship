@@ -8,25 +8,26 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
+
+import java.util.Arrays;
+
 
 /**
  * Created by oscarricaud on 3/12/17.
  * This activity will allow the user to place boats. @see activity_place_ship
  */
 
-public class GameView extends ActionBarActivity {
+public class GameView extends AppCompatActivity {
     private MediaPlayer mp;
     private String fontPath;
     private Toolbar toolbar;
@@ -102,10 +103,10 @@ public class GameView extends ActionBarActivity {
                 humanPlaceBoatsView(difficulty); // The creation of this activity
             }
             if (viewToLaunch.equals("computerBoardView")) {
-                computerBoardView();
+               // computerBoardView();
             }
             if(viewToLaunch.equals("startGameView")){
-                computerBoardView();
+                //computerBoardView();
             }
         }
     }
@@ -319,17 +320,9 @@ public class GameView extends ActionBarActivity {
         next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    callTheController("startGameView", "computer");
+                    computerBoardView(humanBoardView);
                 }
             });
-    }
-
-    /**
-     * Only allows the user to advanced to the next activity once all boats have been placed
-     * on the board grid.
-     */
-    public void hasHumanPlacedAllBoats() {
-
     }
 
     /**
@@ -350,7 +343,6 @@ public class GameView extends ActionBarActivity {
         GameView.this.startActivity(intent);
         fadingTransition(); // Fading Transition Effect
     }
-
     /**
      * Fading Transition Effect
      */
@@ -368,14 +360,21 @@ public class GameView extends ActionBarActivity {
      * and colors a red circle the position of the boats, else colors a white circle indicating the
      * user missed.
      */
-    private void computerBoardView() {
+    private void computerBoardView(BoardView copyOfHumanBoard) {
         setContentView(R.layout.current_game);
 
         /* Begin Human Board */
-       // humanBoardView = (BoardView) findViewById(R.id.humanBoard);
+        Board humanBoardFinal = new Board(10);
+        BoardView humanBoardViewFinal = (BoardView) findViewById(R.id.humanBoard);
+        humanBoardViewFinal.setBoard(humanBoardFinal);
 
+        for(int i = 0 ; i < copyOfHumanBoard.getxCoordinate().size(); i++){
+            humanBoardViewFinal.setxCoordinate(copyOfHumanBoard.getxCoordinate().get(i));
+            humanBoardViewFinal.setyCoordinate(copyOfHumanBoard.getyCoordinate().get(i));
+        }
+        //humanBoardView.invalidate();
         /* End Human Board */
-            
+
        // humanBoardView.invalidate();
 
         /* Begin Computer Stuff Game */
@@ -385,11 +384,11 @@ public class GameView extends ActionBarActivity {
         computerBoardView.setBoard(computerBoard);
 
         // Below we define the boats that will be placed on the board
-        final Ship aircraft = new Ship(5, "aircraft", "Computer");
-        final Ship battleship = new Ship(4, "battleship", "Computer");
-        final Ship destroyer = new Ship(3, "destroyer", "Computer");
-        final Ship submarine = new Ship(3, "submarine", "Computer");
-        final Ship patrol = new Ship(2, "patrol", "Computer");
+        final Ship aircraftPC = new Ship(5, "aircraft", "Computer");
+        final Ship battleshipPC = new Ship(4, "battleship", "Computer");
+        final Ship destroyerPC = new Ship(3, "destroyer", "Computer");
+        final Ship submarinePC = new Ship(3, "submarine", "Computer");
+        final Ship patrolPC = new Ship(2, "patrol", "Computer");
 
         // Define buttons and text views here
         TextView battleshipTitle = (TextView) findViewById(R.id.BattleShip);
@@ -423,53 +422,53 @@ public class GameView extends ActionBarActivity {
                 // Compare the coordinates the user just touched with any of the boats that are placed
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
-                if (isItAHit(aircraft.getComputerCordinates(), x, y)) {
+                if (isItAHit(aircraftPC.getComputerCordinates(), x, y)) {
                     makeExplosionSound(activityContext);
-                    aircraft.hit();
+                    aircraftPC.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (aircraft.getHit() == 5) {
+                    if (aircraftPC.getHit() == 5) {
                         toast("Aircraft SUNK");
                         makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(battleship.getComputerCordinates(), x, y)) {
+                } else if (isItAHit(battleshipPC.getComputerCordinates(), x, y)) {
                     makeExplosionSound(activityContext);
-                    battleship.hit();
+                    battleshipPC.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (battleship.getHit() == 4) {
+                    if (battleshipPC.getHit() == 4) {
                         toast("Battleship SUNK");
                         makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(destroyer.getComputerCordinates(), x, y)) {
+                } else if (isItAHit(destroyerPC.getComputerCordinates(), x, y)) {
                     makeExplosionSound(activityContext);
-                    destroyer.hit();
+                    destroyerPC.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (destroyer.getHit() == 3) {
+                    if (destroyerPC.getHit() == 3) {
                         toast("Destroyer SUNK");
                         makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(submarine.getComputerCordinates(), x, y)) {
+                } else if (isItAHit(submarinePC.getComputerCordinates(), x, y)) {
                     makeExplosionSound(activityContext);
-                    submarine.hit();
+                    submarinePC.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (submarine.getHit() == 3) {
+                    if (submarinePC.getHit() == 3) {
                         toast("Submarine SUNK");
                         makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(patrol.getComputerCordinates(), x, y)) {
+                } else if (isItAHit(patrolPC.getComputerCordinates(), x, y)) {
                     makeExplosionSound(activityContext);
-                    patrol.hit();
+                    patrolPC.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (patrol.getHit() == 2) {
+                    if (patrolPC.getHit() == 2) {
                         toast("Patrol SUNK");
                         makeLouderExplosion(activityContext);
                     }
@@ -637,81 +636,5 @@ public class GameView extends ActionBarActivity {
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), getFontPath());
         textView.setTypeface(typeface);
     }
-
-    /**
-     * The drag and drop feature
-     */
-    /*
-    private final class ChoiceToucheListener implements View.OnTouchListener {
-        @Override
-        public boolean onTouch(View view, MotionEvent event) {
-            // TODO Auto-generated method stub
-            final int X = (int) event.getRawX();
-            final int Y = (int) event.getRawY();
-            int ix = 0;
-            int iy = 0;
-            switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_DOWN:
-                    int _xDelta = X;
-                    int _yDelta = Y;
-                    break;
-                case MotionEvent.ACTION_UP:
-                    break;
-                case MotionEvent.ACTION_POINTER_DOWN:
-                    break;
-                case MotionEvent.ACTION_POINTER_UP:
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                    humanBoardView.locatePlace(X, Y);
-                    int height = humanBoardView.getMeasuredHeight();
-                    int width = humanBoardView.getMeasuredWidth();
-                    if ((X <= 1000 && Y <= 1050)) {
-                        layoutParams.leftMargin = X;
-                        layoutParams.topMargin = Y;
-                        ix = humanBoardView.locatePlaceForX(X);
-                        iy = humanBoardView.locatePlaceForY(Y);
-                        Log.w("Get tag", String.valueOf(view.getTag()));
-
-                        if (view.getTag() == "aircraft") {
-                            Log.w("aircraft", "aircraft");
-                            aircraft.setPlaced(true);
-                            humanBoardView.setxCoordinate(ix);
-                            humanBoardView.setyCoordinate(iy);
-                        } else if (view.getTag() == "battleship") {
-                            Log.w("battleship", "battleship");
-                            battleship.setPlaced(true);
-                            humanBoardView.setxCoordinate(ix);
-                            humanBoardView.setyCoordinate(iy);
-                        } else if (view.getTag() == "destroyer") {
-                            Log.w("destroyer", "destroyer");
-                            destroyer.setPlaced(true);
-                            humanBoardView.setxCoordinate(ix);
-                            humanBoardView.setyCoordinate(iy);
-                        } else if (view.getTag() == "submarine") {
-                            Log.w("submarine", "submarine");
-                            submarine.setPlaced(true);
-                            humanBoardView.setxCoordinate(ix);
-                            humanBoardView.setyCoordinate(iy);
-                        } else if (view.getTag() == "patrol") {
-                            Log.w("patrol", "patrol");
-                            patrol.setPlaced(true);
-                            humanBoardView.setxCoordinate(ix);
-                            humanBoardView.setyCoordinate(iy);
-                        }
-                        Log.w("height", String.valueOf(height));
-                        Log.w("width", String.valueOf(width));
-
-                        view.setLayoutParams(layoutParams);
-                        break;
-                    }
-            }
-            Log.w("Y", String.valueOf(Y));
-            hasHumanPlacedAllBoats();
-            rootLayout.invalidate();
-            return true;
-        }
-    }
-    */
 }
 

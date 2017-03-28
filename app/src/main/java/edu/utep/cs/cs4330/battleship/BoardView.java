@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -25,7 +26,7 @@ import static edu.utep.cs.cs4330.battleship.R.attr.height;
  *
  * @see Board
  */
-public class BoardView extends View {
+public class BoardView extends View implements Serializable {
 
     private int[][] allBoats = new int[10][10];
 
@@ -247,8 +248,10 @@ public class BoardView extends View {
         super.onDraw(canvas);
         drawGrid(canvas);
         drawPlaces(canvas);
+        Log.w("1Woo", "woo");
         if(!xCoordinate.isEmpty() && !yCoordinate.isEmpty()){
             drawHumanBoardPlaces(canvas);
+            Log.w("2Woo", "woo");
         }
     }
 

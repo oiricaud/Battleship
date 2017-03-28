@@ -1,11 +1,12 @@
 package edu.utep.cs.cs4330.battleship;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import java.io.Serializable;
 import java.util.Random;
 
 // Controller
@@ -14,7 +15,7 @@ import java.util.Random;
  * @version 1.0
  * Last update: 03/20/2017
  */
-public class GameController extends AppCompatActivity  {
+public class GameController extends AppCompatActivity implements Serializable{
     private GameModel computerPlayer = new GameModel();
     private GameModel humanPlayer = new GameModel();
     private MediaPlayer mp;
@@ -63,8 +64,10 @@ public class GameController extends AppCompatActivity  {
                 }
                 if (controller.equals("updateBoat") && player.equals("computer")) {
                   //  computerPlayer.putX_Y_On_Map(x, y);
+
                     computerPlayer.updateModel(this, "startGameView");
                 }
+
                 if(controller.equals("quitController")){
                     finish();
                     launchHomeController();
