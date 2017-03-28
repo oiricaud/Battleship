@@ -278,21 +278,10 @@ public class BoardView extends View implements Serializable {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawGrid(canvas);
-        drawPlaces(canvas);
         if(!xCoordinate.isEmpty() && !yCoordinate.isEmpty()){
             drawHumanBoardPlaces(canvas);
         }
-        drawForHuman(canvas);
-
-    }
-
-    private void drawForHuman(Canvas canvas) {
-        for (int k = 0; k < getWhiteXhuman().size(); k++) {
-            Log.w("22Here", "here");
-            float xMiss = (getWhiteXhuman().get(k) * lineGap()) + (lineGap() / 2);
-            float yMiss = (getWhiteYhuman().get(k) * lineGap()) + (lineGap() / 2);
-            canvas.drawCircle(xMiss, yMiss, (lineGap() / 2), whitePaint);
-        }
+        drawPlaces(canvas);
     }
 
     private void drawHumanBoardPlaces(Canvas canvas) {

@@ -483,29 +483,74 @@ public class GameView extends AppCompatActivity {
 
                             toast("Computer Turn");
                             /* Computers TURN  */
-                            int randX = 0;
-                            int randY = 0;
+                            int randX = generateRandomCoordinate();
+                            int randY = generateRandomCoordinate();
                             Log.w("randX", String.valueOf(randX));
                             Log.w("randY", String.valueOf(randY));
                             if (isItAHit(aircraft.gethumanSetCoordinates(), randX, randY)) {
                                 makeExplosionSound(activityContext);
                                 aircraft.hit();
-                                humanBoardViewFinal.setWhiteXhuman(randX);
-                                humanBoardViewFinal.setWhiteYhuman(randY);
+                                humanBoardViewFinal.setxHit(randX);
+                                humanBoardViewFinal.setyHit(randY);
                                 toast("Computer shoots");
                                 if (aircraft.getHit() == 5) {
                                     toast("Aircraft SUNK");
                                     makeLouderExplosion(activityContext);
-                                    humanBoardViewFinal.invalidate();
                                 }
-                            } else {
-                                humanBoardViewFinal.setWhiteXhuman(x);
-                                humanBoardViewFinal.setWhiteYhuman(y);
+                                humanBoardViewFinal.invalidate();
+                            } else if (isItAHit(battleship.gethumanSetCoordinates(), randX, randY)) {
+                                makeExplosionSound(activityContext);
+                                battleship.hit();
+                                humanBoardViewFinal.setxHit(randX);
+                                humanBoardViewFinal.setyHit(randY);
+                                toast("KA-POW");
+                                if (battleshipPC.getHit() == 4) {
+                                    toast("Battleship SUNK");
+                                    makeLouderExplosion(activityContext);
+                                }
+                                humanBoardViewFinal.invalidate();
+                            }
+                            else if (isItAHit(destroyer.gethumanSetCoordinates(), randX, randY)) {
+                                makeExplosionSound(activityContext);
+                                destroyer.hit();
+                                humanBoardViewFinal.setxHit(randX);
+                                humanBoardViewFinal.setyHit(randY);
+                                toast("KA-POW");
+                                if (destroyer.getHit() == 4) {
+                                    toast("destroyer SUNK");
+                                    makeLouderExplosion(activityContext);
+                                }
+                                humanBoardViewFinal.invalidate();
+                            } else if (isItAHit(destroyer.gethumanSetCoordinates(), randX, randY)) {
+                                makeExplosionSound(activityContext);
+                                destroyer.hit();
+                                humanBoardViewFinal.setxHit(randX);
+                                humanBoardViewFinal.setyHit(randY);
+                                toast("KA-POW");
+                                if (destroyer.getHit() == 3) {
+                                    toast("destroyer SUNK");
+                                    makeLouderExplosion(activityContext);
+                                }
+                                humanBoardViewFinal.invalidate();
+                            } else if (isItAHit(submarine.gethumanSetCoordinates(), randX, randY)) {
+                                makeExplosionSound(activityContext);
+                                submarine.hit();
+                                humanBoardViewFinal.setxHit(randX);
+                                humanBoardViewFinal.setyHit(randY);
+                                toast("KA-POW");
+                                if (submarine.getHit() == 2) {
+                                    toast("submarine SUNK");
+                                    makeLouderExplosion(activityContext);
+                                }
+                                humanBoardViewFinal.invalidate();
+                            }
+                            else {
+                                humanBoardViewFinal.setxMiss(randX);
+                                humanBoardViewFinal.setyMiss(randY);
                                 toast("That was close!");
                                 makeMissedSound(activityContext);
                                 humanBoardViewFinal.invalidate();
                             }
-
                         }
                     }
                 });
