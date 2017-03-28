@@ -182,12 +182,13 @@ public class GameView extends ActionBarActivity {
                      int clickOnlyOnce = 0;
                      @Override
                      public void onTouch(int x, int y) {
-                         if (clickOnlyOnce == 0) {
+                         if (clickOnlyOnce <= 1) {
                              if (aircraft.isPlaced()) {
                                  clearCoordinates(aircraft);
+                                 clickOnlyOnce++;
                              }
-                             addCoordinates(aircraft, x, y);
                              aircraft.setPlaced(true);
+                             addCoordinates(aircraft, x, y);
                              clickOnlyOnce++;
                          }
                      }
@@ -199,9 +200,10 @@ public class GameView extends ActionBarActivity {
                 int clickOnlyOnce = 0;
                 @Override
                 public void onTouch(int x, int y) {
-                    if (clickOnlyOnce == 0) {
+                    if (clickOnlyOnce <= 1) {
                         if (battleship.isPlaced()) {
                             clearCoordinates(battleship);
+                            clickOnlyOnce++;
                         }
                         addCoordinates(battleship, x, y);
                         battleship.setPlaced(true);
@@ -216,9 +218,10 @@ public class GameView extends ActionBarActivity {
                 int clickOnlyOnce = 0;
                 @Override
                 public void onTouch(int x, int y) {
-                    if (clickOnlyOnce == 0) {
+                    if (clickOnlyOnce <= 0) {
                         if (destroyer.isPlaced()) {
                             clearCoordinates(destroyer);
+                            clickOnlyOnce++;
                         }
                         addCoordinates(destroyer, x, y);
                         destroyer.setPlaced(true);
@@ -233,9 +236,10 @@ public class GameView extends ActionBarActivity {
                 int clickOnlyOnce = 0;
                 @Override
                 public void onTouch(int x, int y) {
-                    if (clickOnlyOnce == 0) {
+                    if (clickOnlyOnce <= 0) {
                         if (submarine.isPlaced()) {
                             clearCoordinates(submarine);
+                            clickOnlyOnce++;
                         }
                         addCoordinates(submarine, x, y);
                         submarine.setPlaced(true);
@@ -250,9 +254,10 @@ public class GameView extends ActionBarActivity {
                 int clickOnlyOnce = 0;
                 @Override
                 public void onTouch(int x, int y) {
-                    if (clickOnlyOnce == 0) {
+                    if (clickOnlyOnce <= 0) {
                         if (patrol.isPlaced()) {
                             clearCoordinates(patrol);
+                            clickOnlyOnce++;
                         }
                         addCoordinates(patrol, x, y);
                         patrol.setPlaced(true);
@@ -267,11 +272,14 @@ public class GameView extends ActionBarActivity {
     private void addCoordinates(Ship ship, int x, int y) {
             Log.w("name of ship", ship.getName() + ", size: " + ship.getSize());
             Log.w("ship placed", String.valueOf(ship.isPlaced()));
+            Log.w("type of user", ship.getTypeOfPlayer());
             ship.humanSetCoordinates(ship.getSize(), x, y);
             int temp[][] = ship.gethumanSetCoordinates();
             for (int i = 0; i < temp.length; i++) {
                 for (int j = 0; j < temp.length; j++) {
                     if (temp[i][j] == 1) {
+                        ship.setX(i);
+                        ship.setY(j);
                         humanBoardView.xCoordinate.add(i);
                         humanBoardView.yCoordinate.add(j);
                     }
@@ -280,11 +288,17 @@ public class GameView extends ActionBarActivity {
     }
 
     private void clearCoordinates(Ship ship) {
-        ship.clearContents();
-        humanBoardView.xCoordinate.clear();
-        humanBoardView.yCoordinate.clear();
-    }
+        Log.w("Ship", String.valueOf(ship.getX()) + " " + String.valueOf(ship.getY()));
 
+        // Remove all X & Ycoordinates of the current ship
+        for(int k = 0; k < ship.getSize(); k++){
+            humanBoardView.xCoordinate.remove(ship.getX().get(k)); // Deletes the red dots @see BoardView
+            humanBoardView.yCoordinate.remove(ship.getY().get(k));
+        }
+        ship.getX().clear(); // Deletes for @see Ship
+        ship.getY().clear(); // Deletes for @see Ship
+        ship.clearContents(); // Set the grid to -1
+    }
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
      *
@@ -299,6 +313,15 @@ public class GameView extends ActionBarActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Place Boats");
 
+        Button next = (Button) findViewById(R.id.next);
+        changeFont(this, next);
+        next.setVisibility(View.VISIBLE);
+        next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callTheController("startGameView", "computer");
+                }
+            });
     }
 
     /**
@@ -306,23 +329,7 @@ public class GameView extends ActionBarActivity {
      * on the board grid.
      */
     public void hasHumanPlacedAllBoats() {
-        Button next = (Button) findViewById(R.id.next);
-        changeFont(this, next);
 
-        // Once the user has place all ships on grid, advance to the next activity
-        if (aircraft.isPlaced() && battleship.isPlaced() && destroyer.isPlaced() &&
-                submarine.isPlaced() && patrol.isPlaced()) {
-            next.setVisibility(View.VISIBLE);
-            next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    callTheController("startGameView", "computer");
-                }
-            });
-        } else { // By default hide the next button and don't let the user advance until all boats have
-            // been placed on the grid.
-            next.setVisibility(View.INVISIBLE);
-        }
     }
 
     /**
@@ -368,8 +375,7 @@ public class GameView extends ActionBarActivity {
        // humanBoardView = (BoardView) findViewById(R.id.humanBoard);
 
         /* End Human Board */
-        Log.w("Xt", String.valueOf(humanBoardView.getxCoordinate()));
-
+            
        // humanBoardView.invalidate();
 
         /* Begin Computer Stuff Game */

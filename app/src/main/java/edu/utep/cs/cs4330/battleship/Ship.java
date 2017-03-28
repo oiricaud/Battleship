@@ -1,26 +1,33 @@
 package edu.utep.cs.cs4330.battleship;
 
+import java.util.LinkedList;
+
 /**
  * Created by oscarricaud on 2/14/17.
  */
 public class Ship {
     private int[][] map = new int[10][10]; // size of the grid
+    private String typeOfPlayer;
     private int size;
     private String name;
     private boolean sink;
     private int hit;
     private boolean isPlaced;
+    private LinkedList<Integer> xShipCoordinate = new LinkedList<>();
+    private LinkedList<Integer> yShipCoordinate = new LinkedList<>();
 
     public Ship(int size, String nameofship, String typeOfUser) {
         if(typeOfUser.equals("Computer")){
             setSize(size);
             setName(nameofship);
+            setTypeOfPlayer("computer");
             computerSetCoordinates();
             setSink(false);
         }
         if(typeOfUser.equals("Human")){
             setSize(size);
             setName(nameofship);
+            setTypeOfPlayer("human");
             setSink(false);
         }
     }
@@ -107,5 +114,29 @@ public class Ship {
 
     public void setPlaced(boolean placed) {
         isPlaced = placed;
+    }
+
+    public LinkedList<Integer> getX() {
+        return xShipCoordinate;
+    }
+
+    public void setX(int x) {
+        xShipCoordinate.add(x);
+    }
+
+    public LinkedList<Integer> getY() {
+       return yShipCoordinate;
+    }
+
+    public void setY(int y) {
+        yShipCoordinate.add(y);
+    }
+
+    public String getTypeOfPlayer() {
+        return typeOfPlayer;
+    }
+
+    public void setTypeOfPlayer(String typeOfPlayer) {
+        this.typeOfPlayer = typeOfPlayer;
     }
 }
