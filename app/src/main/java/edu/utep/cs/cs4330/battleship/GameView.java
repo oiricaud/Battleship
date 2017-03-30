@@ -101,6 +101,9 @@ public class GameView extends AppCompatActivity {
         }
     }
 
+    /**
+     *  This method launches the home.xml and waits for the user to begin a new game.
+     */
     private void launchHomeView() {
         setContentView(R.layout.home);
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
@@ -117,6 +120,10 @@ public class GameView extends AppCompatActivity {
         });
     }
 
+    /**
+     *  This method launches the activity_level.xml and waits for the user to enter a
+     *  difficulty level.
+     */
     private void chooseLevelView() {
         setContentView(R.layout.activity_level);
         Button easy = (Button) findViewById(R.id.easy);
@@ -152,7 +159,7 @@ public class GameView extends AppCompatActivity {
     }
 
     /**
-     * This method creates buttons and drag & drop feature the user uses to place boats on grid.
+     * This method sets the toolbar for the user to tap on the board to place the boats of the ships
      */
     private void placeBoatsView() {
         setContentView(R.layout.activity_human_game);
@@ -161,6 +168,7 @@ public class GameView extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setTitle("Place Boats");
 
         Button next = (Button) findViewById(R.id.next);
@@ -182,6 +190,10 @@ public class GameView extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * @param item are the different ships the user can tap onto.
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         aircraft.setPlaced(false);
@@ -191,6 +203,7 @@ public class GameView extends AppCompatActivity {
         patrol.setPlaced(false);
 
         if (item.getItemId() == R.id.itemAircraft) {
+            //noinspection ConstantConditions
             getSupportActionBar().setTitle("Tap on Grid to Place Aircraft");
             humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
                 int clickOnlyOnce = 0;
@@ -285,7 +298,6 @@ public class GameView extends AppCompatActivity {
                 }
             });
         }
-
         return true;
     }
 
@@ -549,8 +561,7 @@ public class GameView extends AppCompatActivity {
 
     private int generateRandomCoordinate() {
         Random random = new Random();
-        int rand = random.nextInt(9 - 0 + 1) + 0;
-        return rand;
+        return random.nextInt(9 + 1);
     }
 
     /**
@@ -592,6 +603,10 @@ public class GameView extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * @param quitButton Where is the type of button
+     * @param context when the user hits quit, the user is sent back to the first activity
+     */
     public void quitActivity(Button quitButton, final Context context) {
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -657,11 +672,8 @@ public class GameView extends AppCompatActivity {
         });
     }
 
-    /** Plays at random 3 default game songs.
-     * @param context is the activity context
-     */
     /**
-     * Makes a swish noise when the player misses a shot.
+     * Plays at random 3 default game songs. Makes a swish noise when the player misses a shot.
      *
      * @param context is the activity context
      */
@@ -702,6 +714,11 @@ public class GameView extends AppCompatActivity {
         mp.start();
     }
 
+    /**
+     * Changes the font of the activity
+     * @param context Is the
+     * @param textView the view we want to change font to 
+     */
     public void changeFont(Context context, TextView textView) {
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), getFontPath());
         textView.setTypeface(typeface);
