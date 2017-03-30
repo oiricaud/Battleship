@@ -94,6 +94,7 @@ public class BoardView extends View implements Serializable {
         boardLinePaint.setColor(boardLineColor);
         boardLinePaint.setStrokeWidth(3);
     }
+
     /**
      * Create a new board view to be run in the given context.
      */

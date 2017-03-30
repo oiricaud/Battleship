@@ -36,10 +36,10 @@ public class GameController extends AppCompatActivity implements Serializable {
                 // By default this is the first controller is called when the activity is created.
                 launchHomeController();
 
-                computerPlayer.setPlayerReady(false);
+                computerPlayer.setPlayerReady();
                 computerPlayer.areYouPlaying(false);
 
-                humanPlayer.setPlayerReady(false);
+                humanPlayer.setPlayerReady();
                 humanPlayer.areYouPlaying(true);
 
             } else {
@@ -47,20 +47,20 @@ public class GameController extends AppCompatActivity implements Serializable {
                 String player = extras.getString("player");
 
                 // Gets called when the user begins the game
-                if (controller.equals("humanChooseLevelController")) {
-                              // (view we launch, shouldWeStartGame?)
-                    humanPlayer.updateModel(this, "humanChooseLevelView");
+                if (controller.equals("chooseLevelController")) {
+                    // (view we launch, shouldWeStartGame?)
+                    humanPlayer.updateModel(this, "chooseLevelView");
                 }
                 if (controller.equals("placeBoatsController")) {
                     String difficulty = extras.getString("difficulty");
-                    computerPlayer.setDifficulty(difficulty);
-                    humanPlayer.updateModel(this, "humanPlaceBoatsView");
+                    computerPlayer.setDifficulty();
+                    humanPlayer.updateModel(this, "placeBoatsView");
                 }
                 if (controller.equals("startGameView")) {
                     humanPlayer.updateModel(this, "startGameView");
                 }
                 if (controller.equals("updateBoat") && player.equals("human")) {
-                    humanPlayer.setPlayerReady(true);
+                    humanPlayer.setPlayerReady();
                     humanPlayer.updateModel(this, "startGameView");
                 }
                 if (controller.equals("updateBoat") && player.equals("computer")) {

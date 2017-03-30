@@ -82,25 +82,42 @@ public class GameView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setFontPath("fonts/eightbit.TTF");
 
         // The following loads the corresponding views. This class gets called from @see GameController.
         if (getIntent().getExtras() != null) {
+            setFontPath("fonts/eightbit.TTF");
             Bundle extras = getIntent().getExtras();
             String viewToLaunch = extras.getString("viewWeWantToLaunch"); // Look for YOUR KEY, variable you're receiving
+
             if (viewToLaunch.equals("launchHomeView")) {
-                launchHomeView();
+                launchHomeView(); // Launch the very first activity of this application
             }
-            if (viewToLaunch.equals("humanChooseLevelView")) {
-                humanChooseLevelView(); // The creation of this activity
+            if (viewToLaunch.equals("chooseLevelView")) {
+                chooseLevelView(); // The creation of this activity
             }
-            if (viewToLaunch.equals("humanPlaceBoatsView")) {
-                humanPlaceBoatsView(); // Loads the view that allows the user to place boats.
+            if (viewToLaunch.equals("placeBoatsView")) {
+                placeBoatsView(); // Loads the view that allows the user to place boats.
             }
         }
     }
 
-    private void humanChooseLevelView() {
+    private void launchHomeView() {
+        setContentView(R.layout.home);
+        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
+        changeFont(this, battleshipLabel);
+
+        // Begin to the next activity, placing boats on the map
+        Button startButton = (Button) findViewById(R.id.start);
+        changeFont(this, startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callTheController("chooseLevelController");
+            }
+        });
+    }
+
+    private void chooseLevelView() {
         setContentView(R.layout.activity_level);
         Button easy = (Button) findViewById(R.id.easy);
         Button medium = (Button) findViewById(R.id.medium);
@@ -134,22 +151,28 @@ public class GameView extends AppCompatActivity {
         });
     }
 
-    private void launchHomeView() {
-        setContentView(R.layout.home);
-        TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
-        changeFont(this, battleshipLabel);
+    /**
+     * This method creates buttons and drag & drop feature the user uses to place boats on grid.
+     */
+    private void placeBoatsView() {
+        setContentView(R.layout.activity_human_game);
+        humanBoardView = (BoardView) findViewById(R.id.humanBoardView2);
+        humanBoardView.setBoard(humanBoard);
 
-        // Begin to the next activity, placing boats on the map
-        Button startButton = (Button) findViewById(R.id.start);
-        changeFont(this, startButton);
-        startButton.setOnClickListener(new View.OnClickListener() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Place Boats");
+
+        Button next = (Button) findViewById(R.id.next);
+        changeFont(this, next);
+        next.setVisibility(View.VISIBLE);
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callTheController("humanChooseLevelController");
+                computerBoardView(humanBoardView);
             }
         });
     }
-
 
     // Menu icons are inflated just as they were with actionbar
     @Override
@@ -298,29 +321,6 @@ public class GameView extends AppCompatActivity {
     }
 
     /**
-     * This method creates buttons and drag & drop feature the user uses to place boats on grid.
-     */
-    private void humanPlaceBoatsView() {
-        setContentView(R.layout.activity_human_game);
-        humanBoardView = (BoardView) findViewById(R.id.humanBoardView2);
-        humanBoardView.setBoard(humanBoard);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Place Boats");
-
-        Button next = (Button) findViewById(R.id.next);
-        changeFont(this, next);
-        next.setVisibility(View.VISIBLE);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                computerBoardView(humanBoardView);
-            }
-        });
-    }
-
-    /**
      * @param whatControllerAreWeCalling is the argument we are taking to obtain the corresponding
      *                                   controller @see GameController for more details.
      */
@@ -334,8 +334,7 @@ public class GameView extends AppCompatActivity {
     /**
      * @param whatControllerAreWeCalling is the argument we are taking to obtain the corresponding
      *                                   controller @see GameController for more details.
-     *
-     * @param stringWeWantToPass        is the string we are passing to the @GameController.
+     * @param stringWeWantToPass         is the string we are passing to the @GameController.
      */
     private void callTheController(String whatControllerAreWeCalling, String stringWeWantToPass) {
         Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
@@ -640,7 +639,7 @@ public class GameView extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("New Game successfully created!");
-                                callTheController("humanChooseLevelController");
+                                callTheController("chooseLevelController");
                                 fadingTransition(); // Fading Transition Effect
                             }
                         });
