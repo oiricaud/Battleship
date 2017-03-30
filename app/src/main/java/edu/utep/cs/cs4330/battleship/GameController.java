@@ -28,11 +28,11 @@ public class GameController extends AppCompatActivity implements Serializable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Call the corresponding controller methodsvi
+        // Call the corresponding controller
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
-                playMusic(this);
+               // playMusic(this);
                 // By default this is the first controller is called when the activity is created.
                 launchHomeController();
 
@@ -47,18 +47,19 @@ public class GameController extends AppCompatActivity implements Serializable {
                 String player = extras.getString("player");
 
                 // Gets called when the user begins the game
+                assert controller != null;
                 if (controller.equals("chooseLevelController")) {
                     // (view we launch, shouldWeStartGame?)
                     humanPlayer.updateModel(this, "chooseLevelView");
                 }
                 if (controller.equals("placeBoatsController")) {
-                    String difficulty = extras.getString("difficulty");
                     computerPlayer.setDifficulty();
                     humanPlayer.updateModel(this, "placeBoatsView");
                 }
                 if (controller.equals("startGameView")) {
                     humanPlayer.updateModel(this, "startGameView");
                 }
+                assert player != null;
                 if (controller.equals("updateBoat") && player.equals("human")) {
                     humanPlayer.setPlayerReady();
                     humanPlayer.updateModel(this, "startGameView");
@@ -66,7 +67,6 @@ public class GameController extends AppCompatActivity implements Serializable {
                 if (controller.equals("updateBoat") && player.equals("computer")) {
                     computerPlayer.updateModel(this, "startGameView");
                 }
-
                 if (controller.equals("quitController")) {
                     finish();
                     launchHomeController();

@@ -10,13 +10,12 @@ public class Ship {
     private String typeOfPlayer;
     private int size;
     private String name;
-    private boolean sink;
     private int hit;
     private boolean isPlaced;
     private LinkedList<Integer> xShipCoordinate = new LinkedList<>();
     private LinkedList<Integer> yShipCoordinate = new LinkedList<>();
 
-    public Ship(int size, String nameofship, String typeOfUser) {
+    Ship(int size, String nameofship, String typeOfUser) {
         if (typeOfUser.equals("Computer")) {
             setSize(size);
             setName(nameofship);
@@ -32,7 +31,7 @@ public class Ship {
         }
     }
 
-    public int[][] clearContents() {
+    int[][] clearContents() {
         // Clear all elements since the user wants to place boat elsewhere
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map.length; j++) {
@@ -42,44 +41,44 @@ public class Ship {
         return map;
     }
 
-    public void humanSetCoordinates(int size, int x, int y) {
+    void humanSetCoordinates(int size, int x, int y) {
         // Boat has not been placed, therefore save user coordinates
         for (int i = 0; i < size; i++) {
             map[i + x][y] = 1;
         }
     }
 
-    public void computerSetCoordinates() {
+    private void computerSetCoordinates() {
         int coordinatesRange = (map.length - getSize());
         int randomx = (int) (Math.random() * coordinatesRange);
         int randomy = (int) (Math.random() * coordinatesRange);
         int direction = (int) (Math.random() * 2);
         if (direction == 1) { // if boat is horizontal
-            setPosition("Horizontal");
+            setPosition();
             for (int i = 0; i < getSize(); i++) { // place boat horizontal
                 map[randomx][randomy + i] = 1; // Adding to the right of the head
             }
         } else {
-            setPosition("Vertical");
+            setPosition();
             for (int j = 0; j < getSize(); j++) { // place boat vertical
                 map[randomx + j][randomy] = 1; // Adding below of the head
             }
         }
     }
 
-    public int[][] gethumanSetCoordinates() {
+    int[][] gethumanSetCoordinates() {
         return map;
     }
 
-    public int[][] getComputerCordinates() {
+    int[][] getComputerCordinates() {
         return map;
     }
 
-    public int getSize() {
+    int getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    private void setSize(int size) {
         this.size = size;
     }
 
@@ -91,55 +90,49 @@ public class Ship {
         this.name = name;
     }
 
-    public void setPosition(String position) {
-        String position1 = position;
+    private void setPosition() {
     }
 
-    public boolean isSink() {
-        return sink;
+    private void setSink(boolean sink) {
     }
 
-    public void setSink(boolean sink) {
-        this.sink = sink;
-    }
-
-    public int getHit() {
+    int getHit() {
         return hit;
     }
 
-    public void hit() {
+    void hit() {
         hit++;
     }
 
-    public boolean isPlaced() {
+    boolean isPlaced() {
         return isPlaced;
     }
 
-    public void setPlaced(boolean placed) {
+    void setPlaced(boolean placed) {
         isPlaced = placed;
     }
 
-    public LinkedList<Integer> getX() {
+    LinkedList<Integer> getX() {
         return xShipCoordinate;
     }
 
-    public void setX(int x) {
+    void setX(int x) {
         xShipCoordinate.add(x);
     }
 
-    public LinkedList<Integer> getY() {
+    LinkedList<Integer> getY() {
         return yShipCoordinate;
     }
 
-    public void setY(int y) {
+    void setY(int y) {
         yShipCoordinate.add(y);
     }
 
-    public String getTypeOfPlayer() {
+    String getTypeOfPlayer() {
         return typeOfPlayer;
     }
 
-    public void setTypeOfPlayer(String typeOfPlayer) {
+    private void setTypeOfPlayer(String typeOfPlayer) {
         this.typeOfPlayer = typeOfPlayer;
     }
 }
