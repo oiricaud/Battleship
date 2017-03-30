@@ -32,7 +32,7 @@ public class GameController extends AppCompatActivity implements Serializable {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
-               // playMusic(this);
+                playMusic(this);
                 // By default this is the first controller is called when the activity is created.
                 launchHomeController();
 
