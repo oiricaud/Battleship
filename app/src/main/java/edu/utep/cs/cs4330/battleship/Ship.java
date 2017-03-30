@@ -17,21 +17,22 @@ public class Ship {
     private LinkedList<Integer> yShipCoordinate = new LinkedList<>();
 
     public Ship(int size, String nameofship, String typeOfUser) {
-        if(typeOfUser.equals("Computer")){
+        if (typeOfUser.equals("Computer")) {
             setSize(size);
             setName(nameofship);
             setTypeOfPlayer("computer");
             computerSetCoordinates();
             setSink(false);
         }
-        if(typeOfUser.equals("Human")){
+        if (typeOfUser.equals("Human")) {
             setSize(size);
             setName(nameofship);
             setTypeOfPlayer("human");
             setSink(false);
         }
     }
-    public int[][] clearContents(){
+
+    public int[][] clearContents() {
         // Clear all elements since the user wants to place boat elsewhere
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map.length; j++) {
@@ -40,35 +41,37 @@ public class Ship {
         }
         return map;
     }
-    public void humanSetCoordinates(int size, int x, int y){
+
+    public void humanSetCoordinates(int size, int x, int y) {
         // Boat has not been placed, therefore save user coordinates
         for (int i = 0; i < size; i++) {
             map[i + x][y] = 1;
         }
     }
+
     public void computerSetCoordinates() {
         int coordinatesRange = (map.length - getSize());
         int randomx = (int) (Math.random() * coordinatesRange);
         int randomy = (int) (Math.random() * coordinatesRange);
         int direction = (int) (Math.random() * 2);
-        if(direction == 1) { // if boat is horizontal
+        if (direction == 1) { // if boat is horizontal
             setPosition("Horizontal");
-            for(int i = 0; i < getSize(); i++){ // place boat horizontal
-                map[randomx][randomy+i] = 1; // Adding to the right of the head
+            for (int i = 0; i < getSize(); i++) { // place boat horizontal
+                map[randomx][randomy + i] = 1; // Adding to the right of the head
             }
-        }
-        else{
+        } else {
             setPosition("Vertical");
-            for(int j = 0; j < getSize(); j++){ // place boat vertical
-                map[randomx+j][randomy] = 1; // Adding below of the head
+            for (int j = 0; j < getSize(); j++) { // place boat vertical
+                map[randomx + j][randomy] = 1; // Adding below of the head
             }
         }
     }
-    public int[][] gethumanSetCoordinates(){
+
+    public int[][] gethumanSetCoordinates() {
         return map;
     }
 
-    public int[][] getComputerCordinates(){
+    public int[][] getComputerCordinates() {
         return map;
     }
 
@@ -125,7 +128,7 @@ public class Ship {
     }
 
     public LinkedList<Integer> getY() {
-       return yShipCoordinate;
+        return yShipCoordinate;
     }
 
     public void setY(int y) {

@@ -4,29 +4,32 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.io.Serializable;
 import java.util.Random;
 
 // Controller
+
 /**
  * @author Oscar Ivan Ricaud
  * @version 1.0
- * Last update: 03/20/2017
+ *          Last update: 03/20/2017
  */
-public class GameController extends AppCompatActivity implements Serializable{
+public class GameController extends AppCompatActivity implements Serializable {
     private GameModel computerPlayer = new GameModel();
     private GameModel humanPlayer = new GameModel();
     private MediaPlayer mp;
-    /** This is the main controller class and handles the creation of multiple views.
+
+    /**
+     * This is the main controller class and handles the creation of multiple views.
+     *
      * @param savedInstanceState is the starting state.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Call the corresponding controller methodsvi
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
                 playMusic(this);
@@ -39,7 +42,7 @@ public class GameController extends AppCompatActivity implements Serializable{
                 humanPlayer.setPlayerReady(false);
                 humanPlayer.areYouPlaying(true);
 
-            } else{
+            } else {
                 String controller = extras.getString("controllerName");
                 String player = extras.getString("player");
 
@@ -52,23 +55,23 @@ public class GameController extends AppCompatActivity implements Serializable{
                     computerPlayer.setDifficulty(difficulty);
                     humanPlayer.updateModel(this, "humanPlaceBoatsView");
                 }
-                if(controller.equals("startGameView")){
+                if (controller.equals("startGameView")) {
                     humanPlayer.updateModel(this, "startGameView");
                 }
                 if (controller.equals("updateBoat") && player.equals("human")) {
                     //int x = extras.getInt("x");
                     //int y = extras.getInt("y");
-                   // humanPlayer.putX_Y_On_Map(x, y);
+                    // humanPlayer.putX_Y_On_Map(x, y);
                     humanPlayer.setPlayerReady(true);
                     humanPlayer.updateModel(this, "startGameView");
                 }
                 if (controller.equals("updateBoat") && player.equals("computer")) {
-                  //  computerPlayer.putX_Y_On_Map(x, y);
+                    //  computerPlayer.putX_Y_On_Map(x, y);
 
                     computerPlayer.updateModel(this, "startGameView");
                 }
 
-                if(controller.equals("quitController")){
+                if (controller.equals("quitController")) {
                     finish();
                     launchHomeController();
                 }
@@ -81,29 +84,30 @@ public class GameController extends AppCompatActivity implements Serializable{
      * screen and allows the user to begin a new game by first updating the @see GameModel to the
      * starting state, s0.
      */
-    public void launchHomeController(){
-        if(!humanPlayer.areYouPlaying() && !computerPlayer.areYouPlaying()){
+    public void launchHomeController() {
+        if (!humanPlayer.areYouPlaying() && !computerPlayer.areYouPlaying()) {
             humanPlayer.areYouPlaying(true);
             humanPlayer.updateModel(this, "launchHomeView");
         }
         //humanPlayer.updatePlayers(this, computerPlayer, humanPlayer);
-     //   gameModel.updateView(this, "launchHomeView", "false"); // (view we launch, shouldWeStartGame?)
+        //   gameModel.updateView(this, "launchHomeView", "false"); // (view we launch, shouldWeStartGame?)
     }
+
     public void playMusic(Context context) {
-        if (mp!=null) {
+        if (mp != null) {
             mp.stop();
             mp.release();
         }
         // Play one of these random songs in the background.
         Random random = new Random();
         int obtainRandomNumber = random.nextInt(3 - 1 + 1) + 1;
-        if(obtainRandomNumber == 1){
+        if (obtainRandomNumber == 1) {
             mp = MediaPlayer.create(context, R.raw.alterego);
         }
-        if(obtainRandomNumber == 2){
+        if (obtainRandomNumber == 2) {
             mp = MediaPlayer.create(context, R.raw.oblivion);
         }
-        if(obtainRandomNumber == 3){
+        if (obtainRandomNumber == 3) {
             mp = MediaPlayer.create(context, R.raw.yolo);
         }
         mp.start();

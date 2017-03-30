@@ -1,25 +1,18 @@
 package edu.utep.cs.cs4330.battleship;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import static android.R.attr.width;
-import static edu.utep.cs.cs4330.battleship.R.attr.height;
 
 /**
  * A special view class to display a battleship board as a 2D grid.
@@ -28,36 +21,98 @@ import static edu.utep.cs.cs4330.battleship.R.attr.height;
  */
 public class BoardView extends View implements Serializable {
 
-    private int[][] allBoats = new int[10][10];
-
+    /**
+     * Listeners to be notified upon board touches.
+     */
+    private final List<BoardTouchListener> listeners = new ArrayList<>();
+    /**
+     * Board background color.
+     */
+    private final int boardColor = Color.argb(0, 255, 255, 255); // Transparent
+    /**
+     * Red color circle
+     **/
+    private final int redColor = Color.rgb(255, 69, 0);
+    /**
+     * Black color circle
+     **/
+    private final int blackColor = Color.rgb(0, 0, 0);
+    /**
+     * White color circle
+     **/
+    private final int whiteColor = Color.rgb(255, 255, 255);
+    /**
+     * Board background paint.
+     */
+    private final Paint boardPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    /**
+     * Red background paint
+     */
+    private final Paint redPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    /**
+     * Black background paint
+     */
+    private final Paint blackPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    /**
+     * White background paint
+     */
+    private final Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    /**
+     * Board grid line paint.
+     */
+    private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     public LinkedList<Integer> xCoordinate = new LinkedList<>();
     public LinkedList<Integer> yCoordinate = new LinkedList<>();
-
-    private LinkedList<Integer> whiteXhuman= new LinkedList<>();
-    private LinkedList<Integer> whiteYhuman = new LinkedList<>();
-
     private LinkedList<Integer> xHit = new LinkedList<>();
     private LinkedList<Integer> yHit = new LinkedList<>();
-
     private LinkedList<Integer> setxMiss = new LinkedList<>();
     private LinkedList<Integer> setyMiss = new LinkedList<>();
+    /**
+     * Size of the board.
+     */
+    private int boardSize;
 
-    private boolean iShot;
-
-    public boolean iShot() {
-        return iShot;
+    {
+        boardPaint.setColor(boardColor);
     }
 
-    public void setiShot(boolean iShot) {
-        this.iShot = iShot;
+    {
+        redPaint.setColor(redColor);
     }
 
-    public int[][] getAllBoats() {
-        return allBoats;
+    {
+        blackPaint.setColor(blackColor);
     }
 
-    public void setAllBoats(int[][] allBoats) {
-        this.allBoats = allBoats;
+    {
+        whitePaint.setColor(whiteColor);
+    }
+
+    {
+        /* Board grid line color. */
+        int boardLineColor = Color.WHITE;
+        boardLinePaint.setColor(boardLineColor);
+        boardLinePaint.setStrokeWidth(3);
+    }
+    /**
+     * Create a new board view to be run in the given context.
+     */
+    public BoardView(Context context) {
+        super(context);
+    }
+
+    /**
+     * Create a new board view with the given attribute set.
+     */
+    public BoardView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    /**
+     * Create a new board view with the given attribute set and style.
+     */
+    public BoardView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     public LinkedList<Integer> getxHit() {
@@ -108,133 +163,6 @@ public class BoardView extends View implements Serializable {
         yCoordinate.add(y);
     }
 
-    public LinkedList<Integer> getWhiteXhuman() {
-        return whiteXhuman;
-    }
-
-    public void setWhiteXhuman(int t) {
-        whiteXhuman.add(t);
-    }
-
-    public LinkedList<Integer> getWhiteYhuman() {
-        return whiteYhuman;
-    }
-
-    public void setWhiteYhuman(int o) {
-        whiteYhuman.add(o);
-    }
-
-
-    /**
-     * Callback interface to listen for board touches.
-     */
-    public interface BoardTouchListener {
-
-        /**
-         * Called when a place of the board is touched.
-         * The coordinate of the touched place is provided.
-         *
-         * @param x 0-based column index of the touched place
-         * @param y 0-based row index of the touched place
-         */
-        void onTouch(int x, int y);
-
-    }
-
-    /**
-     * Listeners to be notified upon board touches.
-     */
-    private final List<BoardTouchListener> listeners = new ArrayList<>();
-
-    /**
-     * Board background color.
-     */
-    private final int boardColor = Color.argb(0, 255, 255, 255); // Transparent
-
-    /**
-     * Red color circle
-     **/
-    private final int redColor = Color.rgb(255, 69, 0);
-    /**
-     * Black color circle
-     **/
-    private final int blackColor = Color.rgb(0, 0, 0);
-
-    /**
-     * White color circle
-     **/
-    private final int whiteColor = Color.rgb(255, 255, 255);
-
-    /**
-     * Board background paint.
-     */
-    private final Paint boardPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-    {
-        boardPaint.setColor(boardColor);
-    }
-
-    /**
-     * Red background paint
-     */
-    private final Paint redPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-    {
-        redPaint.setColor(redColor);
-    }
-    /**
-     * Black background paint
-     */
-    private final Paint blackPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-    {
-        blackPaint.setColor(blackColor);
-    }
-    /**
-     * White background paint
-     */
-    private final Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    {
-        whitePaint.setColor(whiteColor);
-    }
-
-    /**
-     * Board grid line paint.
-     */
-    private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    {
-        /* Board grid line color. */
-        int boardLineColor = Color.WHITE;
-        boardLinePaint.setColor(boardLineColor);
-        boardLinePaint.setStrokeWidth(3);
-    }
-
-    /**
-     * Size of the board.
-     */
-    private int boardSize;
-
-    /**
-     * Create a new board view to be run in the given context.
-     */
-    public BoardView(Context context) {
-        super(context);
-    }
-
-    /**
-     * Create a new board view with the given attribute set.
-     */
-    public BoardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    /**
-     * Create a new board view with the given attribute set and style.
-     */
-    public BoardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     /**
      * Set the board to to be displayed by this view.
      */
@@ -270,7 +198,6 @@ public class BoardView extends View implements Serializable {
         return true;
     }
 
-
     /**
      * Overridden here to draw a 2-D representation of the board.
      */
@@ -278,7 +205,7 @@ public class BoardView extends View implements Serializable {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawGrid(canvas);
-        if(!xCoordinate.isEmpty() && !yCoordinate.isEmpty()){
+        if (!xCoordinate.isEmpty() && !yCoordinate.isEmpty()) {
             drawHumanBoardPlaces(canvas);
         }
         drawPlaces(canvas);
@@ -369,6 +296,7 @@ public class BoardView extends View implements Serializable {
         }
         return -1;
     }
+
     public int locatePlaceForY(float y) {
         if (y <= maxCoord()) {
             final float placeSize = lineGap();
@@ -401,6 +329,22 @@ public class BoardView extends View implements Serializable {
         for (BoardTouchListener listener : listeners) {
             listener.onTouch(x, y);
         }
+    }
+
+    /**
+     * Callback interface to listen for board touches.
+     */
+    public interface BoardTouchListener {
+
+        /**
+         * Called when a place of the board is touched.
+         * The coordinate of the touched place is provided.
+         *
+         * @param x 0-based column index of the touched place
+         * @param y 0-based row index of the touched place
+         */
+        void onTouch(int x, int y);
+
     }
 }
 

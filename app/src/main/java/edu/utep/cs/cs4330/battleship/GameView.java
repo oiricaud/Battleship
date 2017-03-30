@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +18,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
-import java.util.Arrays;
 import java.util.Random;
 
 
@@ -105,9 +104,9 @@ public class GameView extends AppCompatActivity {
                 humanPlaceBoatsView(difficulty); // The creation of this activity
             }
             if (viewToLaunch.equals("computerBoardView")) {
-               // computerBoardView();
+                // computerBoardView();
             }
-            if(viewToLaunch.equals("startGameView")){
+            if (viewToLaunch.equals("startGameView")) {
                 //computerBoardView();
             }
         }
@@ -171,6 +170,7 @@ public class GameView extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         aircraft.setPlaced(false);
@@ -179,28 +179,30 @@ public class GameView extends AppCompatActivity {
         submarine.setPlaced(false);
         patrol.setPlaced(false);
 
-         if(item.getItemId() == R.id.itemAircraft) {
+        if (item.getItemId() == R.id.itemAircraft) {
             getSupportActionBar().setTitle("Tap on Grid to Place Aircraft");
-                 humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-                     int clickOnlyOnce = 0;
-                     @Override
-                     public void onTouch(int x, int y) {
-                         if (clickOnlyOnce <= 1) {
-                             if (aircraft.isPlaced()) {
-                                 clearCoordinates(aircraft);
-                                 clickOnlyOnce++;
-                             }
-                             aircraft.setPlaced(true);
-                             addCoordinates(aircraft, x, y);
-                             clickOnlyOnce++;
-                         }
-                     }
-                 });
-         }
-       if(item.getItemId() == R.id.itemBattleship){
+            humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+                int clickOnlyOnce = 0;
+
+                @Override
+                public void onTouch(int x, int y) {
+                    if (clickOnlyOnce <= 1) {
+                        if (aircraft.isPlaced()) {
+                            clearCoordinates(aircraft);
+                            clickOnlyOnce++;
+                        }
+                        aircraft.setPlaced(true);
+                        addCoordinates(aircraft, x, y);
+                        clickOnlyOnce++;
+                    }
+                }
+            });
+        }
+        if (item.getItemId() == R.id.itemBattleship) {
             getSupportActionBar().setTitle("Tap on Grid to Place Battleship");
             humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
                 int clickOnlyOnce = 0;
+
                 @Override
                 public void onTouch(int x, int y) {
                     if (clickOnlyOnce <= 1) {
@@ -215,10 +217,11 @@ public class GameView extends AppCompatActivity {
                 }
             });
         }
-        if(item.getItemId() == R.id.itemDestroyer) {
+        if (item.getItemId() == R.id.itemDestroyer) {
             getSupportActionBar().setTitle("Tap on Grid to Place Destroyer");
             humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
                 int clickOnlyOnce = 0;
+
                 @Override
                 public void onTouch(int x, int y) {
                     if (clickOnlyOnce <= 0) {
@@ -233,10 +236,11 @@ public class GameView extends AppCompatActivity {
                 }
             });
         }
-        if(item.getItemId() == R.id.itemSubmarine) {
+        if (item.getItemId() == R.id.itemSubmarine) {
             getSupportActionBar().setTitle("Tap on Grid to Place Submarine");
             humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
                 int clickOnlyOnce = 0;
+
                 @Override
                 public void onTouch(int x, int y) {
                     if (clickOnlyOnce <= 0) {
@@ -251,10 +255,11 @@ public class GameView extends AppCompatActivity {
                 }
             });
         }
-        if(item.getItemId() == R.id.itemPatrol) {
+        if (item.getItemId() == R.id.itemPatrol) {
             getSupportActionBar().setTitle("Tap on Grid to Place Patrol");
             humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
                 int clickOnlyOnce = 0;
+
                 @Override
                 public void onTouch(int x, int y) {
                     if (clickOnlyOnce <= 0) {
@@ -269,24 +274,25 @@ public class GameView extends AppCompatActivity {
                 }
             });
         }
+
         return true;
     }
 
     private void addCoordinates(Ship ship, int x, int y) {
-            Log.w("name of ship", ship.getName() + ", size: " + ship.getSize());
-            Log.w("ship placed", String.valueOf(ship.isPlaced()));
-            Log.w("type of user", ship.getTypeOfPlayer());
-            ship.humanSetCoordinates(ship.getSize(), x, y);
-            int temp[][] = ship.gethumanSetCoordinates();
-            for (int i = 0; i < temp.length; i++) {
-                for (int j = 0; j < temp.length; j++) {
-                    if (temp[i][j] == 1) {
-                        ship.setX(i);
-                        ship.setY(j);
-                        humanBoardView.xCoordinate.add(i);
-                        humanBoardView.yCoordinate.add(j);
-                    }
+        Log.w("name of ship", ship.getName() + ", size: " + ship.getSize());
+        Log.w("ship placed", String.valueOf(ship.isPlaced()));
+        Log.w("type of user", ship.getTypeOfPlayer());
+        ship.humanSetCoordinates(ship.getSize(), x, y);
+        int temp[][] = ship.gethumanSetCoordinates();
+        for (int i = 0; i < temp.length; i++) {
+            for (int j = 0; j < temp.length; j++) {
+                if (temp[i][j] == 1) {
+                    ship.setX(i);
+                    ship.setY(j);
+                    humanBoardView.xCoordinate.add(i);
+                    humanBoardView.yCoordinate.add(j);
                 }
+            }
         }
     }
 
@@ -294,7 +300,7 @@ public class GameView extends AppCompatActivity {
         Log.w("Ship", String.valueOf(ship.getX()) + " " + String.valueOf(ship.getY()));
 
         // Remove all X & Ycoordinates of the current ship
-        for(int k = 0; k < ship.getSize(); k++){
+        for (int k = 0; k < ship.getSize(); k++) {
             humanBoardView.xCoordinate.remove(ship.getX().get(k)); // Deletes the red dots @see BoardView
             humanBoardView.yCoordinate.remove(ship.getY().get(k));
         }
@@ -302,6 +308,7 @@ public class GameView extends AppCompatActivity {
         ship.getY().clear(); // Deletes for @see Ship
         ship.clearContents(); // Set the grid to -1
     }
+
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
      *
@@ -320,11 +327,11 @@ public class GameView extends AppCompatActivity {
         changeFont(this, next);
         next.setVisibility(View.VISIBLE);
         next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    computerBoardView(humanBoardView);
-                }
-            });
+            @Override
+            public void onClick(View view) {
+                computerBoardView(humanBoardView);
+            }
+        });
     }
 
     /**
@@ -345,6 +352,7 @@ public class GameView extends AppCompatActivity {
         GameView.this.startActivity(intent);
         fadingTransition(); // Fading Transition Effect
     }
+
     /**
      * Fading Transition Effect
      */
@@ -370,7 +378,7 @@ public class GameView extends AppCompatActivity {
         humanBoardViewFinal = (BoardView) findViewById(R.id.humanBoard);
         humanBoardViewFinal.setBoard(humanBoardFinal);
 
-        for(int i = 0 ; i < copyOfHumanBoard.getxCoordinate().size(); i++){
+        for (int i = 0; i < copyOfHumanBoard.getxCoordinate().size(); i++) {
             humanBoardViewFinal.setxCoordinate(copyOfHumanBoard.getxCoordinate().get(i));
             humanBoardViewFinal.setyCoordinate(copyOfHumanBoard.getyCoordinate().get(i));
         }
@@ -409,157 +417,151 @@ public class GameView extends AppCompatActivity {
         countShots = 0;
         setCountShots(0);
         /* End Computer Stuff Game*/
-        boolean computerTurn = false;
-        boolean humanTurn = true;
-        boolean gameIsOver = false;
-        int count = 0;
-            // Call the GameController to see whose turn it is.
-            // Listen for the user input
+        // Call the GameController to see whose turn it is.
+        // Listen for the user input
 
-                computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-                    @Override
-                    public void onTouch(int x, int y) {
-                        setCountShots(countShots + 1);
-                        counter.setText(String.valueOf("Number of Shots: " + getCountShots()));
+        computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+            @Override
+            public void onTouch(int x, int y) {
+                setCountShots(countShots + 1);
+                counter.setText(String.valueOf("Number of Shots: " + getCountShots()));
 
-                        // Compare the coordinates the user just touched with any of the boats that are placed
-                        // on the board. Then either play a missed or explosion sound. When the boat sinks
-                        // play a louder explosion.
-                        if (isItAHit(aircraftPC.getComputerCordinates(), x, y)) {
-                            makeExplosionSound(activityContext);
-                            aircraftPC.hit();
-                            computerBoardView.setxHit(x);
-                            computerBoardView.setyHit(y);
-                            toast("KA-POW");
-                            if (aircraftPC.getHit() == 5) {
-                                toast("Aircraft SUNK");
-                                makeLouderExplosion(activityContext);
-                            }
-                        } else if (isItAHit(battleshipPC.getComputerCordinates(), x, y)) {
-                            makeExplosionSound(activityContext);
-                            battleshipPC.hit();
-                            computerBoardView.setxHit(x);
-                            computerBoardView.setyHit(y);
-                            toast("KA-POW");
-                            if (battleshipPC.getHit() == 4) {
-                                toast("Battleship SUNK");
-                                makeLouderExplosion(activityContext);
-                            }
-                        } else if (isItAHit(destroyerPC.getComputerCordinates(), x, y)) {
-                            makeExplosionSound(activityContext);
-                            destroyerPC.hit();
-                            computerBoardView.setxHit(x);
-                            computerBoardView.setyHit(y);
-                            toast("KA-POW");
-                            if (destroyerPC.getHit() == 3) {
-                                toast("Destroyer SUNK");
-                                makeLouderExplosion(activityContext);
-                            }
-                        } else if (isItAHit(submarinePC.getComputerCordinates(), x, y)) {
-                            makeExplosionSound(activityContext);
-                            submarinePC.hit();
-                            computerBoardView.setxHit(x);
-                            computerBoardView.setyHit(y);
-                            toast("KA-POW");
-                            if (submarinePC.getHit() == 3) {
-                                toast("Submarine SUNK");
-                                makeLouderExplosion(activityContext);
-                            }
-                        } else if (isItAHit(patrolPC.getComputerCordinates(), x, y)) {
-                            makeExplosionSound(activityContext);
-                            patrolPC.hit();
-                            computerBoardView.setxHit(x);
-                            computerBoardView.setyHit(y);
-                            toast("KA-POW");
-                            if (patrolPC.getHit() == 2) {
-                                toast("Patrol SUNK");
-                                makeLouderExplosion(activityContext);
-                            }
-                        } else {
-                            computerBoardView.setxMiss(x);
-                            computerBoardView.setyMiss(y);
-                            toast("That was close!");
-                            makeMissedSound(activityContext);
-
-                            toast("Computer Turn");
-                            /* Computers TURN  */
-                            int randX = generateRandomCoordinate();
-                            int randY = generateRandomCoordinate();
-                            Log.w("randX", String.valueOf(randX));
-                            Log.w("randY", String.valueOf(randY));
-                            if (isItAHit(aircraft.gethumanSetCoordinates(), randX, randY)) {
-                                makeExplosionSound(activityContext);
-                                aircraft.hit();
-                                humanBoardViewFinal.setxHit(randX);
-                                humanBoardViewFinal.setyHit(randY);
-                                toast("Computer shoots");
-                                if (aircraft.getHit() == 5) {
-                                    toast("Aircraft SUNK");
-                                    makeLouderExplosion(activityContext);
-                                }
-                                humanBoardViewFinal.invalidate();
-                            } else if (isItAHit(battleship.gethumanSetCoordinates(), randX, randY)) {
-                                makeExplosionSound(activityContext);
-                                battleship.hit();
-                                humanBoardViewFinal.setxHit(randX);
-                                humanBoardViewFinal.setyHit(randY);
-                                toast("KA-POW");
-                                if (battleshipPC.getHit() == 4) {
-                                    toast("Battleship SUNK");
-                                    makeLouderExplosion(activityContext);
-                                }
-                                humanBoardViewFinal.invalidate();
-                            }
-                            else if (isItAHit(destroyer.gethumanSetCoordinates(), randX, randY)) {
-                                makeExplosionSound(activityContext);
-                                destroyer.hit();
-                                humanBoardViewFinal.setxHit(randX);
-                                humanBoardViewFinal.setyHit(randY);
-                                toast("KA-POW");
-                                if (destroyer.getHit() == 4) {
-                                    toast("destroyer SUNK");
-                                    makeLouderExplosion(activityContext);
-                                }
-                                humanBoardViewFinal.invalidate();
-                            } else if (isItAHit(destroyer.gethumanSetCoordinates(), randX, randY)) {
-                                makeExplosionSound(activityContext);
-                                destroyer.hit();
-                                humanBoardViewFinal.setxHit(randX);
-                                humanBoardViewFinal.setyHit(randY);
-                                toast("KA-POW");
-                                if (destroyer.getHit() == 3) {
-                                    toast("destroyer SUNK");
-                                    makeLouderExplosion(activityContext);
-                                }
-                                humanBoardViewFinal.invalidate();
-                            } else if (isItAHit(submarine.gethumanSetCoordinates(), randX, randY)) {
-                                makeExplosionSound(activityContext);
-                                submarine.hit();
-                                humanBoardViewFinal.setxHit(randX);
-                                humanBoardViewFinal.setyHit(randY);
-                                toast("KA-POW");
-                                if (submarine.getHit() == 2) {
-                                    toast("submarine SUNK");
-                                    makeLouderExplosion(activityContext);
-                                }
-                                humanBoardViewFinal.invalidate();
-                            }
-                            else {
-                                humanBoardViewFinal.setxMiss(randX);
-                                humanBoardViewFinal.setyMiss(randY);
-                                toast("That was close!");
-                                makeMissedSound(activityContext);
-                                humanBoardViewFinal.invalidate();
-                            }
-                        }
+                // Compare the coordinates the user just touched with any of the boats that are placed
+                // on the board. Then either play a missed or explosion sound. When the boat sinks
+                // play a louder explosion.
+                if (isItAHit(aircraftPC.getComputerCordinates(), x, y)) {
+                    makeExplosionSound(activityContext);
+                    aircraftPC.hit();
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
+                    toast("KA-POW");
+                    if (aircraftPC.getHit() == 5) {
+                        toast("Aircraft SUNK");
+                        makeLouderExplosion(activityContext);
                     }
-                });
+                } else if (isItAHit(battleshipPC.getComputerCordinates(), x, y)) {
+                    makeExplosionSound(activityContext);
+                    battleshipPC.hit();
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
+                    toast("KA-POW");
+                    if (battleshipPC.getHit() == 4) {
+                        toast("Battleship SUNK");
+                        makeLouderExplosion(activityContext);
+                    }
+                } else if (isItAHit(destroyerPC.getComputerCordinates(), x, y)) {
+                    makeExplosionSound(activityContext);
+                    destroyerPC.hit();
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
+                    toast("KA-POW");
+                    if (destroyerPC.getHit() == 3) {
+                        toast("Destroyer SUNK");
+                        makeLouderExplosion(activityContext);
+                    }
+                } else if (isItAHit(submarinePC.getComputerCordinates(), x, y)) {
+                    makeExplosionSound(activityContext);
+                    submarinePC.hit();
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
+                    toast("KA-POW");
+                    if (submarinePC.getHit() == 3) {
+                        toast("Submarine SUNK");
+                        makeLouderExplosion(activityContext);
+                    }
+                } else if (isItAHit(patrolPC.getComputerCordinates(), x, y)) {
+                    makeExplosionSound(activityContext);
+                    patrolPC.hit();
+                    computerBoardView.setxHit(x);
+                    computerBoardView.setyHit(y);
+                    toast("KA-POW");
+                    if (patrolPC.getHit() == 2) {
+                        toast("Patrol SUNK");
+                        makeLouderExplosion(activityContext);
+                    }
+                } else {
+                    computerBoardView.setxMiss(x);
+                    computerBoardView.setyMiss(y);
+                    toast("That was close!");
+                    makeMissedSound(activityContext);
+
+                    toast("Computer Turn");
+                            /* Computers TURN  */
+                    int randX = generateRandomCoordinate();
+                    int randY = generateRandomCoordinate();
+                    Log.w("randX", String.valueOf(randX));
+                    Log.w("randY", String.valueOf(randY));
+                    if (isItAHit(aircraft.gethumanSetCoordinates(), randX, randY)) {
+                        makeExplosionSound(activityContext);
+                        aircraft.hit();
+                        humanBoardViewFinal.setxHit(randX);
+                        humanBoardViewFinal.setyHit(randY);
+                        toast("Computer shoots");
+                        if (aircraft.getHit() == 5) {
+                            toast("Aircraft SUNK");
+                            makeLouderExplosion(activityContext);
+                        }
+                        humanBoardViewFinal.invalidate();
+                    } else if (isItAHit(battleship.gethumanSetCoordinates(), randX, randY)) {
+                        makeExplosionSound(activityContext);
+                        battleship.hit();
+                        humanBoardViewFinal.setxHit(randX);
+                        humanBoardViewFinal.setyHit(randY);
+                        toast("KA-POW");
+                        if (battleshipPC.getHit() == 4) {
+                            toast("Battleship SUNK");
+                            makeLouderExplosion(activityContext);
+                        }
+                        humanBoardViewFinal.invalidate();
+                    } else if (isItAHit(destroyer.gethumanSetCoordinates(), randX, randY)) {
+                        makeExplosionSound(activityContext);
+                        destroyer.hit();
+                        humanBoardViewFinal.setxHit(randX);
+                        humanBoardViewFinal.setyHit(randY);
+                        toast("KA-POW");
+                        if (destroyer.getHit() == 4) {
+                            toast("destroyer SUNK");
+                            makeLouderExplosion(activityContext);
+                        }
+                        humanBoardViewFinal.invalidate();
+                    } else if (isItAHit(destroyer.gethumanSetCoordinates(), randX, randY)) {
+                        makeExplosionSound(activityContext);
+                        destroyer.hit();
+                        humanBoardViewFinal.setxHit(randX);
+                        humanBoardViewFinal.setyHit(randY);
+                        toast("KA-POW");
+                        if (destroyer.getHit() == 3) {
+                            toast("destroyer SUNK");
+                            makeLouderExplosion(activityContext);
+                        }
+                        humanBoardViewFinal.invalidate();
+                    } else if (isItAHit(submarine.gethumanSetCoordinates(), randX, randY)) {
+                        makeExplosionSound(activityContext);
+                        submarine.hit();
+                        humanBoardViewFinal.setxHit(randX);
+                        humanBoardViewFinal.setyHit(randY);
+                        toast("KA-POW");
+                        if (submarine.getHit() == 2) {
+                            toast("submarine SUNK");
+                            makeLouderExplosion(activityContext);
+                        }
+                        humanBoardViewFinal.invalidate();
+                    } else {
+                        humanBoardViewFinal.setxMiss(randX);
+                        humanBoardViewFinal.setyMiss(randY);
+                        toast("That was close!");
+                        makeMissedSound(activityContext);
+                        humanBoardViewFinal.invalidate();
+                    }
+                }
+            }
+        });
     }
 
     private int generateRandomCoordinate() {
         Random random = new Random();
         int rand = random.nextInt(9 - 0 + 1) + 0;
-        return  rand;
+        return rand;
     }
 
     private void computerShoot(int x, int y) {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -24,21 +25,20 @@
             android:textColor="@android:color/holo_orange_dark"
             android:textSize="22sp" />
 
-            <Button
-                android:id="@+id/quitButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/holo_red_light"
-                android:text="Quit"
-                android:textStyle="bold"
-                android:layout_marginTop="38dp"
-                android:layout_below="@+id/newButton"
-                android:layout_alignLeft="@+id/newButton"
-                android:layout_alignStart="@+id/newButton" />
+        <Button
+            android:id="@+id/quitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/newButton"
+            android:layout_alignStart="@+id/newButton"
+            android:layout_below="@+id/newButton"
+            android:layout_marginTop="38dp"
+            android:background="@android:color/holo_red_light"
+            android:text="Quit"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/newButton"
-            android:layout_toRightOf="@+id/humanBoard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/BattleShip"
@@ -47,6 +47,7 @@
             android:layout_marginLeft="22dp"
             android:layout_marginStart="22dp"
             android:layout_marginTop="18dp"
+            android:layout_toRightOf="@+id/humanBoard"
             android:background="@android:color/holo_green_light"
             android:text="@string/new_button_label" />
 

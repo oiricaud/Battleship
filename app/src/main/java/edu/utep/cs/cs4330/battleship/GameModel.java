@@ -2,20 +2,19 @@ package edu.utep.cs.cs4330.battleship;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * Created by oscarricaud on 3/19/17.
  */
 
-public class GameModel  {
+public class GameModel {
 
     private String difficulty;
     private boolean gameStatus;
     private boolean playerReady;
     private boolean[][] map = new boolean[10][10]; // size of the grid
 
-    public GameModel(){
+    public GameModel() {
     }
 
     public boolean areYouPlaying() {
@@ -41,6 +40,7 @@ public class GameModel  {
     public void putX_Y_On_Map(int x, int y) {
         map[x][y] = true;
     }
+
     /**
      * @return this returns the difficulty the user chose, which is later retrieved to be displayed
      * on the android phone.

@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/oceanwclouds">
+    android:background="@drawable/oceanwclouds"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:title="Choose boat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="?attr/actionBarTheme"
+        android:title="Choose boat" />
 
     <RelativeLayout
         android:id="@+id/defaultBoatsView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/relativeLayout2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/relativeLayout"
         android:orientation="vertical"
         android:scaleType="fitXY"
-        android:tileMode="repeat"
-        android:layout_alignTop="@+id/relativeLayout"
-        android:layout_above="@+id/relativeLayout2">
+        android:tileMode="repeat">
 
         <edu.utep.cs.cs4330.battleship.BoardView
             android:id="@+id/humanBoardView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_above="@+id/relativeLayout2"
             android:layout_alignParentTop="true"
             android:layout_marginTop="88dp"
-            android:layout_above="@+id/relativeLayout2" />
+            android:layout_weight="1" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout2"
