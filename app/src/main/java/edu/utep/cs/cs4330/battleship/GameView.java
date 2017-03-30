@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +29,7 @@ import java.util.Random;
 public class GameView extends AppCompatActivity {
     private MediaPlayer mp;
     private String fontPath;
-    private Toolbar toolbar;
     /* Begin Fields for Human */
-    private TextView title;
-    private Button quit;
-    private RelativeLayout rootLayout;
     private Board humanBoard = new Board(10);
     private BoardView humanBoardView;
     private Ship aircraft = new Ship(5, "aircraft", "Human");
@@ -93,7 +88,6 @@ public class GameView extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
             String viewToLaunch = extras.getString("viewWeWantToLaunch"); // Look for YOUR KEY, variable you're receiving
-            String difficulty = extras.getString("level_of_difficulty"); // Look for YOUR KEY, variable you're receiving
             if (viewToLaunch.equals("launchHomeView")) {
                 launchHomeView();
             }
@@ -101,13 +95,7 @@ public class GameView extends AppCompatActivity {
                 humanChooseLevelView(); // The creation of this activity
             }
             if (viewToLaunch.equals("humanPlaceBoatsView")) {
-                humanPlaceBoatsView(difficulty); // The creation of this activity
-            }
-            if (viewToLaunch.equals("computerBoardView")) {
-                // computerBoardView();
-            }
-            if (viewToLaunch.equals("startGameView")) {
-                //computerBoardView();
+                humanPlaceBoatsView(); // Loads the view that allows the user to place boats.
             }
         }
     }
@@ -299,7 +287,7 @@ public class GameView extends AppCompatActivity {
     private void clearCoordinates(Ship ship) {
         Log.w("Ship", String.valueOf(ship.getX()) + " " + String.valueOf(ship.getY()));
 
-        // Remove all X & Ycoordinates of the current ship
+        // Remove all X & Y coordinates of the current ship
         for (int k = 0; k < ship.getSize(); k++) {
             humanBoardView.xCoordinate.remove(ship.getX().get(k)); // Deletes the red dots @see BoardView
             humanBoardView.yCoordinate.remove(ship.getY().get(k));
@@ -311,15 +299,13 @@ public class GameView extends AppCompatActivity {
 
     /**
      * This method creates buttons and drag & drop feature the user uses to place boats on grid.
-     *
-     * @param levelOfDifficultyKey
      */
-    private void humanPlaceBoatsView(String levelOfDifficultyKey) {
+    private void humanPlaceBoatsView() {
         setContentView(R.layout.activity_human_game);
         humanBoardView = (BoardView) findViewById(R.id.humanBoardView2);
         humanBoardView.setBoard(humanBoard);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Place Boats");
 
@@ -336,7 +322,7 @@ public class GameView extends AppCompatActivity {
 
     /**
      * @param whatControllerAreWeCalling is the argument we are taking to obtain the corresponding
-     *                                   controller @see GameController
+     *                                   controller @see GameController for more details.
      */
     private void callTheController(String whatControllerAreWeCalling) {
         Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
@@ -345,10 +331,16 @@ public class GameView extends AppCompatActivity {
         fadingTransition(); // Fading Transition Effect
     }
 
-    private void callTheController(String whatControllerAreWeCalling, String difficulty) {
+    /**
+     * @param whatControllerAreWeCalling is the argument we are taking to obtain the corresponding
+     *                                   controller @see GameController for more details.
+     *
+     * @param stringWeWantToPass        is the string we are passing to the @GameController.
+     */
+    private void callTheController(String whatControllerAreWeCalling, String stringWeWantToPass) {
         Intent intent = new Intent(GameView.this, edu.utep.cs.cs4330.battleship.GameController.class);
         intent.putExtra("controllerName", whatControllerAreWeCalling);
-        intent.putExtra("difficulty", difficulty);
+        intent.putExtra("difficulty", stringWeWantToPass);
         GameView.this.startActivity(intent);
         fadingTransition(); // Fading Transition Effect
     }
@@ -417,8 +409,6 @@ public class GameView extends AppCompatActivity {
         countShots = 0;
         setCountShots(0);
         /* End Computer Stuff Game*/
-        // Call the GameController to see whose turn it is.
-        // Listen for the user input
 
         computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
@@ -563,10 +553,6 @@ public class GameView extends AppCompatActivity {
         int rand = random.nextInt(9 - 0 + 1) + 0;
         return rand;
     }
-
-    private void computerShoot(int x, int y) {
-    }
-
 
     /**
      * @param coordinates are the coordinates from the user.

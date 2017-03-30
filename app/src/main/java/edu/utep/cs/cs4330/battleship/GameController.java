@@ -48,7 +48,8 @@ public class GameController extends AppCompatActivity implements Serializable {
 
                 // Gets called when the user begins the game
                 if (controller.equals("humanChooseLevelController")) {
-                    humanPlayer.updateModel(this, "humanChooseLevelView"); // (view we launch, shouldWeStartGame?)
+                              // (view we launch, shouldWeStartGame?)
+                    humanPlayer.updateModel(this, "humanChooseLevelView");
                 }
                 if (controller.equals("placeBoatsController")) {
                     String difficulty = extras.getString("difficulty");
@@ -59,15 +60,10 @@ public class GameController extends AppCompatActivity implements Serializable {
                     humanPlayer.updateModel(this, "startGameView");
                 }
                 if (controller.equals("updateBoat") && player.equals("human")) {
-                    //int x = extras.getInt("x");
-                    //int y = extras.getInt("y");
-                    // humanPlayer.putX_Y_On_Map(x, y);
                     humanPlayer.setPlayerReady(true);
                     humanPlayer.updateModel(this, "startGameView");
                 }
                 if (controller.equals("updateBoat") && player.equals("computer")) {
-                    //  computerPlayer.putX_Y_On_Map(x, y);
-
                     computerPlayer.updateModel(this, "startGameView");
                 }
 
