@@ -2,7 +2,7 @@ Battleship
 ======
 ### About the program
 Update 1.0 
-This version allows the user to place boats on the grid while playing a game with the computer.
+ *This version allows the user to place boats on the grid while playing a game with the computer.*
 
 To view the Java classes for this project [Click Here](https://github.com/oiricaud/Battleship/tree/master/app/src/main/java/edu/utep/cs/cs4330/battleship).
 
