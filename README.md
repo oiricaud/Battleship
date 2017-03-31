@@ -3,6 +3,8 @@ Battleship
 ### About the program
 When you compile the program a cool background image should appear as well as a blue grid, with the title BattleShip, now in the background the boats are placed at random on the grid, horizontally or vertically. If the user misses, it makes a swoosh sound, else it makes a ka-boom sound. When the user taps on the board immediate feedback is given to the user, white circle = missed shot, red circle = non-missed shot.
 
+To view the Java classes for this project [Click Here](https://github.com/oiricaud/Battleship/tree/master/app/src/main/java/edu/utep/cs/cs4330/battleship).
+
 To view the requirements for Assignment #1  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW1-Assignment.md).
 
 Assignment #2 
