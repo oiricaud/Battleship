@@ -1,12 +1,17 @@
 package edu.utep.cs.cs4330.battleship;
 
+import android.util.Log;
+
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Created by oscarricaud on 2/14/17.
  */
 public class Ship {
     private int[][] map = new int[10][10]; // size of the grid
+    private Map<Integer, Integer> mapOfBoat = new HashMap<>();
     private String typeOfPlayer;
     private int size;
     private String name;
@@ -16,18 +21,21 @@ public class Ship {
     private LinkedList<Integer> yShipCoordinate = new LinkedList<>();
 
     Ship(int size, String nameofship, String typeOfUser) {
-        if (typeOfUser.equals("Computer")) {
-            setSize(size);
-            setName(nameofship);
-            setTypeOfPlayer("computer");
-            computerSetCoordinates();
-            setSink(false);
-        }
-        if (typeOfUser.equals("Human")) {
-            setSize(size);
-            setName(nameofship);
-            setTypeOfPlayer("human");
-            setSink(false);
+        if(typeOfUser != null) {
+            if (typeOfUser.equals("Computer")) {
+                setSize(size);
+                setName(nameofship);
+                setTypeOfPlayer("computer");
+                computerSetCoordinates();
+                setSink(false);
+            }
+
+            if (typeOfUser.equals("Human")) {
+                setSize(size);
+                setName(nameofship);
+                setTypeOfPlayer("human");
+                setSink(false);
+            }
         }
     }
 
@@ -50,18 +58,18 @@ public class Ship {
 
     private void computerSetCoordinates() {
         int coordinatesRange = (map.length - getSize());
-        int randomx = (int) (Math.random() * coordinatesRange);
-        int randomy = (int) (Math.random() * coordinatesRange);
+        int randomX = (int) (Math.random() * coordinatesRange);
+        int randomY = (int) (Math.random() * coordinatesRange);
         int direction = (int) (Math.random() * 2);
         if (direction == 1) { // if boat is horizontal
             setPosition();
             for (int i = 0; i < getSize(); i++) { // place boat horizontal
-                map[randomx][randomy + i] = 1; // Adding to the right of the head
+                map[randomX][randomY + i] = 1; // Adding to the right of the head
             }
         } else {
             setPosition();
             for (int j = 0; j < getSize(); j++) { // place boat vertical
-                map[randomx + j][randomy] = 1; // Adding below of the head
+                map[randomX + j][randomY] = 1; // Adding below of the head
             }
         }
     }
@@ -134,5 +142,23 @@ public class Ship {
 
     private void setTypeOfPlayer(String typeOfPlayer) {
         this.typeOfPlayer = typeOfPlayer;
+    }
+
+    public void addCoordinates(int x, int y) {
+        for(int i = 0; i < getSize(); i++) {
+            if((x+i) > 10) { // Make sure it is not greater than the width of the board
+                int tempForXandY = (x + i) * 10000 + y;
+                mapOfBoat.put(i, tempForXandY);
+            }
+        }
+    }
+
+    public void readMeAllCoordinates() {
+        // Iterating over values only
+        for(int i = 0 ; i < getSize(); i++) {
+            int divideX = mapOfBoat.get(i) / 10000;
+            int moduloY = mapOfBoat.get(i) % 10000;
+            Log.w("Ship X:", String.valueOf(divideX) + ", Ship Y:" + String.valueOf(moduloY));
+        }
     }
 }

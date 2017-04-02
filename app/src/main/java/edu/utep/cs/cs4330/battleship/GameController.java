@@ -47,10 +47,10 @@ public class GameController extends AppCompatActivity implements Serializable {
                 String player = extras.getString("player");
 
                 // Gets called when the user begins the game
+
                 assert controller != null;
                 if (controller.equals("chooseLevelController")) {
-                    // (view we launch, shouldWeStartGame?)
-                    humanPlayer.updateModel(this, "chooseLevelView");
+                    humanPlayer.updateModel(this, "chooseLevelView"); // = (view we launch, shouldWeStartGame?)
                 }
                 if (controller.equals("placeBoatsController")) {
                     computerPlayer.setDifficulty();

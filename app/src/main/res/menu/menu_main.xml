@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/itemAircraft"
-        android:title="Aircraft"></item>
+            android:id="@+id/itemAircraft"
+            android:title="Aircraft"/>
     <item
-        android:id="@+id/itemBattleship"
-        android:title="Battleship"></item>
+            android:id="@+id/itemBattleship"
+            android:title="Battleship"/>
     <item
-        android:id="@+id/itemDestroyer"
-        android:title="Destroyer"></item>
+            android:id="@+id/itemDestroyer"
+            android:title="Destroyer"/>
     <item
-        android:id="@+id/itemSubmarine"
-        android:title="Submarine"></item>
+            android:id="@+id/itemSubmarine"
+            android:title="Submarine"/>
     <item
-        android:id="@+id/itemPatrol"
-        android:title="Patrol"></item>
+            android:id="@+id/itemPatrol"
+            android:title="Patrol"/>
 
 </menu>

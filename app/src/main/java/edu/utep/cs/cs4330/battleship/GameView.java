@@ -5,21 +5,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.*;
+import android.widget.*;
 
 import java.util.Random;
-
 
 /**
  * Created by oscarricaud on 3/12/17.
@@ -30,13 +27,11 @@ public class GameView extends AppCompatActivity {
     private MediaPlayer mp;
     private String fontPath;
     /* Begin Fields for Human */
-    private Board humanBoard = new Board(10);
+    Ship aircraft = new Ship(5, "aircraft", "Human");
+    private Board board = new Board(10);
     private BoardView humanBoardView;
-    private Ship aircraft = new Ship(5, "aircraft", "Human");
-    private Ship battleship = new Ship(4, "battleship", "Human");
-    private Ship destroyer = new Ship(3, "destroyer", "Human");
-    private Ship submarine = new Ship(3, "submarine", "Human");
-    private Ship patrol = new Ship(2, "patrol", "Human");
+    private Player humanPlayer = new Player("human", board);
+
     /* End Fields for Human */
 
     /* Begin Fields for AI */
@@ -44,8 +39,9 @@ public class GameView extends AppCompatActivity {
     private BoardView humanBoardViewFinal;
     private int countShots = 0;
     private TextView counter;
-    /* End Fields for AI */
 
+    /* End Fields for AI */
+    private boolean dropped;
     /* Begin Setters and Getters */
 
     /**
@@ -164,12 +160,27 @@ public class GameView extends AppCompatActivity {
     private void placeBoatsView() {
         setContentView(R.layout.activity_human_game);
         humanBoardView = (BoardView) findViewById(R.id.humanBoardView2);
-        humanBoardView.setBoard(humanBoard);
+        humanBoardView.setBoard(humanPlayer.getHumanBoard());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Place Boats");
+        aircraft.setPlaced(false);
+        ImageView aircraft = (ImageView) findViewById(R.id.aircraft);
+        ImageView battleship = (ImageView) findViewById(R.id.battleship);
+        ImageView destroyer = (ImageView) findViewById(R.id.destroyer);
+        ImageView patrol = (ImageView) findViewById(R.id.patrol);
+        ImageView submarine = (ImageView) findViewById(R.id.submarine);
+
+
+        aircraft.setOnTouchListener(new MyTouchListener());
+        battleship.setOnTouchListener(new MyTouchListener());
+        destroyer.setOnTouchListener(new MyTouchListener());
+        patrol.setOnTouchListener(new MyTouchListener());
+        submarine.setOnTouchListener(new MyTouchListener());
+
+        findViewById(R.id.humanBoardPlacer).setOnDragListener(new MyDragListener());
 
         Button next = (Button) findViewById(R.id.next);
         changeFont(this, next);
@@ -196,115 +207,51 @@ public class GameView extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        aircraft.setPlaced(false);
-        battleship.setPlaced(false);
-        destroyer.setPlaced(false);
-        submarine.setPlaced(false);
-        patrol.setPlaced(false);
+        humanPlayer.aircraft.setPlaced(false);
+        humanPlayer.battleship.setPlaced(false);
+        humanPlayer.destroyer.setPlaced(false);
+        humanPlayer.submarine.setPlaced(false);
+        humanPlayer.patrol.setPlaced(false);
 
+
+        Log.w("humanPlayer.aircraft", humanPlayer.getTypeOfPlayer());
         if (item.getItemId() == R.id.itemAircraft) {
+            if(humanPlayer.aircraft.isPlaced()){
+                // Draw here
+            }
             //noinspection ConstantConditions
             getSupportActionBar().setTitle("Tap on Grid to Place Aircraft");
             humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+
                 int clickOnlyOnce = 0;
 
                 @Override
                 public void onTouch(int x, int y) {
+                    /*
                     if (clickOnlyOnce <= 1) {
-                        if (aircraft.isPlaced()) {
-                            clearCoordinates(aircraft);
+                        if (humanPlayer.aircraft.isPlaced()) {
+                            clearCoordinates(humanPlayer.aircraft);
                             clickOnlyOnce++;
                         }
-                        aircraft.setPlaced(true);
-                        addCoordinates(aircraft, x, y);
+                        humanPlayer.aircraft.setPlaced(true);
+                        addCoordinates(humanPlayer.aircraft, x, y);
                         clickOnlyOnce++;
                     }
+                    */
                 }
             });
         }
-        if (item.getItemId() == R.id.itemBattleship) {
-            getSupportActionBar().setTitle("Tap on Grid to Place Battleship");
-            humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-                int clickOnlyOnce = 0;
 
-                @Override
-                public void onTouch(int x, int y) {
-                    if (clickOnlyOnce <= 1) {
-                        if (battleship.isPlaced()) {
-                            clearCoordinates(battleship);
-                            clickOnlyOnce++;
-                        }
-                        addCoordinates(battleship, x, y);
-                        battleship.setPlaced(true);
-                        clickOnlyOnce++;
-                    }
-                }
-            });
-        }
-        if (item.getItemId() == R.id.itemDestroyer) {
-            getSupportActionBar().setTitle("Tap on Grid to Place Destroyer");
-            humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-                int clickOnlyOnce = 0;
-
-                @Override
-                public void onTouch(int x, int y) {
-                    if (clickOnlyOnce <= 0) {
-                        if (destroyer.isPlaced()) {
-                            clearCoordinates(destroyer);
-                            clickOnlyOnce++;
-                        }
-                        addCoordinates(destroyer, x, y);
-                        destroyer.setPlaced(true);
-                        clickOnlyOnce++;
-                    }
-                }
-            });
-        }
-        if (item.getItemId() == R.id.itemSubmarine) {
-            getSupportActionBar().setTitle("Tap on Grid to Place Submarine");
-            humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-                int clickOnlyOnce = 0;
-
-                @Override
-                public void onTouch(int x, int y) {
-                    if (clickOnlyOnce <= 0) {
-                        if (submarine.isPlaced()) {
-                            clearCoordinates(submarine);
-                            clickOnlyOnce++;
-                        }
-                        addCoordinates(submarine, x, y);
-                        submarine.setPlaced(true);
-                        clickOnlyOnce++;
-                    }
-                }
-            });
-        }
-        if (item.getItemId() == R.id.itemPatrol) {
-            getSupportActionBar().setTitle("Tap on Grid to Place Patrol");
-            humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-                int clickOnlyOnce = 0;
-
-                @Override
-                public void onTouch(int x, int y) {
-                    if (clickOnlyOnce <= 0) {
-                        if (patrol.isPlaced()) {
-                            clearCoordinates(patrol);
-                            clickOnlyOnce++;
-                        }
-                        addCoordinates(patrol, x, y);
-                        patrol.setPlaced(true);
-                        clickOnlyOnce++;
-                    }
-                }
-            });
-        }
         return true;
+
     }
 
-    private void addCoordinates(Ship ship, int x, int y) {
-        Log.w("name of ship", ship.getName() + ", size: " + ship.getSize());
-        Log.w("ship placed", String.valueOf(ship.isPlaced()));
-        Log.w("type of user", ship.getTypeOfPlayer());
+    private void addCoordinates(int x, int y){
+        humanBoardView.invalidate();
+        /*
+  //      Log.w("name of ship", ship.getName() + ", size: " + ship.getSize());
+ //       Log.w("ship placed", String.valueOf(ship.isPlaced()));
+//        Log.w("type of user", ship.getTypeOfPlayer());
         ship.humanSetCoordinates(ship.getSize(), x, y);
         int temp[][] = ship.gethumanSetCoordinates();
         for (int i = 0; i < temp.length; i++) {
@@ -317,6 +264,8 @@ public class GameView extends AppCompatActivity {
                 }
             }
         }
+        humanBoardView.invalidate();
+        */
     }
 
     private void clearCoordinates(Ship ship) {
@@ -381,6 +330,7 @@ public class GameView extends AppCompatActivity {
         humanBoardViewFinal = (BoardView) findViewById(R.id.humanBoard);
         humanBoardViewFinal.setBoard(humanBoardFinal);
 
+        // Get the coordinates from the previous activity to this activity
         for (int i = 0; i < copyOfHumanBoard.getxCoordinate().size(); i++) {
             humanBoardViewFinal.setxCoordinate(copyOfHumanBoard.getxCoordinate().get(i));
             humanBoardViewFinal.setyCoordinate(copyOfHumanBoard.getyCoordinate().get(i));
@@ -487,25 +437,25 @@ public class GameView extends AppCompatActivity {
                     makeMissedSound(activityContext);
 
                     toast("Computer Turn");
-                            /* Computers TURN  */
+                    /* Computers TURN  shoot at human board */
                     int randX = generateRandomCoordinate();
                     int randY = generateRandomCoordinate();
                     Log.w("randX", String.valueOf(randX));
                     Log.w("randY", String.valueOf(randY));
-                    if (isItAHit(aircraft.gethumanSetCoordinates(), randX, randY)) {
+                    if (isItAHit(humanPlayer.aircraft.gethumanSetCoordinates(), randX, randY)) {
                         makeExplosionSound(activityContext);
-                        aircraft.hit();
+                        humanPlayer.aircraft.hit();
                         humanBoardViewFinal.setxHit(randX);
                         humanBoardViewFinal.setyHit(randY);
                         toast("Computer shoots");
-                        if (aircraft.getHit() == 5) {
+                        if (humanPlayer.aircraft.getHit() == 5) {
                             toast("Aircraft SUNK");
                             makeLouderExplosion(activityContext);
                         }
                         humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(battleship.gethumanSetCoordinates(), randX, randY)) {
+                    } else if (isItAHit(humanPlayer.battleship.gethumanSetCoordinates(), randX, randY)) {
                         makeExplosionSound(activityContext);
-                        battleship.hit();
+                        humanPlayer.battleship.hit();
                         humanBoardViewFinal.setxHit(randX);
                         humanBoardViewFinal.setyHit(randY);
                         toast("KA-POW");
@@ -514,35 +464,35 @@ public class GameView extends AppCompatActivity {
                             makeLouderExplosion(activityContext);
                         }
                         humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(destroyer.gethumanSetCoordinates(), randX, randY)) {
+                    } else if (isItAHit(humanPlayer.destroyer.gethumanSetCoordinates(), randX, randY)) {
                         makeExplosionSound(activityContext);
-                        destroyer.hit();
+                        humanPlayer.destroyer.hit();
                         humanBoardViewFinal.setxHit(randX);
                         humanBoardViewFinal.setyHit(randY);
                         toast("KA-POW");
-                        if (destroyer.getHit() == 4) {
+                        if (humanPlayer.destroyer.getHit() == 4) {
                             toast("destroyer SUNK");
                             makeLouderExplosion(activityContext);
                         }
                         humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(destroyer.gethumanSetCoordinates(), randX, randY)) {
+                    } else if (isItAHit(humanPlayer.destroyer.gethumanSetCoordinates(), randX, randY)) {
                         makeExplosionSound(activityContext);
-                        destroyer.hit();
+                        humanPlayer.destroyer.hit();
                         humanBoardViewFinal.setxHit(randX);
                         humanBoardViewFinal.setyHit(randY);
                         toast("KA-POW");
-                        if (destroyer.getHit() == 3) {
+                        if (humanPlayer.destroyer.getHit() == 3) {
                             toast("destroyer SUNK");
                             makeLouderExplosion(activityContext);
                         }
                         humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(submarine.gethumanSetCoordinates(), randX, randY)) {
+                    } else if (isItAHit(humanPlayer.submarine.gethumanSetCoordinates(), randX, randY)) {
                         makeExplosionSound(activityContext);
-                        submarine.hit();
+                        humanPlayer.submarine.hit();
                         humanBoardViewFinal.setxHit(randX);
                         humanBoardViewFinal.setyHit(randY);
                         toast("KA-POW");
-                        if (submarine.getHit() == 2) {
+                        if (humanPlayer.submarine.getHit() == 2) {
                             toast("submarine SUNK");
                             makeLouderExplosion(activityContext);
                         }
@@ -577,7 +527,7 @@ public class GameView extends AppCompatActivity {
     /**
      * Show a toast message.
      */
-    protected void toast(String msg) {
+    private void toast(String msg) {
         final Toast toast = Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT);
         toast.show();
         new CountDownTimer(500, 1000) {
@@ -717,11 +667,127 @@ public class GameView extends AppCompatActivity {
     /**
      * Changes the font of the activity
      * @param context Is the
-     * @param textView the view we want to change font to 
+     * @param textView the view we want to change font to
      */
     public void changeFont(Context context, TextView textView) {
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), getFontPath());
         textView.setTypeface(typeface);
+    }
+
+    private class MyDragListener implements View.OnDragListener {
+       // Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
+        Drawable normalShape = getResources().getDrawable(R.drawable.shape);
+        Drawable error = getResources().getDrawable(R.drawable.error_placement_boat);
+
+        // Make images smaller
+        int width = 100;
+        int height = 100;
+        LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
+        private int tempX = 0;
+        private int tempY = 0;
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int sdk = android.os.Build.VERSION.SDK_INT;
+
+            switch (event.getAction()) {
+
+                case DragEvent.ACTION_DRAG_STARTED:
+
+                    break;
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                        //noinspection deprecation
+                    //   v.setBackgroundDrawable(enterShape);
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                      //     v.setBackground(enterShape);
+                        }
+                    }
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                        //noinspection deprecation
+                      v.setBackgroundDrawable(normalShape);
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                         v.setBackground(normalShape);
+                        }
+                    }
+
+                    break;
+                case DragEvent.ACTION_DROP:
+                    v.setBackgroundDrawable(normalShape);
+                    // Dropped, reassign View to ViewGroup
+                    View view = (View) event.getLocalState(); // Current image
+                    ViewGroup owner = (ViewGroup) view.getParent(); // RelativeLayout id: humanBoardPlacer
+                    view.setLayoutParams(parms);
+                    owner.removeView(view);                         // Remove the current image from the humanBoardPlacer
+                    RelativeLayout container = (RelativeLayout) v; // Container for boardview
+
+                    String boatWeAreDragging = getResources().getResourceEntryName(view.getId());
+                    Log.w("view get height", String.valueOf(view.getHeight()) + " view get Width" + String.valueOf(view.getWidth()));
+                    Log.w("owner x", String.valueOf(owner.getX()) + " owner y " + String.valueOf(owner.getY()));
+                    Log.w("event.getX()", String.valueOf(event.getX()) + "event.getY()" + String.valueOf(event.getY()));
+                    // Round to the nearest 50
+                    int convertX = (int) ((event.getX()  + 49) / 50 ) * 50;
+                    int convertY =  (int) ((event.getY()  + 49) / 50 ) * 50;
+                    if(convertX <= 600 ) {
+                        dropped = true;
+                        // Place boat at the dragged coordinate
+                        Log.w("round X", String.valueOf(convertX) + "round Y" + String.valueOf(convertY));
+                        view.setX(convertX - 50); view.setY(convertY - 50);
+
+                        // Store the coordinates to a temp variable in case the user places the boat out of bounds
+                        tempX = convertX; tempY = convertY;
+
+                        // Add the coordinates @see BoardView
+                        container.addView(view);
+                        view.setVisibility(View.VISIBLE);
+
+                        if (boatWeAreDragging.equals("aircraft")) {
+                            int[][] emptyArray = new int[10][10];
+                            // Get actual Row from the @see BoardView based on x
+                            int tempX = humanBoardView.locateX(convertX);
+                            // Get actual Column from the @see BoardView based on y
+                            int tempY = humanBoardView.locateY(convertY);
+
+                            for (int i = 0; i < 5; i++) {
+                                if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
+                                    emptyArray[tempX + i][tempY] = 1;
+                                }
+                            }
+                            humanBoardView.map = emptyArray; // Prevents from drawing multiple times when the user changes
+                            // position of boat.
+                            humanBoardView.invalidate();
+                        }
+                    }
+                    else { // OUT OF BOUNDS, RESET THE BOAT COORDINATES TO PREVIOUS LOCATION
+                        view.setX(tempX-50);
+                        view.setY(tempY-50);
+                        container.addView(view);
+                        view.setVisibility(View.VISIBLE);
+                        toast("Out of bounds");
+                        v.setBackgroundDrawable(error);
+                        humanBoardView.invalidate();
+                    }
+                    Log.w("Lost.getX()", String.valueOf(event.getX()) + "Lost.getY()" + String.valueOf(event.getY()));
+                    break;
+
+                case DragEvent.ACTION_DRAG_ENDED:
+                    view = (View) event.getLocalState();
+                    view.setVisibility(View.VISIBLE);
+                    if (dropped = false) {
+                        Context context = getApplicationContext();
+
+                        toast("Can't place here");
+                    }
+                    humanBoardView.invalidate();
+                default:
+                    break;
+            }
+            return true;
+        }
     }
 }
 
