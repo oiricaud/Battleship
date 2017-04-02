@@ -1,5 +1,6 @@
 package edu.utep.cs.cs4330.battleship;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,9 +40,9 @@ public class GameView extends AppCompatActivity {
     private BoardView humanBoardViewFinal;
     private int countShots = 0;
     private TextView counter;
-
+    private boolean getResult = false;
     /* End Fields for AI */
-    private boolean dropped;
+    private boolean dropped = true;
     /* Begin Setters and Getters */
 
     /**
@@ -676,8 +677,12 @@ public class GameView extends AppCompatActivity {
 
     private class MyDragListener implements View.OnDragListener {
        // Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
-        Drawable normalShape = getResources().getDrawable(R.drawable.shape);
-        Drawable error = getResources().getDrawable(R.drawable.error_placement_boat);
+        Drawable accept = getResources().getDrawable(R.drawable.accept);
+        Drawable reject = getResources().getDrawable(R.drawable.reject);
+        Drawable neutral = getResources().getDrawable(R.drawable.neutral);
+        Drawable board_color = getResources().getDrawable(R.drawable.board_color);
+       // Drawable normalShape = getResources().getDrawable(R.drawable.board_color);
+       // Drawable error = getResources().getDrawable(R.drawable.error_placement_boat);
 
         // Make images smaller
         int width = 100;
@@ -686,38 +691,47 @@ public class GameView extends AppCompatActivity {
         private int tempX = 0;
         private int tempY = 0;
 
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         @Override
         public boolean onDrag(View v, DragEvent event) {
             int sdk = android.os.Build.VERSION.SDK_INT;
-
+            v.setBackground(board_color);
             switch (event.getAction()) {
 
                 case DragEvent.ACTION_DRAG_STARTED:
-
+                    v.setBackgroundDrawable(neutral);
+                    v.setBackground(board_color);
                     break;
                 case DragEvent.ACTION_DRAG_ENTERED:
                     if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
                         //noinspection deprecation
-                    //   v.setBackgroundDrawable(enterShape);
+                        v.setBackgroundDrawable(neutral);
+                        v.setBackground(board_color);
                     } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                      //     v.setBackground(enterShape);
+                            v.setBackgroundDrawable(neutral);
+                            v.setBackground(board_color);
                         }
                     }
                     break;
                 case DragEvent.ACTION_DRAG_EXITED:
+
                     if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
                         //noinspection deprecation
-                      v.setBackgroundDrawable(normalShape);
+                        v.setBackground(board_color);
+                   //   v.setBackgroundDrawable(normalShape);
                     } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                         v.setBackground(normalShape);
+                       //  v.setBackground(normalShape);
+                            v.setBackground(board_color);
                         }
                     }
 
                     break;
                 case DragEvent.ACTION_DROP:
-                    v.setBackgroundDrawable(normalShape);
+                    v.setBackgroundDrawable(accept);
+                    getResult = true;
+                //    v.setBackgroundDrawable(normalShape);
                     // Dropped, reassign View to ViewGroup
                     View view = (View) event.getLocalState(); // Current image
                     ViewGroup owner = (ViewGroup) view.getParent(); // RelativeLayout id: humanBoardPlacer
@@ -732,8 +746,7 @@ public class GameView extends AppCompatActivity {
                     // Round to the nearest 50
                     int convertX = (int) ((event.getX()  + 49) / 50 ) * 50;
                     int convertY =  (int) ((event.getY()  + 49) / 50 ) * 50;
-                    if(convertX <= 600 ) {
-                        dropped = true;
+                    if(convertX < 525 && convertY >= 50 && convertY <= 850) {
                         // Place boat at the dragged coordinate
                         Log.w("round X", String.valueOf(convertX) + "round Y" + String.valueOf(convertY));
                         view.setX(convertX - 50); view.setY(convertY - 50);
@@ -763,25 +776,26 @@ public class GameView extends AppCompatActivity {
                         }
                     }
                     else { // OUT OF BOUNDS, RESET THE BOAT COORDINATES TO PREVIOUS LOCATION
+                        v.setBackgroundDrawable(reject);
                         view.setX(tempX-50);
                         view.setY(tempY-50);
                         container.addView(view);
                         view.setVisibility(View.VISIBLE);
                         toast("Out of bounds");
-                        v.setBackgroundDrawable(error);
+                       // v.setBackgroundDrawable(error);
                         humanBoardView.invalidate();
+                        getResult = true;
                     }
                     Log.w("Lost.getX()", String.valueOf(event.getX()) + "Lost.getY()" + String.valueOf(event.getY()));
                     break;
 
                 case DragEvent.ACTION_DRAG_ENDED:
-                    view = (View) event.getLocalState();
-                    view.setVisibility(View.VISIBLE);
-                    if (dropped = false) {
-                        Context context = getApplicationContext();
-
+                    if (getResult == false) {
                         toast("Can't place here");
                     }
+                    view = (View) event.getLocalState();
+                    view.setVisibility(View.VISIBLE);
+
                     humanBoardView.invalidate();
                 default:
                     break;
