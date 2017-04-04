@@ -21,7 +21,7 @@ public class Ship {
     private LinkedList<Integer> yShipCoordinate = new LinkedList<>();
 
     Ship(int size, String nameofship, String typeOfUser) {
-        if(typeOfUser != null) {
+        if (typeOfUser != null) {
             if (typeOfUser.equals("Computer")) {
                 setSize(size);
                 setName(nameofship);
@@ -50,7 +50,7 @@ public class Ship {
     }
 
     void humanSetCoordinates(int size, int x, int y) {
-        if(map != null) {
+        if (map != null) {
             // Boat has not been placed, therefore save user coordinates
             for (int i = 0; i < size; i++) {
                 map[i + x][y] = 1;
@@ -147,8 +147,8 @@ public class Ship {
     }
 
     public void addCoordinates(int x, int y) {
-        for(int i = 0; i < getSize(); i++) {
-            if((x+i) > 10) { // Make sure it is not greater than the width of the board
+        for (int i = 0; i < getSize(); i++) {
+            if ((x + i) > 10) { // Make sure it is not greater than the width of the board
                 int tempForXandY = (x + i) * 10000 + y;
                 mapOfBoat.put(i, tempForXandY);
             }
@@ -157,7 +157,7 @@ public class Ship {
 
     public void readMeAllCoordinates() {
         // Iterating over values only
-        for(int i = 0 ; i < getSize(); i++) {
+        for (int i = 0; i < getSize(); i++) {
             int divideX = mapOfBoat.get(i) / 10000;
             int moduloY = mapOfBoat.get(i) % 10000;
             Log.w("Ship X:", String.valueOf(divideX) + ", Ship Y:" + String.valueOf(moduloY));

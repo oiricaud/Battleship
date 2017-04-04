@@ -61,7 +61,7 @@ public class BoardView extends View implements Serializable {
      * Board grid line paint.
      */
     private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    public  int[][] map = new int[10][10];
+    public int[][] map = new int[10][10];
     public LinkedList<Integer> xCoordinate = new LinkedList<>();
     public LinkedList<Integer> yCoordinate = new LinkedList<>();
     private LinkedList<Integer> xHit = new LinkedList<>();
@@ -212,18 +212,18 @@ public class BoardView extends View implements Serializable {
         }
         drawPlaces(canvas);
         // Iterate and look for "1" which indicate position of boats, hence do some coloring.
-        if(map != null){
-            for(int i = 0; i < map.length; i++){
-                for(int j = 0; j < map.length; j++){
-                    if(map[i][j] >= 1) {
+        if (map != null) {
+            for (int i = 0; i < map.length; i++) {
+                for (int j = 0; j < map.length; j++) {
+                    if (map[i][j] >= 1) {
                         float drawX = (i * lineGap()) + (lineGap() / 2);
                         float drawY = (j * lineGap()) + (lineGap() / 2);
                         int left = (int) (drawX - (lineGap() / 2));
-                        int top = (int) (drawY- (lineGap() / 2));
+                        int top = (int) (drawY - (lineGap() / 2));
                         int right = (int) (drawX + (lineGap() / 2));
                         int bottom = (int) (drawY + (lineGap() / 2));
-                     //   Log.w("Draw X", String.valueOf(drawX) + " Draw Y," + String.valueOf(drawY));
-                     //   Log.w("linegap", String.valueOf(lineGap()));
+                        //   Log.w("Draw X", String.valueOf(drawX) + " Draw Y," + String.valueOf(drawY));
+                        //   Log.w("linegap", String.valueOf(lineGap()));
                         canvas.drawRect(left, top, right, bottom, blackPaint);
                     }
                 }
@@ -308,6 +308,7 @@ public class BoardView extends View implements Serializable {
         }
         return -1;
     }
+
     public int locateX(float x) {
         if (x <= maxCoord()) {
             final float placeSize = lineGap();
@@ -316,6 +317,7 @@ public class BoardView extends View implements Serializable {
         }
         return -1;
     }
+
     public int locateY(float y) {
         if (y <= maxCoord()) {
             final float placeSize = lineGap();
@@ -324,6 +326,7 @@ public class BoardView extends View implements Serializable {
         }
         return -1;
     }
+
     /**
      * Register the given listener.
      */

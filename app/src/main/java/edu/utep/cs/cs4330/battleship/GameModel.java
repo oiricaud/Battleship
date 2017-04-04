@@ -5,7 +5,6 @@ import android.content.Intent;
 
 /**
  * Created by oscarricaud on 3/19/17.
- *
  */
 
 class GameModel {

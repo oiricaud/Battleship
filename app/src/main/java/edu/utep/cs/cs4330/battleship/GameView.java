@@ -25,10 +25,10 @@ import java.util.Random;
  */
 
 public class GameView extends AppCompatActivity {
-    private MediaPlayer mp;
-    private String fontPath;
     /* Begin Fields for Human */
     Ship aircraft = new Ship(5, "aircraft", "Human");
+    private MediaPlayer mp;
+    private String fontPath;
     private Board board = new Board(10);
     private BoardView humanBoardView;
     private Player humanPlayer = new Player("human", board);
@@ -99,7 +99,7 @@ public class GameView extends AppCompatActivity {
     }
 
     /**
-     *  This method launches the home.xml and waits for the user to begin a new game.
+     * This method launches the home.xml and waits for the user to begin a new game.
      */
     private void launchHomeView() {
         setContentView(R.layout.home);
@@ -118,8 +118,8 @@ public class GameView extends AppCompatActivity {
     }
 
     /**
-     *  This method launches the activity_level.xml and waits for the user to enter a
-     *  difficulty level.
+     * This method launches the activity_level.xml and waits for the user to enter a
+     * difficulty level.
      */
     private void chooseLevelView() {
         setContentView(R.layout.activity_level);
@@ -217,7 +217,7 @@ public class GameView extends AppCompatActivity {
 
         Log.w("humanPlayer.aircraft", humanPlayer.getTypeOfPlayer());
         if (item.getItemId() == R.id.itemAircraft) {
-            if(humanPlayer.aircraft.isPlaced()){
+            if (humanPlayer.aircraft.isPlaced()) {
                 // Draw here
             }
             //noinspection ConstantConditions
@@ -247,7 +247,7 @@ public class GameView extends AppCompatActivity {
 
     }
 
-    private void addCoordinates(int x, int y){
+    private void addCoordinates(int x, int y) {
         humanBoardView.invalidate();
         /*
   //      Log.w("name of ship", ship.getName() + ", size: " + ship.getSize());
@@ -556,7 +556,7 @@ public class GameView extends AppCompatActivity {
 
     /**
      * @param quitButton Where is the type of button
-     * @param context when the user hits quit, the user is sent back to the first activity
+     * @param context    when the user hits quit, the user is sent back to the first activity
      */
     public void quitActivity(Button quitButton, final Context context) {
         quitButton.setOnClickListener(new View.OnClickListener() {
@@ -667,7 +667,8 @@ public class GameView extends AppCompatActivity {
 
     /**
      * Changes the font of the activity
-     * @param context Is the
+     *
+     * @param context  Is the
      * @param textView the view we want to change font to
      */
     public void changeFont(Context context, TextView textView) {
@@ -676,18 +677,18 @@ public class GameView extends AppCompatActivity {
     }
 
     private class MyDragListener implements View.OnDragListener {
-       // Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
+        // Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
         Drawable accept = getResources().getDrawable(R.drawable.accept);
         Drawable reject = getResources().getDrawable(R.drawable.reject);
         Drawable neutral = getResources().getDrawable(R.drawable.neutral);
         Drawable board_color = getResources().getDrawable(R.drawable.board_color);
-       // Drawable normalShape = getResources().getDrawable(R.drawable.board_color);
-       // Drawable error = getResources().getDrawable(R.drawable.error_placement_boat);
+        // Drawable normalShape = getResources().getDrawable(R.drawable.board_color);
+        // Drawable error = getResources().getDrawable(R.drawable.error_placement_boat);
 
         // Make images smaller
         int width = 100;
         int height = 100;
-        LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
+        LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width, height);
         private int tempX = 0;
         private int tempY = 0;
 
@@ -703,7 +704,7 @@ public class GameView extends AppCompatActivity {
                     v.setBackground(board_color);
                     break;
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                    if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
                         //noinspection deprecation
                         v.setBackgroundDrawable(neutral);
                         v.setBackground(board_color);
@@ -716,13 +717,13 @@ public class GameView extends AppCompatActivity {
                     break;
                 case DragEvent.ACTION_DRAG_EXITED:
 
-                    if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                    if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
                         //noinspection deprecation
                         v.setBackground(board_color);
-                   //   v.setBackgroundDrawable(normalShape);
+                        //   v.setBackgroundDrawable(normalShape);
                     } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                       //  v.setBackground(normalShape);
+                            //  v.setBackground(normalShape);
                             v.setBackground(board_color);
                         }
                     }
@@ -732,7 +733,7 @@ public class GameView extends AppCompatActivity {
                     v.setBackgroundDrawable(accept);
                     getResult = true;
                     int[][] boatsCoordinates = new int[10][10];
-                //    v.setBackgroundDrawable(normalShape);
+                    //    v.setBackgroundDrawable(normalShape);
                     // Dropped, reassign View to ViewGroup
                     View view = (View) event.getLocalState(); // Current image
                     ViewGroup owner = (ViewGroup) view.getParent(); // RelativeLayout id: humanBoardPlacer
@@ -745,22 +746,24 @@ public class GameView extends AppCompatActivity {
                     Log.w("owner x", String.valueOf(owner.getX()) + " owner y " + String.valueOf(owner.getY()));
                     Log.w("event.getX()", String.valueOf(event.getX()) + "event.getY()" + String.valueOf(event.getY()));
                     // Round to the nearest 50
-                    int convertX = (int) ((event.getX()  + 49) / 50 ) * 50;
-                    int convertY =  (int) ((event.getY()  + 49) / 50 ) * 50;
-                    if(convertX < 525 && convertY >= 50 && convertY <= 850) {
+                    int convertX = (int) ((event.getX() + 49) / 50) * 50;
+                    int convertY = (int) ((event.getY() + 49) / 50) * 50;
+                    if (convertX < 525 && convertY >= 50 && convertY <= 850) {
                         // Place boat at the dragged coordinate
                         Log.w("round X", String.valueOf(convertX) + "round Y" + String.valueOf(convertY));
-                        view.setX(convertX - 50); view.setY(convertY - 50);
+                        view.setX(convertX - 50);
+                        view.setY(convertY - 50);
 
                         // Store the coordinates to a temp variable in case the user places the boat out of bounds
-                        tempX = convertX; tempY = convertY;
+                        tempX = convertX;
+                        tempY = convertY;
 
                         // Add the coordinates @see BoardView
                         container.addView(view);
                         view.setVisibility(View.VISIBLE);
 
                         if (boatWeAreDragging.equals("aircraft")) {
-                            if(humanPlayer.aircraft.isPlaced()){ // Boat has already been placed
+                            if (humanPlayer.aircraft.isPlaced()) { // Boat has already been placed
                                 humanPlayer.removeCoordinates(humanPlayer.aircraft.map, "aircraft");
                                 humanPlayer.aircraft.clearCoordinates(); // Hence, delete all coordinates for this ship
                             }
@@ -775,15 +778,15 @@ public class GameView extends AppCompatActivity {
                                 }
                             }
                             humanPlayer.aircraft.map = boatsCoordinates;
-                          //  humanPlayer.map = humanPlayer.aircraft.map; // Store coordinates to players map
+                            //  humanPlayer.map = humanPlayer.aircraft.map; // Store coordinates to players map
                             humanPlayer.addCoordinates(humanPlayer.aircraft.map);
                             humanPlayer.aircraft.setPlaced(true);
                             // position of boat.
-                           // humanBoardView.invalidate();
+                            // humanBoardView.invalidate();
                         }
 
                         if (boatWeAreDragging.equals("battleship")) {
-                            if(humanPlayer.battleship.isPlaced()){ // If boat is already placed
+                            if (humanPlayer.battleship.isPlaced()) { // If boat is already placed
                                 humanPlayer.removeCoordinates(humanPlayer.battleship.map, "battleship");
                                 humanPlayer.battleship.clearCoordinates(); // Hence, delete all coordinates for this ship
                                 // Save the coordinates for other boats
@@ -802,21 +805,20 @@ public class GameView extends AppCompatActivity {
                             humanPlayer.battleship.map = boatsCoordinates;
                             humanPlayer.addCoordinates(humanPlayer.battleship.map);
                             humanPlayer.battleship.setPlaced(true);
-                          // humanPlayer.addAircraftCoordinates(humanPlayer.battleship.map);
+                            // humanPlayer.addAircraftCoordinates(humanPlayer.battleship.map);
                             //humanPlayer.map = humanPlayer.battleship.map; // Store coordinates to players map
                             // Prevents from drawing multiple times when the user changes  position of boat.
                             //humanBoardView.map = humanPlayer.map;
 
                         }
-                    }
-                    else { // OUT OF BOUNDS, RESET THE BOAT COORDINATES TO PREVIOUS LOCATION
+                    } else { // OUT OF BOUNDS, RESET THE BOAT COORDINATES TO PREVIOUS LOCATION
                         v.setBackgroundDrawable(reject);
-                        view.setX(tempX-50);
-                        view.setY(tempY-50);
+                        view.setX(tempX - 50);
+                        view.setY(tempY - 50);
                         container.addView(view);
                         view.setVisibility(View.VISIBLE);
                         toast("Out of bounds");
-                       // v.setBackgroundDrawable(error);
+                        // v.setBackgroundDrawable(error);
                         humanBoardView.invalidate();
                         getResult = true;
                     }
