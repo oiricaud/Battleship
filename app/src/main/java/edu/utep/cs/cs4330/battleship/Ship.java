@@ -10,7 +10,7 @@ import java.util.Map;
  * Created by oscarricaud on 2/14/17.
  */
 public class Ship {
-    private int[][] map = new int[10][10]; // size of the grid
+    public int[][] map = new int[10][10]; // size of the grid
     private Map<Integer, Integer> mapOfBoat = new HashMap<>();
     private String typeOfPlayer;
     private int size;
@@ -39,7 +39,7 @@ public class Ship {
         }
     }
 
-    int[][] clearContents() {
+    int[][] clearCoordinates() {
         // Clear all elements since the user wants to place boat elsewhere
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map.length; j++) {
@@ -50,9 +50,11 @@ public class Ship {
     }
 
     void humanSetCoordinates(int size, int x, int y) {
-        // Boat has not been placed, therefore save user coordinates
-        for (int i = 0; i < size; i++) {
-            map[i + x][y] = 1;
+        if(map != null) {
+            // Boat has not been placed, therefore save user coordinates
+            for (int i = 0; i < size; i++) {
+                map[i + x][y] = 1;
+            }
         }
     }
 

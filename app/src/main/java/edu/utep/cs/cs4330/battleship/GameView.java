@@ -279,7 +279,7 @@ public class GameView extends AppCompatActivity {
         }
         ship.getX().clear(); // Deletes for @see Ship
         ship.getY().clear(); // Deletes for @see Ship
-        ship.clearContents(); // Set the grid to -1
+        ship.clearCoordinates(); // Set the grid to -1
     }
 
     /**
@@ -731,6 +731,7 @@ public class GameView extends AppCompatActivity {
                 case DragEvent.ACTION_DROP:
                     v.setBackgroundDrawable(accept);
                     getResult = true;
+                    int[][] boatsCoordinates = new int[10][10];
                 //    v.setBackgroundDrawable(normalShape);
                     // Dropped, reassign View to ViewGroup
                     View view = (View) event.getLocalState(); // Current image
@@ -759,7 +760,10 @@ public class GameView extends AppCompatActivity {
                         view.setVisibility(View.VISIBLE);
 
                         if (boatWeAreDragging.equals("aircraft")) {
-                            int[][] emptyArray = new int[10][10];
+                            if(humanPlayer.aircraft.isPlaced()){ // Boat has already been placed
+                                humanPlayer.removeCoordinates(humanPlayer.aircraft.map, "aircraft");
+                                humanPlayer.aircraft.clearCoordinates(); // Hence, delete all coordinates for this ship
+                            }
                             // Get actual Row from the @see BoardView based on x
                             int tempX = humanBoardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
@@ -767,12 +771,42 @@ public class GameView extends AppCompatActivity {
 
                             for (int i = 0; i < 5; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
-                                    emptyArray[tempX + i][tempY] = 1;
+                                    boatsCoordinates[tempX + i][tempY] = 1;
                                 }
                             }
-                            humanBoardView.map = emptyArray; // Prevents from drawing multiple times when the user changes
+                            humanPlayer.aircraft.map = boatsCoordinates;
+                          //  humanPlayer.map = humanPlayer.aircraft.map; // Store coordinates to players map
+                            humanPlayer.addCoordinates(humanPlayer.aircraft.map);
+                            humanPlayer.aircraft.setPlaced(true);
                             // position of boat.
-                            humanBoardView.invalidate();
+                           // humanBoardView.invalidate();
+                        }
+
+                        if (boatWeAreDragging.equals("battleship")) {
+                            if(humanPlayer.battleship.isPlaced()){ // If boat is already placed
+                                humanPlayer.removeCoordinates(humanPlayer.battleship.map, "battleship");
+                                humanPlayer.battleship.clearCoordinates(); // Hence, delete all coordinates for this ship
+                                // Save the coordinates for other boats
+                            }
+
+                            // Get actual Row from the @see BoardView based on x
+                            int tempX = humanBoardView.locateX(convertX);
+                            // Get actual Column from the @see BoardView based on y
+                            int tempY = humanBoardView.locateY(convertY);
+
+                            for (int i = 0; i < 4; i++) {
+                                if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
+                                    boatsCoordinates[tempX + i][tempY] = 2;
+                                }
+                            }
+                            humanPlayer.battleship.map = boatsCoordinates;
+                            humanPlayer.addCoordinates(humanPlayer.battleship.map);
+                            humanPlayer.battleship.setPlaced(true);
+                          // humanPlayer.addAircraftCoordinates(humanPlayer.battleship.map);
+                            //humanPlayer.map = humanPlayer.battleship.map; // Store coordinates to players map
+                            // Prevents from drawing multiple times when the user changes  position of boat.
+                            //humanBoardView.map = humanPlayer.map;
+
                         }
                     }
                     else { // OUT OF BOUNDS, RESET THE BOAT COORDINATES TO PREVIOUS LOCATION
@@ -795,11 +829,13 @@ public class GameView extends AppCompatActivity {
                     }
                     view = (View) event.getLocalState();
                     view.setVisibility(View.VISIBLE);
-
-                    humanBoardView.invalidate();
                 default:
+                    humanBoardView.map = humanPlayer.map; // Prevents from drawing multiple times when the
+                    // user changes
+                    humanBoardView.invalidate();
                     break;
             }
+
             return true;
         }
     }

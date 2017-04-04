@@ -215,7 +215,7 @@ public class BoardView extends View implements Serializable {
         if(map != null){
             for(int i = 0; i < map.length; i++){
                 for(int j = 0; j < map.length; j++){
-                    if(map[i][j] == 1) {
+                    if(map[i][j] >= 1) {
                         float drawX = (i * lineGap()) + (lineGap() / 2);
                         float drawY = (j * lineGap()) + (lineGap() / 2);
                         int left = (int) (drawX - (lineGap() / 2));
