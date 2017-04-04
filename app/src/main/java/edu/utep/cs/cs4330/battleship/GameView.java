@@ -844,7 +844,7 @@ public class GameView extends AppCompatActivity {
 
                             for (int i = 0; i < 3; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
-                                    boatsCoordinates[tempX + i][tempY] = 3;
+                                    boatsCoordinates[tempX + i][tempY] = 4;
                                 }
                             }
                             humanPlayer.submarine.map = boatsCoordinates;
@@ -867,7 +867,7 @@ public class GameView extends AppCompatActivity {
 
                             for (int i = 0; i < 3; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
-                                    boatsCoordinates[tempX + i][tempY] = 3;
+                                    boatsCoordinates[tempX + i][tempY] = 5;
                                 }
                             }
                             humanPlayer.patrol.map = boatsCoordinates;
