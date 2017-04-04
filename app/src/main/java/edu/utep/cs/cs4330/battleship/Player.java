@@ -29,6 +29,15 @@ class Player {
                 if (coordinates[i][j] == 2) { // Battleship
                     map[i][j] = 2;
                 }
+                if (coordinates[i][j] == 3) { // Destroyer
+                    map[i][j] = 3;
+                }
+                if (coordinates[i][j] == 4) { // Submarine
+                    map[i][j] = 4;
+                }
+                if (coordinates[i][j] == 5) { // Patrol
+                    map[i][j] = 5;
+                }
             }
         }
     }
@@ -41,6 +50,15 @@ class Player {
                 }
                 if (typeOfShip.equals("battleship") && coordinates[i][j] == 2) { // Remove aircraft coordinates
                     map[i][j] = -2;
+                }
+                if (typeOfShip.equals("destroyer") && coordinates[i][j] == 3) { // Remove destroyer coordinates
+                    map[i][j] = -3;
+                }
+                if (typeOfShip.equals("submarine") && coordinates[i][j] == 4) { // Remove submarine coordinates
+                    map[i][j] = -4;
+                }
+                if (typeOfShip.equals("patrol") && coordinates[i][j] == 5) { // Remove patrol coordinates
+                    map[i][j] = -5;
                 }
             }
         }
