@@ -61,9 +61,10 @@ public class BoardView extends View implements Serializable {
      * Board grid line paint.
      */
     private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    public int[][] map = new int[10][10];
-    public LinkedList<Integer> xCoordinate = new LinkedList<>();
-    public LinkedList<Integer> yCoordinate = new LinkedList<>();
+
+    int[][] map = new int[10][10];
+    private LinkedList<Integer> xCoordinate = new LinkedList<>();
+    private LinkedList<Integer> yCoordinate = new LinkedList<>();
     private LinkedList<Integer> xHit = new LinkedList<>();
     private LinkedList<Integer> yHit = new LinkedList<>();
     private LinkedList<Integer> setxMiss = new LinkedList<>();
@@ -117,58 +118,58 @@ public class BoardView extends View implements Serializable {
         super(context, attrs, defStyleAttr);
     }
 
-    public LinkedList<Integer> getxHit() {
+    private LinkedList<Integer> getxHit() {
         return xHit;
     }
 
-    public void setxHit(int i) {
+    void setxHit(int i) {
         xHit.add(i);
     }
 
-    public LinkedList<Integer> getyHit() {
+    private LinkedList<Integer> getyHit() {
         return yHit;
     }
 
-    public void setyHit(int i) {
+    void setyHit(int i) {
         yHit.add(i);
     }
 
-    public LinkedList<Integer> getxMiss() {
+    private LinkedList<Integer> getxMiss() {
         return setxMiss;
     }
 
-    public void setxMiss(int i) {
+    void setxMiss(int i) {
         setxMiss.add(i);
     }
 
-    public LinkedList<Integer> getyMiss() {
+    private LinkedList<Integer> getyMiss() {
         return setyMiss;
     }
 
-    public void setyMiss(int i) {
+    void setyMiss(int i) {
         setyMiss.add(i);
     }
 
-    public LinkedList<Integer> getxCoordinate() {
+    LinkedList<Integer> getxCoordinate() {
         return xCoordinate;
     }
 
-    public void setxCoordinate(int x) {
+    void setxCoordinate(int x) {
         xCoordinate.add(x);
     }
 
-    public LinkedList<Integer> getyCoordinate() {
+    LinkedList<Integer> getyCoordinate() {
         return yCoordinate;
     }
 
-    public void setyCoordinate(int y) {
+    void setyCoordinate(int y) {
         yCoordinate.add(y);
     }
 
     /**
      * Set the board to to be displayed by this view.
      */
-    public void setBoard(Board board) {
+    void setBoard(Board board) {
         /* Board to be displayed by this view. */
         this.boardSize = board.size();
     }
@@ -274,7 +275,7 @@ public class BoardView extends View implements Serializable {
     /**
      * Calculate the gap between two horizontal/vertical lines.
      */
-    protected float lineGap() {
+    private float lineGap() {
         return Math.min(getMeasuredWidth(), getMeasuredHeight()) / (float) boardSize;
     }
 
@@ -288,7 +289,7 @@ public class BoardView extends View implements Serializable {
     /**
      * Calculate the maximum screen coordinate.
      */
-    protected float maxCoord() {
+    private float maxCoord() {
         return lineGap() * (numOfLines() - 1);
     }
 
@@ -298,7 +299,7 @@ public class BoardView extends View implements Serializable {
      * don't correspond to any place in the board.
      * The returned coordinates are encoded as <code>x*100 + y</code>.
      */
-    public int locatePlace(float x, float y) {
+    private int locatePlace(float x, float y) {
         if (x <= maxCoord() && y <= maxCoord()) {
             final float placeSize = lineGap();
             int ix = (int) (x / placeSize);
@@ -309,7 +310,7 @@ public class BoardView extends View implements Serializable {
         return -1;
     }
 
-    public int locateX(float x) {
+    int locateX(float x) {
         if (x <= maxCoord()) {
             final float placeSize = lineGap();
             int ix = (int) (x / placeSize);
@@ -318,7 +319,7 @@ public class BoardView extends View implements Serializable {
         return -1;
     }
 
-    public int locateY(float y) {
+    int locateY(float y) {
         if (y <= maxCoord()) {
             final float placeSize = lineGap();
             int iy = (int) (y / placeSize);
@@ -330,7 +331,7 @@ public class BoardView extends View implements Serializable {
     /**
      * Register the given listener.
      */
-    public void addBoardTouchListener(BoardTouchListener listener) {
+    void addBoardTouchListener(BoardTouchListener listener) {
         if (!listeners.contains(listener)) {
             listeners.add(listener);
         }
@@ -346,7 +347,7 @@ public class BoardView extends View implements Serializable {
     /**
      * Notify all registered listeners.
      */
-    public void notifyBoardTouch(int x, int y) {
+    private void notifyBoardTouch(int x, int y) {
         for (BoardTouchListener listener : listeners) {
             listener.onTouch(x, y);
         }

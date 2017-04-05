@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -25,48 +26,32 @@ import java.util.Random;
  */
 
 public class GameView extends AppCompatActivity {
-    /* Begin Fields for Human */
-    Ship aircraft = new Ship(5, "aircraft", "Human");
-    private MediaPlayer mp;
+    private MediaPlayer mp; // For music background
     private String fontPath;
+
+    /* Begin Fields for Human */
     private Board board = new Board(10);
     private BoardView humanBoardView;
-    private Player humanPlayer = new Player("human", board);
-
+    private BoardView humanBoardViewFinal;
+    private Player humanPlayer = new Player("Human", board);
     /* End Fields for Human */
 
     /* Begin Fields for AI */
     private BoardView computerBoardView;
-    private BoardView humanBoardViewFinal;
     private int countShots = 0;
     private TextView counter;
-    private boolean getResult = false;
+    private Player computerPlayer = new Player("Computer", board);
     /* End Fields for AI */
-    private boolean dropped = true;
-    /* Begin Setters and Getters */
 
-    /**
-     * @return the number of shots the user has shot at boats
-     */
-    public int getCountShots() {
-        return countShots;
-    }
+    private boolean getResult = false; // Determine if the an image object has been dragged
 
-    /**
-     * @param countShots set the count of shots each time the user fires.
-     */
-    public void setCountShots(int countShots) {
-        this.countShots = countShots;
-    }
-
-    public String getFontPath() {
+    private String getFontPath() {
         return fontPath;
     }
 
-    public void setFontPath(String fontPath) {
+    private void setFontPath(String fontPath) {
         this.fontPath = fontPath;
     }
-    /* End Setters and Getters */
 
     /**
      * @param savedInstanceState This class gets called from @see GameController
@@ -163,23 +148,27 @@ public class GameView extends AppCompatActivity {
         humanBoardView = (BoardView) findViewById(R.id.humanBoardView2);
         humanBoardView.setBoard(humanPlayer.getPlayerBoard());
 
+        /* Set up the toolbar and define it's title */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Place Boats");
 
+        /* Get the image objects */
         ImageView aircraft = (ImageView) findViewById(R.id.aircraft);
         ImageView battleship = (ImageView) findViewById(R.id.battleship);
         ImageView destroyer = (ImageView) findViewById(R.id.destroyer);
         ImageView submarine = (ImageView) findViewById(R.id.submarine);
         ImageView patrol = (ImageView) findViewById(R.id.patrol);
 
+        /* Allow these boat images to be draggable, listen when they are touched */
         aircraft.setOnTouchListener(new MyTouchListener());
         battleship.setOnTouchListener(new MyTouchListener());
         destroyer.setOnTouchListener(new MyTouchListener());
         submarine.setOnTouchListener(new MyTouchListener());
         patrol.setOnTouchListener(new MyTouchListener());
 
+        /* Define the particular location where these boat images are allowed to be dragged onto */
         findViewById(R.id.humanBoardPlacer).setOnDragListener(new MyDragListener());
 
         Button next = (Button) findViewById(R.id.next);
@@ -207,11 +196,7 @@ public class GameView extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        humanPlayer.aircraft.setPlaced(false);
-        humanPlayer.battleship.setPlaced(false);
-        humanPlayer.destroyer.setPlaced(false);
-        humanPlayer.submarine.setPlaced(false);
-        humanPlayer.patrol.setPlaced(false);
+
 
         Log.w("humanPlayer.aircraft", humanPlayer.getTypeOfPlayer());
         if (item.getItemId() == R.id.itemAircraft) {
@@ -274,7 +259,7 @@ public class GameView extends AppCompatActivity {
     private void computerBoardView(BoardView copyOfHumanBoard) {
         setContentView(R.layout.current_game);
 
-        /* Begin Human Board */
+        /* Define Human Board */
         final Board humanBoardFinal = new Board(10);
         humanBoardViewFinal = (BoardView) findViewById(R.id.humanBoard);
         humanBoardViewFinal.setBoard(humanBoardFinal);
@@ -292,12 +277,6 @@ public class GameView extends AppCompatActivity {
         computerBoardView = (BoardView) findViewById(R.id.computerBoard);
         computerBoardView.setBoard(computerBoard);
 
-        // Below we define the boats that will be placed on the board
-        final Ship aircraftPC = new Ship(5, "aircraft", "Computer");
-        final Ship battleshipPC = new Ship(4, "battleship", "Computer");
-        final Ship destroyerPC = new Ship(3, "destroyer", "Computer");
-        final Ship submarinePC = new Ship(3, "submarine", "Computer");
-        final Ship patrolPC = new Ship(2, "patrol", "Computer");
 
         // Define buttons and text views here
         TextView battleshipTitle = (TextView) findViewById(R.id.BattleShip);
@@ -315,67 +294,64 @@ public class GameView extends AppCompatActivity {
         newActivity(newButton, activityContext);
         quitActivity(quitButton, activityContext);
 
-        // The counter displays the number of shots in the UI, the user has tapped on the board.
-        countShots = 0;
-        setCountShots(0);
         /* End Computer Stuff Game*/
-
+        Log.w("Computer's board", Arrays.deepToString(computerPlayer.boardGrid));
         computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
-                setCountShots(countShots + 1);
-                counter.setText(String.valueOf("Number of Shots: " + getCountShots()));
-
+                // The counter displays the number of shots in the UI, the user has tapped on the board.
+                computerPlayer.shoots();
+                counter.setText(String.valueOf("Number of Shots: " + computerPlayer.getNumberOfShots()));
                 // Compare the coordinates the user just touched with any of the boats that are placed
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
-                if (isItAHit(aircraftPC.getComputerCoordinates(), x, y)) {
+                if (computerPlayer.aircraft.shootShip(x, y)) {
                     makeExplosionSound(activityContext);
-                    aircraftPC.hit();
+                    computerPlayer.aircraft.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (aircraftPC.getHit() == 5) {
+                    if (computerPlayer.aircraft.getHit() == 5) {
                         toast("Aircraft SUNK");
                         makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(battleshipPC.getComputerCoordinates(), x, y)) {
+                } else if (computerPlayer.battleship.shootShip(x, y)) {
                     makeExplosionSound(activityContext);
-                    battleshipPC.hit();
+                    computerPlayer.battleship.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (battleshipPC.getHit() == 4) {
+                    if (computerPlayer.battleship.getHit() == 4) {
                         toast("Battleship SUNK");
                         makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(destroyerPC.getComputerCoordinates(), x, y)) {
+                } else if (computerPlayer.destroyer.shootShip(x, y)) {
                     makeExplosionSound(activityContext);
-                    destroyerPC.hit();
+                    computerPlayer.destroyer.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (destroyerPC.getHit() == 3) {
+                    if (computerPlayer.destroyer.getHit() == 3) {
                         toast("Destroyer SUNK");
                         makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(submarinePC.getComputerCoordinates(), x, y)) {
+                } else if (computerPlayer.submarine.shootShip(x, y)) {
                     makeExplosionSound(activityContext);
-                    submarinePC.hit();
+                    computerPlayer.submarine.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (submarinePC.getHit() == 3) {
+                    if (computerPlayer.submarine.getHit() == 3) {
                         toast("Submarine SUNK");
                         makeLouderExplosion(activityContext);
                     }
-                } else if (isItAHit(patrolPC.getComputerCoordinates(), x, y)) {
+                } else if (computerPlayer.patrol.shootShip(x, y)) {
                     makeExplosionSound(activityContext);
-                    patrolPC.hit();
+                    computerPlayer.patrol.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
-                    if (patrolPC.getHit() == 2) {
+                    if (computerPlayer.patrol.getHit() == 2) {
                         toast("Patrol SUNK");
                         makeLouderExplosion(activityContext);
                     }
@@ -408,7 +384,8 @@ public class GameView extends AppCompatActivity {
                         humanBoardViewFinal.setxHit(randX);
                         humanBoardViewFinal.setyHit(randY);
                         toast("KA-POW");
-                        if (battleshipPC.getHit() == 4) {
+
+                        if (humanPlayer.battleship.getHit() == 4) {
                             toast("Battleship SUNK");
                             makeLouderExplosion(activityContext);
                         }

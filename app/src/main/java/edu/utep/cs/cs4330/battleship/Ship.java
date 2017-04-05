@@ -8,22 +8,14 @@ public class Ship {
     private int size;
     private int hit;
     private boolean isPlaced;
+    private boolean shootShip;
     private String nameOfShip;
 
-    Ship(int size, String ship, String typeOfUser) {
-        if (typeOfUser != null) {
-            if (typeOfUser.equals("Computer")) {
-                setSize(size);
-                computerSetCoordinates();
-                setSink(false);
-            }
-
-            if (typeOfUser.equals("Human")) {
-                setSize(size);
-                setSink(false);
-            }
-            nameShip(ship);
-        }
+    Ship(int size, String ship) {
+        setSize(size);
+        setSink(false);
+        nameShip(ship);
+        randomCoordinates();
     }
 
     void clearCoordinates() {
@@ -35,29 +27,55 @@ public class Ship {
         }
     }
 
-    private void computerSetCoordinates() {
+    private void randomCoordinates() {
         int coordinatesRange = (map.length - getSizeOfBoat());
         int randomX = (int) (Math.random() * coordinatesRange);
         int randomY = (int) (Math.random() * coordinatesRange);
         int direction = (int) (Math.random() * 2);
+
+
         if (direction == 1) { // if boat is horizontal
             setPosition();
             for (int i = 0; i < getSizeOfBoat(); i++) { // place boat horizontal
-                map[randomX][randomY + i] = 1; // Adding to the right of the head
+                if(getNameOfShip().equals("aircraft")){
+                    map[randomX][randomY + i] = 1; // Adding to the right of the head
+                }
+                if(getNameOfShip().equals("battleship")){
+                    map[randomX][randomY + i] = 2; // Adding to the right of the head
+                }
+                if(getNameOfShip().equals("destroyer")){
+                    map[randomX][randomY + i] = 3; // Adding to the right of the head
+                }
+                if(getNameOfShip().equals("submarine")){
+                    map[randomX][randomY + i] = 4; // Adding to the right of the head
+                }
+                if(getNameOfShip().equals("patrol")){
+                    map[randomX][randomY + i] = 5; // Adding to the right of the head
+                }
             }
         } else {
             setPosition();
             for (int j = 0; j < getSizeOfBoat(); j++) { // place boat vertical
-                map[randomX + j][randomY] = 1; // Adding below of the head
+                if(getNameOfShip().equals("aircraft")){
+                    map[randomX + j][randomY] = 1; // Adding below of the head
+                }
+                if(getNameOfShip().equals("battleship")){
+                    map[randomX + j][randomY] = 2; // Adding below of the head
+                }
+                if(getNameOfShip().equals("destroyer")){
+                    map[randomX + j][randomY] = 3; // Adding below of the head
+                }
+                if(getNameOfShip().equals("submarine")){
+                    map[randomX + j][randomY] = 4; // Adding below of the head
+                }
+                if(getNameOfShip().equals("patrol")){
+                    map[randomX + j][randomY] = 5; // Adding below of the head
+                }
             }
         }
     }
 
     int[][] gethumanSetCoordinates() {
-        return map;
-    }
-
-    int[][] getComputerCoordinates() {
         return map;
     }
 
@@ -97,5 +115,13 @@ public class Ship {
 
     public void nameShip(String nameOfShip) {
         this.nameOfShip = nameOfShip;
+    }
+
+    /**
+     * @return true if it finds a boat at given coordinates
+     *         false if it does not find a boat at given coordinates
+     */
+    boolean shootShip(int x, int y) {
+        return map[x][y] >= 1;
     }
 }

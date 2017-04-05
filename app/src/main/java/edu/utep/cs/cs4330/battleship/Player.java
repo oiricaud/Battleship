@@ -1,29 +1,46 @@
 package edu.utep.cs.cs4330.battleship;
 
+import android.util.Log;
+
 /*
  * Created by oscarricaud on 3/31/17.
  */
 class Player {
     int[][] boardGrid = new int[10][10];
     private String typeOfPlayer;
-    Ship aircraft = new Ship(5, "aircraft", getTypeOfPlayer());
-    Ship battleship = new Ship(4, "battleship", getTypeOfPlayer());
-    Ship destroyer = new Ship(3, "destroyer", getTypeOfPlayer());
-    Ship submarine = new Ship(3, "submarine", getTypeOfPlayer());
-    Ship patrol = new Ship(2, "patrol", getTypeOfPlayer());
+    private int numberOfShots;
     private Board playerBoard = new Board(10);
+
+    Ship aircraft = new Ship(5, "aircraft");
+    Ship battleship = new Ship(4, "battleship");
+    Ship destroyer = new Ship(3, "destroyer");
+    Ship submarine = new Ship(3, "submarine");
+    Ship patrol = new Ship(2, "patrol");
 
     /**
      * @param player
      * @param board
      */
     Player(String player, Board board) {
-        if (player.equals("human")) {
-            setTypeOfPlayer("human");
+        if (player.equals("Human")) {
+            setTypeOfPlayer("Human");
         }
-        if (player.equals("computer")) {
-            setTypeOfPlayer("computer");
+        if (player.equals("Computer")) {
+            setTypeOfPlayer("Computer");
+            Log.w("2Here", "here");
+            // Add random coordinates for a specific boat to the players board grid
+            addCoordinates(aircraft.map);
+            addCoordinates(battleship.map);
+            addCoordinates(destroyer.map);
+            addCoordinates(submarine.map);
+            addCoordinates(patrol.map);
         }
+        aircraft.setPlaced(false);
+        battleship.setPlaced(false);
+        destroyer.setPlaced(false);
+        submarine.setPlaced(false);
+        patrol.setPlaced(false);
+
         setPlayerBoard(board);
     }
 
@@ -100,4 +117,16 @@ class Player {
         this.playerBoard = playerBoard;
     }
 
+    /**
+     * @return the number of shots the user has shot at boats
+     */
+    public int getNumberOfShots() {
+        return numberOfShots;
+    }
+    /**
+     * @param countShots set the count of shots each time the user fires.
+     */
+    void shoots() {
+        this.numberOfShots = 1 + numberOfShots;
+    }
 }
