@@ -5,7 +5,7 @@ import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 
-/**
+/*
  * Created by oscarricaud on 3/31/17.
  */
 public class MyTouchListener implements View.OnTouchListener {

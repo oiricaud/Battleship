@@ -161,7 +161,7 @@ public class GameView extends AppCompatActivity {
     private void placeBoatsView() {
         setContentView(R.layout.activity_human_game);
         humanBoardView = (BoardView) findViewById(R.id.humanBoardView2);
-        humanBoardView.setBoard(humanPlayer.getHumanBoard());
+        humanBoardView.setBoard(humanPlayer.getPlayerBoard());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -764,7 +764,7 @@ public class GameView extends AppCompatActivity {
                         /* AIRCRAFT */
                         if (boatWeAreDragging.equals("aircraft")) {
                             if (humanPlayer.aircraft.isPlaced()) { // Boat has already been placed
-                                humanPlayer.removeCoordinates(humanPlayer.aircraft.map, "aircraft");
+                                humanPlayer.removeCoordinates(humanPlayer.aircraft.map);
                                 // Delete all coordinates for this ship
                                 humanPlayer.aircraft.clearCoordinates();
                             }
@@ -786,7 +786,7 @@ public class GameView extends AppCompatActivity {
                         /* BATTLESHIP */
                         if (boatWeAreDragging.equals("battleship")) {
                             if (humanPlayer.battleship.isPlaced()) { // If boat is already placed
-                                humanPlayer.removeCoordinates(humanPlayer.battleship.map, "battleship");
+                                humanPlayer.removeCoordinates(humanPlayer.battleship.map);
                                 // Delete all coordinates for this ship
                                 humanPlayer.battleship.clearCoordinates();
                             }
@@ -809,7 +809,7 @@ public class GameView extends AppCompatActivity {
                         /* DESTROYER */
                         if (boatWeAreDragging.equals("destroyer")) {
                             if (humanPlayer.destroyer.isPlaced()) { // If boat is already placed
-                                humanPlayer.removeCoordinates(humanPlayer.destroyer.map, "destroyer");
+                                humanPlayer.removeCoordinates(humanPlayer.destroyer.map);
                                 // Delete all coordinates for this ship
                                 humanPlayer.destroyer.clearCoordinates();
                             }
@@ -832,7 +832,7 @@ public class GameView extends AppCompatActivity {
                         /* SUBMARINE */
                         if (boatWeAreDragging.equals("submarine")) {
                             if (humanPlayer.submarine.isPlaced()) { // If boat is already placed
-                                humanPlayer.removeCoordinates(humanPlayer.submarine.map, "submarine");
+                                humanPlayer.removeCoordinates(humanPlayer.submarine.map);
                                 // Hence, delete all coordinates for this ship
                                 humanPlayer.submarine.clearCoordinates();
                             }
@@ -855,7 +855,7 @@ public class GameView extends AppCompatActivity {
                          /* PATROL */
                         if (boatWeAreDragging.equals("patrol")) {
                             if (humanPlayer.patrol.isPlaced()) { // If boat is already placed
-                                humanPlayer.removeCoordinates(humanPlayer.patrol.map, "patrol");
+                                humanPlayer.removeCoordinates(humanPlayer.patrol.map);
                                 humanPlayer.patrol.clearCoordinates(); // Hence, delete all coordinates for this ship
                                 // Save the coordinates for other boats
                             }
@@ -865,7 +865,7 @@ public class GameView extends AppCompatActivity {
                             // Get actual Column from the @see BoardView based on y
                             int tempY = humanBoardView.locateY(convertY);
 
-                            for (int i = 0; i < 3; i++) {
+                            for (int i = 0; i < 2; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                     boatsCoordinates[tempX + i][tempY] = 5;
                                 }
@@ -896,7 +896,7 @@ public class GameView extends AppCompatActivity {
                     view = (View) event.getLocalState();
                     view.setVisibility(View.VISIBLE);
                 default:
-                    humanBoardView.map = humanPlayer.map; // Prevents from drawing multiple times when the
+                    humanBoardView.map = humanPlayer.boardGrid; // Prevents from drawing multiple times when the
                     // user changes
                     humanBoardView.invalidate();
                     break;
