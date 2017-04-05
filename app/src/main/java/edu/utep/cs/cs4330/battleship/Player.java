@@ -7,15 +7,14 @@ import android.util.Log;
  */
 class Player {
     int[][] boardGrid = new int[10][10];
-    private String typeOfPlayer;
-    private int numberOfShots;
-    private Board playerBoard = new Board(10);
-
     Ship aircraft = new Ship(5, "aircraft");
     Ship battleship = new Ship(4, "battleship");
     Ship destroyer = new Ship(3, "destroyer");
     Ship submarine = new Ship(3, "submarine");
     Ship patrol = new Ship(2, "patrol");
+    private String typeOfPlayer;
+    private int numberOfShots;
+    private Board playerBoard = new Board(10);
 
     /**
      * @param player
@@ -85,7 +84,7 @@ class Player {
                 if (coordinates[i][j] == 1) { // Remove aircraft coordinates
                     boardGrid[i][j] = -1;
                 }
-                if (coordinates[i][j] == 2) { // Remove aircraft coordinates
+                if (coordinates[i][j] == 2) { // Remove battleship coordinates
                     boardGrid[i][j] = -2;
                 }
                 if (coordinates[i][j] == 3) { // Remove destroyer coordinates
@@ -99,6 +98,37 @@ class Player {
                 }
             }
         }
+    }
+
+    /**
+     * @return true if it finds a boat at given coordinates
+     * false if it does not find a boat at given coordinates
+     */
+    boolean shootShip(int x, int y) {
+        if (boardGrid[x][y] >= 1) {
+            int boatID = boardGrid[x][y];
+            if (boatID == 1) { // Shot aircraft
+                aircraft.hit();
+                return true;
+            }
+            if (boatID == 2) { // Shot battleship
+                battleship.hit();
+                return true;
+            }
+            if (boatID == 3) { // Shot destroyer
+                destroyer.hit();
+                return true;
+            }
+            if (boatID == 4) { // Shot submarine
+                submarine.hit();
+                return true;
+            }
+            if (boatID == 5) { // Shot patrol
+                patrol.hit();
+                return true;
+            }
+        }
+        return false;
     }
 
     String getTypeOfPlayer() {

@@ -305,56 +305,16 @@ public class GameView extends AppCompatActivity {
                 // Compare the coordinates the user just touched with any of the boats that are placed
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
-                if (computerPlayer.aircraft.shootShip(x, y)) {
+                if (computerPlayer.shootShip(x, y)) {
                     makeExplosionSound(activityContext);
-                    computerPlayer.aircraft.hit();
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
                     toast("KA-POW");
+                    /*
                     if (computerPlayer.aircraft.getHit() == 5) {
                         toast("Aircraft SUNK");
                         makeLouderExplosion(activityContext);
-                    }
-                } else if (computerPlayer.battleship.shootShip(x, y)) {
-                    makeExplosionSound(activityContext);
-                    computerPlayer.battleship.hit();
-                    computerBoardView.setxHit(x);
-                    computerBoardView.setyHit(y);
-                    toast("KA-POW");
-                    if (computerPlayer.battleship.getHit() == 4) {
-                        toast("Battleship SUNK");
-                        makeLouderExplosion(activityContext);
-                    }
-                } else if (computerPlayer.destroyer.shootShip(x, y)) {
-                    makeExplosionSound(activityContext);
-                    computerPlayer.destroyer.hit();
-                    computerBoardView.setxHit(x);
-                    computerBoardView.setyHit(y);
-                    toast("KA-POW");
-                    if (computerPlayer.destroyer.getHit() == 3) {
-                        toast("Destroyer SUNK");
-                        makeLouderExplosion(activityContext);
-                    }
-                } else if (computerPlayer.submarine.shootShip(x, y)) {
-                    makeExplosionSound(activityContext);
-                    computerPlayer.submarine.hit();
-                    computerBoardView.setxHit(x);
-                    computerBoardView.setyHit(y);
-                    toast("KA-POW");
-                    if (computerPlayer.submarine.getHit() == 3) {
-                        toast("Submarine SUNK");
-                        makeLouderExplosion(activityContext);
-                    }
-                } else if (computerPlayer.patrol.shootShip(x, y)) {
-                    makeExplosionSound(activityContext);
-                    computerPlayer.patrol.hit();
-                    computerBoardView.setxHit(x);
-                    computerBoardView.setyHit(y);
-                    toast("KA-POW");
-                    if (computerPlayer.patrol.getHit() == 2) {
-                        toast("Patrol SUNK");
-                        makeLouderExplosion(activityContext);
-                    }
+                    } */
                 } else {
                     computerBoardView.setxMiss(x);
                     computerBoardView.setyMiss(y);

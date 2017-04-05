@@ -109,19 +109,11 @@ public class Ship {
         isPlaced = placed;
     }
 
-    public String getNameOfShip() {
+    private String getNameOfShip() {
         return nameOfShip;
     }
 
-    public void nameShip(String nameOfShip) {
+    private void nameShip(String nameOfShip) {
         this.nameOfShip = nameOfShip;
-    }
-
-    /**
-     * @return true if it finds a boat at given coordinates
-     *         false if it does not find a boat at given coordinates
-     */
-    boolean shootShip(int x, int y) {
-        return map[x][y] >= 1;
     }
 }
