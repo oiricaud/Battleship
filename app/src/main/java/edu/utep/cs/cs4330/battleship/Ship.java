@@ -33,7 +33,6 @@ public class Ship {
         int randomY = (int) (Math.random() * coordinatesRange);
         int direction = (int) (Math.random() * 2);
 
-
         if (direction == 1) { // if boat is horizontal
             setPosition();
             for (int i = 0; i < getSizeOfBoat(); i++) { // place boat horizontal
@@ -75,9 +74,6 @@ public class Ship {
         }
     }
 
-    int[][] gethumanSetCoordinates() {
-        return map;
-    }
 
     private int getSizeOfBoat() {
         return size;

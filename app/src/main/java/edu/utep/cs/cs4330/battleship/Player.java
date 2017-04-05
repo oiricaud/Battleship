@@ -1,12 +1,10 @@
 package edu.utep.cs.cs4330.battleship;
 
-import android.util.Log;
-
 /*
  * Created by oscarricaud on 3/31/17.
  */
 class Player {
-    int[][] boardGrid = new int[10][10];
+    Board gameBoard = new Board(10);
     Ship aircraft = new Ship(5, "aircraft");
     Ship battleship = new Ship(4, "battleship");
     Ship destroyer = new Ship(3, "destroyer");
@@ -26,13 +24,12 @@ class Player {
         }
         if (player.equals("Computer")) {
             setTypeOfPlayer("Computer");
-            Log.w("2Here", "here");
             // Add random coordinates for a specific boat to the players board grid
-            addCoordinates(aircraft.map);
-            addCoordinates(battleship.map);
-            addCoordinates(destroyer.map);
-            addCoordinates(submarine.map);
-            addCoordinates(patrol.map);
+            board.addCoordinates(aircraft.map);
+            board.addCoordinates(battleship.map);
+            board.addCoordinates(destroyer.map);
+            board.addCoordinates(submarine.map);
+            board.addCoordinates(patrol.map);
         }
         aircraft.setPlaced(false);
         battleship.setPlaced(false);
@@ -43,70 +40,22 @@ class Player {
         setPlayerBoard(board);
     }
 
-    /**
-     * @param coordinates After the user clicks and drags a specific boat image to the grid; the coordinates must be
-     *                    saved to the players board map. This is exactly what this method is doing. Each boat is
-     *                    associated with a number. The method then adds the specific Boat id to a 2D Matrix Map,
-     *                    which is later retrieved on the
-     * @see BoardView class to draw the boats on the grid
-     * specifically for the user to visually see where the boats are placed.
-     */
-    void addCoordinates(int[][] coordinates) {
-        for (int i = 0; i < coordinates.length; i++) {
-            for (int j = 0; j < coordinates.length; j++) {
-                if (coordinates[i][j] == 1) { // Aircraft ID
-                    boardGrid[i][j] = 1;
-                }
-                if (coordinates[i][j] == 2) { // Battleship ID
-                    boardGrid[i][j] = 2;
-                }
-                if (coordinates[i][j] == 3) { // Destroyer ID
-                    boardGrid[i][j] = 3;
-                }
-                if (coordinates[i][j] == 4) { // Submarine ID
-                    boardGrid[i][j] = 4;
-                }
-                if (coordinates[i][j] == 5) { // Patrol ID
-                    boardGrid[i][j] = 5;
-                }
-            }
-        }
+
+    String getTypeOfPlayer() {
+        return typeOfPlayer;
     }
 
-    /**
-     * @param coordinates Are the coordinates of a specific boat, when the user places a boat and decides to place
-     *                    the boat elsewhere we must delete the coordinates of the previous location and update the
-     * @see BoardView class to update the onDraw method.
-     */
-    void removeCoordinates(int[][] coordinates) {
-        for (int i = 0; i < coordinates.length; i++) {
-            for (int j = 0; j < coordinates.length; j++) {
-                if (coordinates[i][j] == 1) { // Remove aircraft coordinates
-                    boardGrid[i][j] = -1;
-                }
-                if (coordinates[i][j] == 2) { // Remove battleship coordinates
-                    boardGrid[i][j] = -2;
-                }
-                if (coordinates[i][j] == 3) { // Remove destroyer coordinates
-                    boardGrid[i][j] = -3;
-                }
-                if (coordinates[i][j] == 4) { // Remove submarine coordinates
-                    boardGrid[i][j] = -4;
-                }
-                if (coordinates[i][j] == 5) { // Remove patrol coordinates
-                    boardGrid[i][j] = -5;
-                }
-            }
-        }
+    private void setTypeOfPlayer(String typeOfPlayer) {
+        this.typeOfPlayer = typeOfPlayer;
     }
 
     /**
      * @return true if it finds a boat at given coordinates
      * false if it does not find a boat at given coordinates
      */
-    boolean shootShip(int x, int y) {
-        if (boardGrid[x][y] >= 1) {
-            int boatID = boardGrid[x][y];
+    boolean shootAtBoard(int x, int y) {
+        if (gameBoard.grid[x][y] >= 1) {
+            int boatID = gameBoard.grid[x][y];
             if (boatID == 1) { // Shot aircraft
                 aircraft.hit();
                 return true;
@@ -129,14 +78,6 @@ class Player {
             }
         }
         return false;
-    }
-
-    String getTypeOfPlayer() {
-        return typeOfPlayer;
-    }
-
-    private void setTypeOfPlayer(String typeOfPlayer) {
-        this.typeOfPlayer = typeOfPlayer;
     }
 
     Board getPlayerBoard() {

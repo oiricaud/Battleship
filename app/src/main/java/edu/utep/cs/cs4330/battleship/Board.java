@@ -14,14 +14,71 @@ class Board {
      * <code>size*size </code> places.
      */
     private final int size;
+    int[][] grid = new int[10][10];
     private int x;
     private int y;
-
     /**
      * Create a new board of the given size.
      */
     Board(int size) {
         this.size = size;
+    }
+
+    /**
+     * @param coordinates After the user clicks and drags a specific boat image to the grid; the coordinates must be
+     *                    saved to the players board map. This is exactly what this method is doing. Each boat is
+     *                    associated with a number. The method then adds the specific Boat id to a 2D Matrix Map,
+     *                    which is later retrieved on the
+     * @see BoardView class to draw the boats on the grid
+     * specifically for the user to visually see where the boats are placed.
+     */
+    void addCoordinates(int[][] coordinates) {
+        for (int i = 0; i < coordinates.length; i++) {
+            for (int j = 0; j < coordinates.length; j++) {
+                if (coordinates[i][j] == 1) { // Aircraft ID
+                    grid[i][j] = 1;
+                }
+                if (coordinates[i][j] == 2) { // Battleship ID
+                    grid[i][j] = 2;
+                }
+                if (coordinates[i][j] == 3) { // Destroyer ID
+                    grid[i][j] = 3;
+                }
+                if (coordinates[i][j] == 4) { // Submarine ID
+                    grid[i][j] = 4;
+                }
+                if (coordinates[i][j] == 5) { // Patrol ID
+                    grid[i][j] = 5;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param coordinates Are the coordinates of a specific boat, when the user places a boat and decides to place
+     *                    the boat elsewhere we must delete the coordinates of the previous location and update the
+     * @see BoardView class to update the onDraw method.
+     */
+    void removeCoordinates(int[][] coordinates) {
+        for (int i = 0; i < coordinates.length; i++) {
+            for (int j = 0; j < coordinates.length; j++) {
+                if (coordinates[i][j] == 1) { // Remove aircraft coordinates
+                    grid[i][j] = -1;
+                }
+                if (coordinates[i][j] == 2) { // Remove battleship coordinates
+                    grid[i][j] = -2;
+                }
+                if (coordinates[i][j] == 3) { // Remove destroyer coordinates
+                    grid[i][j] = -3;
+                }
+                if (coordinates[i][j] == 4) { // Remove submarine coordinates
+                    grid[i][j] = -4;
+                }
+                if (coordinates[i][j] == 5) { // Remove patrol coordinates
+                    grid[i][j] = -5;
+                }
+            }
+        }
     }
 
     /**

@@ -295,17 +295,17 @@ public class GameView extends AppCompatActivity {
         quitActivity(quitButton, activityContext);
 
         /* End Computer Stuff Game*/
-        Log.w("Computer's board", Arrays.deepToString(computerPlayer.boardGrid));
         computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
                 // The counter displays the number of shots in the UI, the user has tapped on the board.
                 computerPlayer.shoots();
+                Log.w("AC coordinates", Arrays.deepToString(computerPlayer.aircraft.map));
                 counter.setText(String.valueOf("Number of Shots: " + computerPlayer.getNumberOfShots()));
                 // Compare the coordinates the user just touched with any of the boats that are placed
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
-                if (computerPlayer.shootShip(x, y)) {
+                if (computerPlayer.shootAtBoard(x, y)) {
                     makeExplosionSound(activityContext);
                     computerBoardView.setxHit(x);
                     computerBoardView.setyHit(y);
@@ -327,7 +327,7 @@ public class GameView extends AppCompatActivity {
                     int randY = generateRandomCoordinate();
                     Log.w("randX", String.valueOf(randX));
                     Log.w("randY", String.valueOf(randY));
-                    if (isItAHit(humanPlayer.aircraft.gethumanSetCoordinates(), randX, randY)) {
+                    if (isItAHit(humanPlayer.aircraft.map, randX, randY)) {
                         makeExplosionSound(activityContext);
                         humanPlayer.aircraft.hit();
                         humanBoardViewFinal.setxHit(randX);
@@ -338,7 +338,7 @@ public class GameView extends AppCompatActivity {
                             makeLouderExplosion(activityContext);
                         }
                         humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(humanPlayer.battleship.gethumanSetCoordinates(), randX, randY)) {
+                    } else if (isItAHit(humanPlayer.battleship.map, randX, randY)) {
                         makeExplosionSound(activityContext);
                         humanPlayer.battleship.hit();
                         humanBoardViewFinal.setxHit(randX);
@@ -350,7 +350,7 @@ public class GameView extends AppCompatActivity {
                             makeLouderExplosion(activityContext);
                         }
                         humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(humanPlayer.destroyer.gethumanSetCoordinates(), randX, randY)) {
+                    } else if (isItAHit(humanPlayer.destroyer.map, randX, randY)) {
                         makeExplosionSound(activityContext);
                         humanPlayer.destroyer.hit();
                         humanBoardViewFinal.setxHit(randX);
@@ -361,7 +361,7 @@ public class GameView extends AppCompatActivity {
                             makeLouderExplosion(activityContext);
                         }
                         humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(humanPlayer.destroyer.gethumanSetCoordinates(), randX, randY)) {
+                    } else if (isItAHit(humanPlayer.destroyer.map, randX, randY)) {
                         makeExplosionSound(activityContext);
                         humanPlayer.destroyer.hit();
                         humanBoardViewFinal.setxHit(randX);
@@ -372,7 +372,7 @@ public class GameView extends AppCompatActivity {
                             makeLouderExplosion(activityContext);
                         }
                         humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(humanPlayer.submarine.gethumanSetCoordinates(), randX, randY)) {
+                    } else if (isItAHit(humanPlayer.submarine.map, randX, randY)) {
                         makeExplosionSound(activityContext);
                         humanPlayer.submarine.hit();
                         humanBoardViewFinal.setxHit(randX);
@@ -649,7 +649,7 @@ public class GameView extends AppCompatActivity {
                         /* AIRCRAFT */
                         if (boatWeAreDragging.equals("aircraft")) {
                             if (humanPlayer.aircraft.isPlaced()) { // Boat has already been placed
-                                humanPlayer.removeCoordinates(humanPlayer.aircraft.map);
+                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.aircraft.map);
                                 // Delete all coordinates for this ship
                                 humanPlayer.aircraft.clearCoordinates();
                             }
@@ -664,14 +664,14 @@ public class GameView extends AppCompatActivity {
                                 }
                             }
                             humanPlayer.aircraft.map = boatsCoordinates;
-                            humanPlayer.addCoordinates(humanPlayer.aircraft.map);
+                            humanPlayer.gameBoard.addCoordinates(humanPlayer.aircraft.map);
                             humanPlayer.aircraft.setPlaced(true);
                         }
 
                         /* BATTLESHIP */
                         if (boatWeAreDragging.equals("battleship")) {
                             if (humanPlayer.battleship.isPlaced()) { // If boat is already placed
-                                humanPlayer.removeCoordinates(humanPlayer.battleship.map);
+                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.battleship.map);
                                 // Delete all coordinates for this ship
                                 humanPlayer.battleship.clearCoordinates();
                             }
@@ -687,14 +687,14 @@ public class GameView extends AppCompatActivity {
                                 }
                             }
                             humanPlayer.battleship.map = boatsCoordinates;
-                            humanPlayer.addCoordinates(humanPlayer.battleship.map);
+                            humanPlayer.gameBoard.addCoordinates(humanPlayer.battleship.map);
                             humanPlayer.battleship.setPlaced(true);
                         }
 
                         /* DESTROYER */
                         if (boatWeAreDragging.equals("destroyer")) {
                             if (humanPlayer.destroyer.isPlaced()) { // If boat is already placed
-                                humanPlayer.removeCoordinates(humanPlayer.destroyer.map);
+                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.destroyer.map);
                                 // Delete all coordinates for this ship
                                 humanPlayer.destroyer.clearCoordinates();
                             }
@@ -710,14 +710,14 @@ public class GameView extends AppCompatActivity {
                                 }
                             }
                             humanPlayer.destroyer.map = boatsCoordinates;
-                            humanPlayer.addCoordinates(humanPlayer.destroyer.map);
+                            humanPlayer.gameBoard.addCoordinates(humanPlayer.destroyer.map);
                             humanPlayer.destroyer.setPlaced(true);
                         }
 
                         /* SUBMARINE */
                         if (boatWeAreDragging.equals("submarine")) {
                             if (humanPlayer.submarine.isPlaced()) { // If boat is already placed
-                                humanPlayer.removeCoordinates(humanPlayer.submarine.map);
+                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.submarine.map);
                                 // Hence, delete all coordinates for this ship
                                 humanPlayer.submarine.clearCoordinates();
                             }
@@ -733,14 +733,14 @@ public class GameView extends AppCompatActivity {
                                 }
                             }
                             humanPlayer.submarine.map = boatsCoordinates;
-                            humanPlayer.addCoordinates(humanPlayer.submarine.map);
+                            humanPlayer.gameBoard.addCoordinates(humanPlayer.submarine.map);
                             humanPlayer.submarine.setPlaced(true);
                         }
 
                          /* PATROL */
                         if (boatWeAreDragging.equals("patrol")) {
                             if (humanPlayer.patrol.isPlaced()) { // If boat is already placed
-                                humanPlayer.removeCoordinates(humanPlayer.patrol.map);
+                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.patrol.map);
                                 humanPlayer.patrol.clearCoordinates(); // Hence, delete all coordinates for this ship
                                 // Save the coordinates for other boats
                             }
@@ -756,7 +756,7 @@ public class GameView extends AppCompatActivity {
                                 }
                             }
                             humanPlayer.patrol.map = boatsCoordinates;
-                            humanPlayer.addCoordinates(humanPlayer.patrol.map);
+                            humanPlayer.gameBoard.addCoordinates(humanPlayer.patrol.map);
                             humanPlayer.patrol.setPlaced(true);
                         }
 
@@ -781,7 +781,7 @@ public class GameView extends AppCompatActivity {
                     view = (View) event.getLocalState();
                     view.setVisibility(View.VISIBLE);
                 default:
-                    humanBoardView.map = humanPlayer.boardGrid; // Prevents from drawing multiple times when the
+                    humanBoardView.map = humanPlayer.gameBoard.grid; // Prevents from drawing multiple times when the
                     // user changes
                     humanBoardView.invalidate();
                     break;
