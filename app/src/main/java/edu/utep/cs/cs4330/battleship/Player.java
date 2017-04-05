@@ -4,15 +4,14 @@ package edu.utep.cs.cs4330.battleship;
  * Created by oscarricaud on 3/31/17.
  */
 class Player {
-    private String typeOfPlayer;
-    private Board playerBoard = new Board(10);
     int[][] boardGrid = new int[10][10];
-
+    private String typeOfPlayer;
     Ship aircraft = new Ship(5, "aircraft", getTypeOfPlayer());
     Ship battleship = new Ship(4, "battleship", getTypeOfPlayer());
     Ship destroyer = new Ship(3, "destroyer", getTypeOfPlayer());
     Ship submarine = new Ship(3, "submarine", getTypeOfPlayer());
     Ship patrol = new Ship(2, "patrol", getTypeOfPlayer());
+    private Board playerBoard = new Board(10);
 
     /**
      * @param player
@@ -22,7 +21,7 @@ class Player {
         if (player.equals("human")) {
             setTypeOfPlayer("human");
         }
-        if(player.equals("computer")){
+        if (player.equals("computer")) {
             setTypeOfPlayer("computer");
         }
         setPlayerBoard(board);
@@ -33,8 +32,8 @@ class Player {
      *                    saved to the players board map. This is exactly what this method is doing. Each boat is
      *                    associated with a number. The method then adds the specific Boat id to a 2D Matrix Map,
      *                    which is later retrieved on the
-     *                    @see BoardView class to draw the boats on the grid
-     *                    specifically for the user to visually see where the boats are placed.
+     * @see BoardView class to draw the boats on the grid
+     * specifically for the user to visually see where the boats are placed.
      */
     void addCoordinates(int[][] coordinates) {
         for (int i = 0; i < coordinates.length; i++) {
@@ -61,7 +60,7 @@ class Player {
     /**
      * @param coordinates Are the coordinates of a specific boat, when the user places a boat and decides to place
      *                    the boat elsewhere we must delete the coordinates of the previous location and update the
-     *                    @see BoardView class to update the onDraw method.
+     * @see BoardView class to update the onDraw method.
      */
     void removeCoordinates(int[][] coordinates) {
         for (int i = 0; i < coordinates.length; i++) {

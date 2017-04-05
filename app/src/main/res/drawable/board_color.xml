@@ -5,17 +5,17 @@
 
     <stroke
             android:width="2dp"
-            android:color="#FFFFFFFF" />
+            android:color="#FFFFFFFF"/>
 
     <gradient
             android:angle="225"
             android:endColor="#283E51"
-            android:startColor="#4B79A1" />
+            android:startColor="#4B79A1"/>
 
     <corners
             android:bottomLeftRadius="7dp"
             android:bottomRightRadius="7dp"
             android:topLeftRadius="7dp"
-            android:topRightRadius="7dp" />
+            android:topRightRadius="7dp"/>
 
 </shape>

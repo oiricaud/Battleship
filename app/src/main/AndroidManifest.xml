@@ -6,7 +6,7 @@
             android:largeScreens="true"
             android:normalScreens="true"
             android:smallScreens="true"
-            android:xlargeScreens="true" />
+            android:xlargeScreens="true"/>
 
     <application
             android:allowBackup="true"
@@ -16,8 +16,8 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity android:name=".GameController">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".GameView"></activity>

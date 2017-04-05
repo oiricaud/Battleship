@@ -2,7 +2,7 @@
     <string name="app_name">Battleship</string>
     <string name="new_button_label">New</string>
     <string name="countOfHits">""</string>
-    <string name="number_of_shots_0">Number of Shots: 0 </string>
+    <string name="number_of_shots_0">Number of Shots: 0</string>
     <string name="battleship">BattleShip</string>
     <string name="start">Start</string>
     <string name="next">Next</string>
