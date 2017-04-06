@@ -6,6 +6,8 @@ Update 1.0
 
 To view the Java classes for this project [Click Here](https://github.com/oiricaud/Battleship/tree/master/app/src/main/java/edu/utep/cs/cs4330/battleship).
 
+Visual representations of Class Diagrams [Click Here](https://github.com/oiricaud/Battleship/blob/master/Class-Diagram.png).
+
 To view the requirements for Assignment #1  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW1-Assignment.md).
 
 Assignment #2 
