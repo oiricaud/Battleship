@@ -30,16 +30,7 @@ public class GameView extends AppCompatActivity {
     private MediaPlayer mp; // For music background
     private String fontPath;
     private TextView counter;
-
-    /* Begin Fields for Human */
-    private BoardView humanBoardView;
-    private Player humanPlayer = new Player("Human");
-    /* End Fields for Human */
-
-    /* Begin Fields for AI */
-    private BoardView computerBoardView;
-    private Player computerPlayer = new Player("Computer");
-    /* End Fields for AI */
+    private GameModel gameModel = new GameModel();
 
     private boolean getResult = false; // Determine if the an image object has been dragged
 
@@ -143,8 +134,8 @@ public class GameView extends AppCompatActivity {
      */
     private void placeBoatsView() {
         setContentView(R.layout.activity_human_game);
-        humanBoardView = (BoardView) findViewById(R.id.humanBoardView2);
-        humanBoardView.setBoard(humanPlayer.getPlayerBoard());
+        gameModel.humanBoardView = (BoardView) findViewById(R.id.humanBoardView2);
+        gameModel.humanBoardView.setBoard(gameModel.humanPlayer.getPlayerBoard());
 
         /* Set up the toolbar and define it's title */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -175,7 +166,7 @@ public class GameView extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                computerBoardView(humanBoardView);
+                computerBoardView(gameModel.humanBoardView);
             }
         });
     }
@@ -196,12 +187,12 @@ public class GameView extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
-        Log.w("humanPlayer.aircraft", humanPlayer.getTypeOfPlayer());
+        Log.w("humanPlayer.aircraft", gameModel.humanPlayer.getTypeOfPlayer());
         if (item.getItemId() == R.id.itemAircraft) {
 
             //noinspection ConstantConditions
             getSupportActionBar().setTitle("Tap on Grid to Place Aircraft");
-            humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+            gameModel.humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
 
                 @Override
                 public void onTouch(int x, int y) {
@@ -259,17 +250,17 @@ public class GameView extends AppCompatActivity {
 
         /* Define Human Board */
 
-        humanBoardView = (BoardView) findViewById(R.id.humanBoard);
-        humanBoardView.setBoard(humanPlayer.gameBoard);
+        gameModel.humanBoardView = (BoardView) findViewById(R.id.humanBoard);
+        gameModel.humanBoardView.setBoard(gameModel.humanPlayer.gameBoard);
 
         // Get the coordinates from the previous activity to this activity
-        humanBoardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
+        gameModel.humanBoardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
         /* End Human Board */
 
         /* Begin Computer Stuff Game */
         final Context activityContext = this;
-        computerBoardView = (BoardView) findViewById(R.id.computerBoard);
-        computerBoardView.setBoard(computerPlayer.gameBoard);
+        gameModel.computerBoardView = (BoardView) findViewById(R.id.computerBoard);
+        gameModel.computerBoardView.setBoard(gameModel.computerPlayer.gameBoard);
 
 
         // Define buttons and text views here
@@ -289,39 +280,39 @@ public class GameView extends AppCompatActivity {
         quitActivity(quitButton, activityContext);
 
         /* End Computer Stuff Game*/
-        Log.w("Computers board", Arrays.deepToString(computerPlayer.gameBoard.grid));
-        Log.w("Humans board", Arrays.deepToString(humanPlayer.gameBoard.grid));
-        computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+        Log.w("Computers board", Arrays.deepToString(gameModel.computerPlayer.gameBoard.grid));
+        Log.w("Humans board", Arrays.deepToString(gameModel.humanPlayer.gameBoard.grid));
+        gameModel.computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             /* After player taps on computers board */
             @Override
             public void onTouch(int x, int y) {
                 // Human shoots at Computers board
-                if (humanPlayer.shootsAt(computerPlayer.gameBoard, x, y)) { // Human hits a boat, paint red
+                if (gameModel.humanPlayer.shootsAt(gameModel.computerPlayer.gameBoard, x, y)) { // Human hits a boat, paint red
                     makeExplosionSound(activityContext);
                     toast("HIT");
-                    computerBoardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+                    gameModel.computerBoardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
                 } else { // Human misses, paint computers board white
-                    computerBoardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
+                    gameModel.computerBoardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
                     toast("That was close!");
                     makeMissedSound(activityContext);
-                    humanPlayer.shoots(); // Increment counter for # of shots
-                    counter.setText(String.valueOf("Number of Shots: " + humanPlayer.getNumberOfShots()));
+                    gameModel.humanPlayer.shoots(); // Increment counter for # of shots
+                    counter.setText(String.valueOf("Number of Shots: " + gameModel.humanPlayer.getNumberOfShots()));
 
                     // COMPUTER SHOOT AT HUMAN BOARD
                     int randomX = generateRandomCoordinate(); // Generate random coordinates
                     int randomY = generateRandomCoordinate(); // Generate random coordinates
 
-                    if (computerPlayer.shootsAt(humanPlayer.gameBoard, randomX, randomY)) {
+                    if (gameModel.computerPlayer.shootsAt(gameModel.humanPlayer.gameBoard, randomX, randomY)) {
                         makeExplosionSound(activityContext);
                         toast("HIT");
-                        humanBoardView.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
-                        humanBoardView.invalidate();
+                        gameModel.humanBoardView.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
+                        gameModel.humanBoardView.invalidate();
                     } else {
-                        humanBoardView.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
+                        gameModel.humanBoardView.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
                         toast("That was close!");
                         makeMissedSound(activityContext);
                     }
-                    humanBoardView.invalidate();
+                    gameModel.humanBoardView.invalidate();
                 }
             }
         });
@@ -570,116 +561,116 @@ public class GameView extends AppCompatActivity {
 
                         /* AIRCRAFT */
                         if (boatWeAreDragging.equals("aircraft")) {
-                            if (humanPlayer.aircraft.isPlaced()) { // Boat has already been placed
-                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.aircraft.map);
+                            if (gameModel.humanPlayer.aircraft.isPlaced()) { // Boat has already been placed
+                                gameModel.humanPlayer.gameBoard.removeCoordinates(gameModel.humanPlayer.aircraft.map);
                                 // Delete all coordinates for this ship
-                                humanPlayer.aircraft.clearCoordinates();
+                                gameModel.humanPlayer.aircraft.clearCoordinates();
                             }
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanBoardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanBoardView.locateY(convertY);
 
                             for (int i = 0; i < 5; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                     boatsCoordinates[tempX + i][tempY] = 1;
                                 }
                             }
-                            humanPlayer.aircraft.map = boatsCoordinates;
-                            humanPlayer.gameBoard.addCoordinates(humanPlayer.aircraft.map);
-                            humanPlayer.aircraft.setPlaced(true);
+                            gameModel.humanPlayer.aircraft.map = boatsCoordinates;
+                            gameModel.humanPlayer.gameBoard.addCoordinates(gameModel.humanPlayer.aircraft.map);
+                            gameModel.humanPlayer.aircraft.setPlaced(true);
                         }
 
                         /* BATTLESHIP */
                         if (boatWeAreDragging.equals("battleship")) {
-                            if (humanPlayer.battleship.isPlaced()) { // If boat is already placed
-                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.battleship.map);
+                            if (gameModel.humanPlayer.battleship.isPlaced()) { // If boat is already placed
+                                gameModel.humanPlayer.gameBoard.removeCoordinates(gameModel.humanPlayer.battleship.map);
                                 // Delete all coordinates for this ship
-                                humanPlayer.battleship.clearCoordinates();
+                                gameModel.humanPlayer.battleship.clearCoordinates();
                             }
 
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanBoardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanBoardView.locateY(convertY);
 
                             for (int i = 0; i < 4; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                     boatsCoordinates[tempX + i][tempY] = 2;
                                 }
                             }
-                            humanPlayer.battleship.map = boatsCoordinates;
-                            humanPlayer.gameBoard.addCoordinates(humanPlayer.battleship.map);
-                            humanPlayer.battleship.setPlaced(true);
+                            gameModel.humanPlayer.battleship.map = boatsCoordinates;
+                            gameModel.humanPlayer.gameBoard.addCoordinates(gameModel.humanPlayer.battleship.map);
+                            gameModel.humanPlayer.battleship.setPlaced(true);
                         }
 
                         /* DESTROYER */
                         if (boatWeAreDragging.equals("destroyer")) {
-                            if (humanPlayer.destroyer.isPlaced()) { // If boat is already placed
-                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.destroyer.map);
+                            if (gameModel.humanPlayer.destroyer.isPlaced()) { // If boat is already placed
+                                gameModel.humanPlayer.gameBoard.removeCoordinates(gameModel.humanPlayer.destroyer.map);
                                 // Delete all coordinates for this ship
-                                humanPlayer.destroyer.clearCoordinates();
+                                gameModel.humanPlayer.destroyer.clearCoordinates();
                             }
 
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanBoardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanBoardView.locateY(convertY);
 
                             for (int i = 0; i < 3; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                     boatsCoordinates[tempX + i][tempY] = 3;
                                 }
                             }
-                            humanPlayer.destroyer.map = boatsCoordinates;
-                            humanPlayer.gameBoard.addCoordinates(humanPlayer.destroyer.map);
-                            humanPlayer.destroyer.setPlaced(true);
+                            gameModel.humanPlayer.destroyer.map = boatsCoordinates;
+                            gameModel.humanPlayer.gameBoard.addCoordinates(gameModel.humanPlayer.destroyer.map);
+                            gameModel.humanPlayer.destroyer.setPlaced(true);
                         }
 
                         /* SUBMARINE */
                         if (boatWeAreDragging.equals("submarine")) {
-                            if (humanPlayer.submarine.isPlaced()) { // If boat is already placed
-                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.submarine.map);
+                            if (gameModel.humanPlayer.submarine.isPlaced()) { // If boat is already placed
+                                gameModel.humanPlayer.gameBoard.removeCoordinates(gameModel.humanPlayer.submarine.map);
                                 // Hence, delete all coordinates for this ship
-                                humanPlayer.submarine.clearCoordinates();
+                                gameModel.humanPlayer.submarine.clearCoordinates();
                             }
 
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanBoardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanBoardView.locateY(convertY);
 
                             for (int i = 0; i < 3; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                     boatsCoordinates[tempX + i][tempY] = 4;
                                 }
                             }
-                            humanPlayer.submarine.map = boatsCoordinates;
-                            humanPlayer.gameBoard.addCoordinates(humanPlayer.submarine.map);
-                            humanPlayer.submarine.setPlaced(true);
+                            gameModel.humanPlayer.submarine.map = boatsCoordinates;
+                            gameModel.humanPlayer.gameBoard.addCoordinates(gameModel.humanPlayer.submarine.map);
+                            gameModel.humanPlayer.submarine.setPlaced(true);
                         }
 
                          /* PATROL */
                         if (boatWeAreDragging.equals("patrol")) {
-                            if (humanPlayer.patrol.isPlaced()) { // If boat is already placed
-                                humanPlayer.gameBoard.removeCoordinates(humanPlayer.patrol.map);
-                                humanPlayer.patrol.clearCoordinates(); // Hence, delete all coordinates for this ship
+                            if (gameModel.humanPlayer.patrol.isPlaced()) { // If boat is already placed
+                                gameModel.humanPlayer.gameBoard.removeCoordinates(gameModel.humanPlayer.patrol.map);
+                                gameModel.humanPlayer.patrol.clearCoordinates(); // Hence, delete all coordinates for this ship
                                 // Save the coordinates for other boats
                             }
 
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanBoardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanBoardView.locateY(convertY);
 
                             for (int i = 0; i < 2; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                     boatsCoordinates[tempX + i][tempY] = 5;
                                 }
                             }
-                            humanPlayer.patrol.map = boatsCoordinates;
-                            humanPlayer.gameBoard.addCoordinates(humanPlayer.patrol.map);
-                            humanPlayer.patrol.setPlaced(true);
+                            gameModel.humanPlayer.patrol.map = boatsCoordinates;
+                            gameModel.humanPlayer.gameBoard.addCoordinates(gameModel.humanPlayer.patrol.map);
+                            gameModel.humanPlayer.patrol.setPlaced(true);
                         }
 
                     } else { // OUT OF BOUNDS, RESET THE BOAT COORDINATES TO PREVIOUS LOCATION
@@ -690,22 +681,22 @@ public class GameView extends AppCompatActivity {
                         view.setVisibility(View.VISIBLE);
                         toast("Out of bounds");
                         // v.setBackgroundDrawable(error);
-                        humanBoardView.invalidate();
+                        gameModel.humanBoardView.invalidate();
                         getResult = true;
                     }
                     Log.w("Lost.getX()", String.valueOf(event.getX()) + "Lost.getY()" + String.valueOf(event.getY()));
                     break;
 
                 case DragEvent.ACTION_DRAG_ENDED:
-                    if (getResult == false) {
+                    if (!getResult) {
                         toast("Can't place here");
                     }
                     view = (View) event.getLocalState();
                     view.setVisibility(View.VISIBLE);
                 default:
-                    humanBoardView.coordinatesOfHumanShips = humanPlayer.gameBoard.grid; // Prevents from drawing multiple times when the
+                    gameModel.humanBoardView.coordinatesOfHumanShips = gameModel.humanPlayer.gameBoard.grid; // Prevents from drawing multiple times when the
                     // user changes
-                    humanBoardView.invalidate();
+                    gameModel.humanBoardView.invalidate();
                     break;
             }
 

@@ -135,8 +135,6 @@ public class BoardView extends View implements Serializable {
                 int xy = locatePlace(event.getX(), event.getY());
                 invalidate();
                 if (xy >= 0) {
-                    Log.w("x1 eventGetX ", String.valueOf(event.getX()));
-                    Log.w("y eventGetY", String.valueOf(event.getY()));
                     notifyBoardTouch(xy / 100, xy % 100);
                 }
                 break;
@@ -179,7 +177,7 @@ public class BoardView extends View implements Serializable {
     }
 
     /**
-     * Draw all the places of the board.
+     * Keeps track of all the places either the Computer or Human has shot at the boardView.
      */
     private void drawBoard(Canvas canvas) {
         if (gameCoordinates != null) {
