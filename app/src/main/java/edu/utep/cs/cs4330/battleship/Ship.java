@@ -41,38 +41,38 @@ public class Ship {
         if (direction == 1) { // if boat is horizontal
             setPosition();
             for (int i = 0; i < getSizeOfBoat(); i++) { // place boat horizontal
-                if(getNameOfShip().equals("aircraft")){
+                if (getNameOfShip().equals("aircraft")) {
                     map[randomX][randomY + i] = 1; // Adding to the right of the head
                 }
-                if(getNameOfShip().equals("battleship")){
+                if (getNameOfShip().equals("battleship")) {
                     map[randomX][randomY + i] = 2; // Adding to the right of the head
                 }
-                if(getNameOfShip().equals("destroyer")){
+                if (getNameOfShip().equals("destroyer")) {
                     map[randomX][randomY + i] = 3; // Adding to the right of the head
                 }
-                if(getNameOfShip().equals("submarine")){
+                if (getNameOfShip().equals("submarine")) {
                     map[randomX][randomY + i] = 4; // Adding to the right of the head
                 }
-                if(getNameOfShip().equals("patrol")){
+                if (getNameOfShip().equals("patrol")) {
                     map[randomX][randomY + i] = 5; // Adding to the right of the head
                 }
             }
         } else {
             setPosition();
             for (int j = 0; j < getSizeOfBoat(); j++) { // place boat vertical
-                if(getNameOfShip().equals("aircraft")){
+                if (getNameOfShip().equals("aircraft")) {
                     map[randomX + j][randomY] = 1; // Adding below of the head
                 }
-                if(getNameOfShip().equals("battleship")){
+                if (getNameOfShip().equals("battleship")) {
                     map[randomX + j][randomY] = 2; // Adding below of the head
                 }
-                if(getNameOfShip().equals("destroyer")){
+                if (getNameOfShip().equals("destroyer")) {
                     map[randomX + j][randomY] = 3; // Adding below of the head
                 }
-                if(getNameOfShip().equals("submarine")){
+                if (getNameOfShip().equals("submarine")) {
                     map[randomX + j][randomY] = 4; // Adding below of the head
                 }
-                if(getNameOfShip().equals("patrol")){
+                if (getNameOfShip().equals("patrol")) {
                     map[randomX + j][randomY] = 5; // Adding below of the head
                 }
             }

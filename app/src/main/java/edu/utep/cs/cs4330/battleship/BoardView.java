@@ -61,7 +61,6 @@ public class BoardView extends View implements Serializable {
      */
     private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    int[][] coordinatesOfHumanBoard = new int[10][10];
     int[][] coordinatesOfHumanShips = new int[10][10];
     int[][] gameCoordinates = new int[10][10];
 

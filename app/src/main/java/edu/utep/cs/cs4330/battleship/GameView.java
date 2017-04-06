@@ -295,25 +295,21 @@ public class GameView extends AppCompatActivity {
         Log.w("Computers board", Arrays.deepToString(computerPlayer.gameBoard.grid));
         Log.w("Humans board", Arrays.deepToString(humanPlayer.gameBoard.grid));
         computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+            /* After player taps on computers board */
             @Override
             public void onTouch(int x, int y) {
-                // The counter displays the number of shots in the UI, the user has tapped on the board.
-                // Compare the coordinates the user just touched with any of the boats that are placed
-                // on the board. Then either play a missed or explosion sound. When the boat sinks
-                // play a louder explosion.
-
-                /* BEGIN HUMAN SHOOT AT COMPUTER BOARD */
-                if (humanPlayer.shootsAt(computerPlayer.gameBoard, x, y)) { // Shoots at a boat, paint red
+                // Human shoots at Computers board
+                if (humanPlayer.shootsAt(computerPlayer.gameBoard, x, y)) { // Human hits a boat, paint red
                     makeExplosionSound(activityContext);
                     toast("HIT");
                     computerBoardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
-                } else { // Misses, paint white
+                } else { // Human misses, paint computers board white
                     computerBoardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
                     toast("That was close!");
                     makeMissedSound(activityContext);
                     humanPlayer.shoots(); // Increment counter for # of shots
-                    /* END HUMAN SHOOT AT COMPUTER BOARD */
                     counter.setText(String.valueOf("Number of Shots: " + humanPlayer.getNumberOfShots()));
+
                     // COMPUTER SHOOT AT HUMAN BOARD
                     int randomX = generateRandomCoordinate(); // Generate random coordinates
                     int randomY = generateRandomCoordinate(); // Generate random coordinates

@@ -112,6 +112,7 @@ class Player {
     public int getNumberOfShots() {
         return numberOfShots;
     }
+
     /**
      * @param countShots set the count of shots each time the user fires.
      */

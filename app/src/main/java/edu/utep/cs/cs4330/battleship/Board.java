@@ -17,6 +17,7 @@ class Board {
     int[][] grid = new int[10][10];
     private int x;
     private int y;
+
     /**
      * Create a new board of the given size.
      */
@@ -35,6 +36,7 @@ class Board {
     int[][] readCoordinates() {
         return grid;
     }
+
     void addCoordinates(int[][] coordinates) {
         for (int i = 0; i < coordinates.length; i++) {
             for (int j = 0; j < coordinates.length; j++) {
