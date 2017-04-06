@@ -22,7 +22,7 @@ class Player {
      * @param player
      * @param board
      */
-    Player(String player, Board board) {
+    Player(String player) {
         if (player.equals("Human")) {
             setTypeOfPlayer("Human");
         }
@@ -40,8 +40,6 @@ class Player {
         destroyer.setPlaced(false);
         submarine.setPlaced(false);
         patrol.setPlaced(false);
-
-        setPlayerBoard(board);
     }
 
 

@@ -30,17 +30,15 @@ public class GameView extends AppCompatActivity {
     private String fontPath;
 
     /* Begin Fields for Human */
-    private Board board = new Board(10);
     private BoardView humanBoardView;
     private BoardView humanBoardViewFinal;
-    private Player humanPlayer = new Player("Human", board);
+    private Player humanPlayer = new Player("Human");
     /* End Fields for Human */
 
     /* Begin Fields for AI */
     private BoardView computerBoardView;
-    private int countShots = 0;
     private TextView counter;
-    private Player computerPlayer = new Player("Computer", board);
+    private Player computerPlayer = new Player("Computer");
     /* End Fields for AI */
 
     private boolean getResult = false; // Determine if the an image object has been dragged
@@ -260,9 +258,9 @@ public class GameView extends AppCompatActivity {
         setContentView(R.layout.current_game);
 
         /* Define Human Board */
-        final Board humanBoardFinal = new Board(10);
+
         humanBoardViewFinal = (BoardView) findViewById(R.id.humanBoard);
-        humanBoardViewFinal.setBoard(humanBoardFinal);
+        humanBoardViewFinal.setBoard(humanPlayer.gameBoard);
 
         // Get the coordinates from the previous activity to this activity
         humanBoardViewFinal.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
@@ -270,9 +268,8 @@ public class GameView extends AppCompatActivity {
 
         /* Begin Computer Stuff Game */
         final Context activityContext = this;
-        final Board computerBoard = new Board(10);
         computerBoardView = (BoardView) findViewById(R.id.computerBoard);
-        computerBoardView.setBoard(computerBoard);
+        computerBoardView.setBoard(computerPlayer.gameBoard);
 
 
         // Define buttons and text views here
