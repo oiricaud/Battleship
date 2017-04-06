@@ -33,7 +33,6 @@ public class GameView extends AppCompatActivity {
 
     /* Begin Fields for Human */
     private BoardView humanBoardView;
-    private BoardView humanBoardViewFinal;
     private Player humanPlayer = new Player("Human");
     /* End Fields for Human */
 
@@ -260,11 +259,11 @@ public class GameView extends AppCompatActivity {
 
         /* Define Human Board */
 
-        humanBoardViewFinal = (BoardView) findViewById(R.id.humanBoard);
-        humanBoardViewFinal.setBoard(humanPlayer.gameBoard);
+        humanBoardView = (BoardView) findViewById(R.id.humanBoard);
+        humanBoardView.setBoard(humanPlayer.gameBoard);
 
         // Get the coordinates from the previous activity to this activity
-        humanBoardViewFinal.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
+        humanBoardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
         /* End Human Board */
 
         /* Begin Computer Stuff Game */
@@ -315,14 +314,14 @@ public class GameView extends AppCompatActivity {
                     if (computerPlayer.shootsAt(humanPlayer.gameBoard, randomX, randomY)) {
                         makeExplosionSound(activityContext);
                         toast("HIT");
-                        humanBoardViewFinal.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
-                        humanBoardViewFinal.invalidate();
+                        humanBoardView.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
+                        humanBoardView.invalidate();
                     } else {
-                        humanBoardViewFinal.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
+                        humanBoardView.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
                         toast("That was close!");
                         makeMissedSound(activityContext);
                     }
-                    humanBoardViewFinal.invalidate();
+                    humanBoardView.invalidate();
                 }
             }
         });
