@@ -4,13 +4,13 @@ Battleship
 Update 1.1 
  *This version allows the user to place boats on the grid while playing a game with the computer.*
 
-To view the Java classes for this project [Click Here](https://github.com/oiricaud/Battleship/tree/master/app/src/main/java/edu/utep/cs/cs4330/battleship).
+View Java Classes [Click Here](https://github.com/oiricaud/Battleship/tree/master/app/src/main/java/edu/utep/cs/cs4330/battleship).
 
-Visual representations of Class Diagrams [Click Here](https://github.com/oiricaud/Battleship/blob/master/Class-Diagram.png).
+View Class Diagrams [Click Here](https://github.com/oiricaud/Battleship/blob/master/Class-Diagram.png).
 
-To view Assignment #2  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW2-Assignment.md).
+View Assignment #2  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW2-Assignment.md).
 
-To view Assignment #1  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW1-Assignment.md).
+View Assignment #1  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW1-Assignment.md).
 
 
 Assignment #3 
