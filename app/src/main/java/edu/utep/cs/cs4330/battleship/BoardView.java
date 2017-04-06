@@ -154,12 +154,12 @@ public class BoardView extends View implements Serializable {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawHumanBoard(canvas);
+        drawHumanShips(canvas);
         drawBoard(canvas);
         drawGrid(canvas);
     }
 
-    private void drawHumanBoard(Canvas canvas) {
+    private void drawHumanShips(Canvas canvas) {
         // Iterate and look for "1" which indicate position of boats, hence do some coloring.
         if (coordinatesOfHumanShips != null) {
             for (int i = 0; i < coordinatesOfHumanShips.length; i++) {
@@ -171,8 +171,6 @@ public class BoardView extends View implements Serializable {
                         int top = (int) (drawY - (lineGap() / 2));
                         int right = (int) (drawX + (lineGap() / 2));
                         int bottom = (int) (drawY + (lineGap() / 2));
-                        //   Log.w("Draw X", String.valueOf(drawX) + " Draw Y," + String.valueOf(drawY));
-                        //   Log.w("linegap", String.valueOf(lineGap()));
                         canvas.drawRect(left, top, right, bottom, blackPaint);
                     }
                 }

@@ -36,12 +36,6 @@ public class GameController extends AppCompatActivity implements Serializable {
                 // By default this is the first controller is called when the activity is created.
                 launchHomeController();
 
-                computerPlayer.setPlayerReady();
-                computerPlayer.areYouPlaying(false);
-
-                humanPlayer.setPlayerReady();
-                humanPlayer.areYouPlaying(true);
-
             } else {
                 String controller = extras.getString("controllerName");
                 String player = extras.getString("player");
@@ -53,7 +47,6 @@ public class GameController extends AppCompatActivity implements Serializable {
                     humanPlayer.updateModel(this, "chooseLevelView"); // = (view we launch, shouldWeStartGame?)
                 }
                 if (controller.equals("placeBoatsController")) {
-                    computerPlayer.setDifficulty();
                     humanPlayer.updateModel(this, "placeBoatsView");
                 }
                 if (controller.equals("startGameView")) {
@@ -61,7 +54,6 @@ public class GameController extends AppCompatActivity implements Serializable {
                 }
                 assert player != null;
                 if (controller.equals("updateBoat") && player.equals("human")) {
-                    humanPlayer.setPlayerReady();
                     humanPlayer.updateModel(this, "startGameView");
                 }
                 if (controller.equals("updateBoat") && player.equals("computer")) {
@@ -80,23 +72,20 @@ public class GameController extends AppCompatActivity implements Serializable {
      * screen and allows the user to begin a new game by first updating the @see GameModel to the
      * starting state, s0.
      */
-    public void launchHomeController() {
-        if (!humanPlayer.areYouPlaying() && !computerPlayer.areYouPlaying()) {
-            humanPlayer.areYouPlaying(true);
-            humanPlayer.updateModel(this, "launchHomeView");
-        }
+    private void launchHomeController() {
+        humanPlayer.updateModel(this, "launchHomeView");
         //humanPlayer.updatePlayers(this, computerPlayer, humanPlayer);
         //   gameModel.updateView(this, "launchHomeView", "false"); // (view we launch, shouldWeStartGame?)
     }
 
-    public void playMusic(Context context) {
+    private void playMusic(Context context) {
         if (mp != null) {
             mp.stop();
             mp.release();
         }
         // Play one of these random songs in the background.
         Random random = new Random();
-        int obtainRandomNumber = random.nextInt(3 - 1 + 1) + 1;
+        int obtainRandomNumber = random.nextInt(4);
         if (obtainRandomNumber == 1) {
             mp = MediaPlayer.create(context, R.raw.alterego);
         }

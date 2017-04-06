@@ -2,6 +2,7 @@ package edu.utep.cs.cs4330.battleship;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import java.util.Random;
 public class GameView extends AppCompatActivity {
     private MediaPlayer mp; // For music background
     private String fontPath;
+    private TextView counter;
 
     /* Begin Fields for Human */
     private BoardView humanBoardView;
@@ -37,7 +39,6 @@ public class GameView extends AppCompatActivity {
 
     /* Begin Fields for AI */
     private BoardView computerBoardView;
-    private TextView counter;
     private Player computerPlayer = new Player("Computer");
     /* End Fields for AI */
 
@@ -711,6 +712,27 @@ public class GameView extends AppCompatActivity {
 
             return true;
         }
+    }
+
+    private class MyTouchListener implements View.OnTouchListener {
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    view.startDragAndDrop(data, shadowBuilder, view, 0);
+                } else {
+                    //noinspection deprecation
+                    view.startDrag(data, shadowBuilder, view, 0);
+                }
+                view.setVisibility(View.INVISIBLE);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     }
 }
 
