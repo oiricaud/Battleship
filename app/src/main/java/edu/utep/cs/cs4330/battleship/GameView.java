@@ -265,10 +265,7 @@ public class GameView extends AppCompatActivity {
         humanBoardViewFinal.setBoard(humanBoardFinal);
 
         // Get the coordinates from the previous activity to this activity
-        for (int i = 0; i < copyOfHumanBoard.getxCoordinate().size(); i++) {
-            humanBoardViewFinal.setxCoordinate(copyOfHumanBoard.getxCoordinate().get(i));
-            humanBoardViewFinal.setyCoordinate(copyOfHumanBoard.getyCoordinate().get(i));
-        }
+        humanBoardViewFinal.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
         /* End Human Board */
 
         /* Begin Computer Stuff Game */
@@ -295,101 +292,43 @@ public class GameView extends AppCompatActivity {
         quitActivity(quitButton, activityContext);
 
         /* End Computer Stuff Game*/
+        Log.w("Computers board", Arrays.deepToString(computerPlayer.gameBoard.grid));
+        Log.w("Humans board", Arrays.deepToString(humanPlayer.gameBoard.grid));
         computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             @Override
             public void onTouch(int x, int y) {
                 // The counter displays the number of shots in the UI, the user has tapped on the board.
-                computerPlayer.shoots();
-                Log.w("AC coordinates", Arrays.deepToString(computerPlayer.aircraft.map));
-                counter.setText(String.valueOf("Number of Shots: " + computerPlayer.getNumberOfShots()));
                 // Compare the coordinates the user just touched with any of the boats that are placed
                 // on the board. Then either play a missed or explosion sound. When the boat sinks
                 // play a louder explosion.
-                if (computerPlayer.shootAtBoard(x, y)) {
+
+                /* BEGIN HUMAN SHOOT AT COMPUTER BOARD */
+                if (humanPlayer.shootsAt(computerPlayer.gameBoard, x, y)) { // Shoots at a boat, paint red
                     makeExplosionSound(activityContext);
-                    computerBoardView.setxHit(x);
-                    computerBoardView.setyHit(y);
-                    toast("KA-POW");
-                    /*
-                    if (computerPlayer.aircraft.getHit() == 5) {
-                        toast("Aircraft SUNK");
-                        makeLouderExplosion(activityContext);
-                    } */
-                } else {
-                    computerBoardView.setxMiss(x);
-                    computerBoardView.setyMiss(y);
+                    toast("HIT");
+                    computerBoardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+                } else { // Misses, paint white
+                    computerBoardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
                     toast("That was close!");
                     makeMissedSound(activityContext);
+                    humanPlayer.shoots(); // Increment counter for # of shots
+                    /* END HUMAN SHOOT AT COMPUTER BOARD */
+                    counter.setText(String.valueOf("Number of Shots: " + humanPlayer.getNumberOfShots()));
+                    // COMPUTER SHOOT AT HUMAN BOARD
+                    int randomX = generateRandomCoordinate(); // Generate random coordinates
+                    int randomY = generateRandomCoordinate(); // Generate random coordinates
 
-                    toast("Computer Turn");
-                    /* Computers TURN  shoot at human board */
-                    int randX = generateRandomCoordinate();
-                    int randY = generateRandomCoordinate();
-                    Log.w("randX", String.valueOf(randX));
-                    Log.w("randY", String.valueOf(randY));
-                    if (isItAHit(humanPlayer.aircraft.map, randX, randY)) {
+                    if (computerPlayer.shootsAt(humanPlayer.gameBoard, randomX, randomY)) {
                         makeExplosionSound(activityContext);
-                        humanPlayer.aircraft.hit();
-                        humanBoardViewFinal.setxHit(randX);
-                        humanBoardViewFinal.setyHit(randY);
-                        toast("Computer shoots");
-                        if (humanPlayer.aircraft.getHit() == 5) {
-                            toast("Aircraft SUNK");
-                            makeLouderExplosion(activityContext);
-                        }
-                        humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(humanPlayer.battleship.map, randX, randY)) {
-                        makeExplosionSound(activityContext);
-                        humanPlayer.battleship.hit();
-                        humanBoardViewFinal.setxHit(randX);
-                        humanBoardViewFinal.setyHit(randY);
-                        toast("KA-POW");
-
-                        if (humanPlayer.battleship.getHit() == 4) {
-                            toast("Battleship SUNK");
-                            makeLouderExplosion(activityContext);
-                        }
-                        humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(humanPlayer.destroyer.map, randX, randY)) {
-                        makeExplosionSound(activityContext);
-                        humanPlayer.destroyer.hit();
-                        humanBoardViewFinal.setxHit(randX);
-                        humanBoardViewFinal.setyHit(randY);
-                        toast("KA-POW");
-                        if (humanPlayer.destroyer.getHit() == 4) {
-                            toast("destroyer SUNK");
-                            makeLouderExplosion(activityContext);
-                        }
-                        humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(humanPlayer.destroyer.map, randX, randY)) {
-                        makeExplosionSound(activityContext);
-                        humanPlayer.destroyer.hit();
-                        humanBoardViewFinal.setxHit(randX);
-                        humanBoardViewFinal.setyHit(randY);
-                        toast("KA-POW");
-                        if (humanPlayer.destroyer.getHit() == 3) {
-                            toast("destroyer SUNK");
-                            makeLouderExplosion(activityContext);
-                        }
-                        humanBoardViewFinal.invalidate();
-                    } else if (isItAHit(humanPlayer.submarine.map, randX, randY)) {
-                        makeExplosionSound(activityContext);
-                        humanPlayer.submarine.hit();
-                        humanBoardViewFinal.setxHit(randX);
-                        humanBoardViewFinal.setyHit(randY);
-                        toast("KA-POW");
-                        if (humanPlayer.submarine.getHit() == 2) {
-                            toast("submarine SUNK");
-                            makeLouderExplosion(activityContext);
-                        }
+                        toast("HIT");
+                        humanBoardViewFinal.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
                         humanBoardViewFinal.invalidate();
                     } else {
-                        humanBoardViewFinal.setxMiss(randX);
-                        humanBoardViewFinal.setyMiss(randY);
+                        humanBoardViewFinal.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
                         toast("That was close!");
                         makeMissedSound(activityContext);
-                        humanBoardViewFinal.invalidate();
                     }
+                    humanBoardViewFinal.invalidate();
                 }
             }
         });
@@ -397,17 +336,7 @@ public class GameView extends AppCompatActivity {
 
     private int generateRandomCoordinate() {
         Random random = new Random();
-        return random.nextInt(9 + 1);
-    }
-
-    /**
-     * @param coordinates are the coordinates from the user.
-     * @param x           is the number of rows - 1.
-     * @param y           is the number of columns - 1.
-     * @return If the user hits a boat return true else false.
-     */
-    private boolean isItAHit(int[][] coordinates, int x, int y) {
-        return coordinates[x][y] == 1;
+        return random.nextInt(10);
     }
 
     /**
@@ -781,7 +710,7 @@ public class GameView extends AppCompatActivity {
                     view = (View) event.getLocalState();
                     view.setVisibility(View.VISIBLE);
                 default:
-                    humanBoardView.map = humanPlayer.gameBoard.grid; // Prevents from drawing multiple times when the
+                    humanBoardView.coordinatesOfHumanShips = humanPlayer.gameBoard.grid; // Prevents from drawing multiple times when the
                     // user changes
                     humanBoardView.invalidate();
                     break;

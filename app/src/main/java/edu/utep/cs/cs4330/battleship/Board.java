@@ -32,6 +32,9 @@ class Board {
      * @see BoardView class to draw the boats on the grid
      * specifically for the user to visually see where the boats are placed.
      */
+    int[][] readCoordinates() {
+        return grid;
+    }
     void addCoordinates(int[][] coordinates) {
         for (int i = 0; i < coordinates.length; i++) {
             for (int j = 0; j < coordinates.length; j++) {

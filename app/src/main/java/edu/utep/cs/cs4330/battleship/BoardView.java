@@ -11,7 +11,6 @@ import android.view.View;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -62,13 +61,10 @@ public class BoardView extends View implements Serializable {
      */
     private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    int[][] map = new int[10][10];
-    private LinkedList<Integer> xCoordinate = new LinkedList<>();
-    private LinkedList<Integer> yCoordinate = new LinkedList<>();
-    private LinkedList<Integer> xHit = new LinkedList<>();
-    private LinkedList<Integer> yHit = new LinkedList<>();
-    private LinkedList<Integer> setxMiss = new LinkedList<>();
-    private LinkedList<Integer> setyMiss = new LinkedList<>();
+    int[][] coordinatesOfHumanBoard = new int[10][10];
+    int[][] coordinatesOfHumanShips = new int[10][10];
+    int[][] gameCoordinates = new int[10][10];
+
     /**
      * Size of the board.
      */
@@ -118,54 +114,6 @@ public class BoardView extends View implements Serializable {
         super(context, attrs, defStyleAttr);
     }
 
-    private LinkedList<Integer> getxHit() {
-        return xHit;
-    }
-
-    void setxHit(int i) {
-        xHit.add(i);
-    }
-
-    private LinkedList<Integer> getyHit() {
-        return yHit;
-    }
-
-    void setyHit(int i) {
-        yHit.add(i);
-    }
-
-    private LinkedList<Integer> getxMiss() {
-        return setxMiss;
-    }
-
-    void setxMiss(int i) {
-        setxMiss.add(i);
-    }
-
-    private LinkedList<Integer> getyMiss() {
-        return setyMiss;
-    }
-
-    void setyMiss(int i) {
-        setyMiss.add(i);
-    }
-
-    LinkedList<Integer> getxCoordinate() {
-        return xCoordinate;
-    }
-
-    void setxCoordinate(int x) {
-        xCoordinate.add(x);
-    }
-
-    LinkedList<Integer> getyCoordinate() {
-        return yCoordinate;
-    }
-
-    void setyCoordinate(int y) {
-        yCoordinate.add(y);
-    }
-
     /**
      * Set the board to to be displayed by this view.
      */
@@ -207,16 +155,17 @@ public class BoardView extends View implements Serializable {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        drawHumanBoard(canvas);
+        drawBoard(canvas);
+        drawGrid(canvas);
+    }
 
-        if (!xCoordinate.isEmpty() && !yCoordinate.isEmpty()) {
-            drawHumanBoardPlaces(canvas);
-        }
-        drawPlaces(canvas);
+    private void drawHumanBoard(Canvas canvas) {
         // Iterate and look for "1" which indicate position of boats, hence do some coloring.
-        if (map != null) {
-            for (int i = 0; i < map.length; i++) {
-                for (int j = 0; j < map.length; j++) {
-                    if (map[i][j] >= 1) {
+        if (coordinatesOfHumanShips != null) {
+            for (int i = 0; i < coordinatesOfHumanShips.length; i++) {
+                for (int j = 0; j < coordinatesOfHumanShips.length; j++) {
+                    if (coordinatesOfHumanShips[i][j] >= 1) {       // DRAW ALL BOATS HERE
                         float drawX = (i * lineGap()) + (lineGap() / 2);
                         float drawY = (j * lineGap()) + (lineGap() / 2);
                         int left = (int) (drawX - (lineGap() / 2));
@@ -230,31 +179,27 @@ public class BoardView extends View implements Serializable {
                 }
             }
         }
-        drawGrid(canvas);
-    }
-
-    private void drawHumanBoardPlaces(Canvas canvas) {
-        for (int k = 0; k < xCoordinate.size(); k++) {
-            float drawX = (xCoordinate.get(k) * lineGap()) + (lineGap() / 2);
-            float drawY = (yCoordinate.get(k) * lineGap()) + (lineGap() / 2);
-            canvas.drawCircle(drawX, drawY, (lineGap() / 2), blackPaint);
-        }
     }
 
     /**
      * Draw all the places of the board.
      */
-    private void drawPlaces(Canvas canvas) {
-
-        for (int i = 0; i < getxMiss().size(); i++) {
-            float xMiss = (getxMiss().get(i) * lineGap()) + (lineGap() / 2);
-            float yMiss = (getyMiss().get(i) * lineGap()) + (lineGap() / 2);
-            canvas.drawCircle(xMiss, yMiss, (lineGap() / 2), whitePaint);
-        }
-        for (int j = 0; j < getxHit().size(); j++) {
-            float xHit = (getxHit().get(j) * lineGap()) + (lineGap() / 2);
-            float yHit = (getyHit().get(j) * lineGap()) + (lineGap() / 2);
-            canvas.drawCircle(xHit, yHit, (lineGap() / 2), redPaint);
+    private void drawBoard(Canvas canvas) {
+        if (gameCoordinates != null) {
+            for (int i = 0; i < gameCoordinates.length; i++) {
+                for (int j = 0; j < gameCoordinates.length; j++) {
+                    if (gameCoordinates[i][j] == 8) { // HIT
+                        float xMiss = (i * lineGap()) + (lineGap() / 2);
+                        float yMiss = (j * lineGap()) + (lineGap() / 2);
+                        canvas.drawCircle(xMiss, yMiss, (lineGap() / 2), redPaint); // HIT
+                    }
+                    if (gameCoordinates[i][j] == -9) { // MISS
+                        float xMiss = (i * lineGap()) + (lineGap() / 2);
+                        float yMiss = (j * lineGap()) + (lineGap() / 2);
+                        canvas.drawCircle(xMiss, yMiss, (lineGap() / 2), whitePaint);  // MISS
+                    }
+                }
+            }
         }
     }
 

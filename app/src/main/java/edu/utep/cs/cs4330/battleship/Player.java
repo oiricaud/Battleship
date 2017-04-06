@@ -1,5 +1,9 @@
 package edu.utep.cs.cs4330.battleship;
 
+import android.util.Log;
+
+import java.util.Arrays;
+
 /*
  * Created by oscarricaud on 3/31/17.
  */
@@ -25,11 +29,11 @@ class Player {
         if (player.equals("Computer")) {
             setTypeOfPlayer("Computer");
             // Add random coordinates for a specific boat to the players board grid
-            board.addCoordinates(aircraft.map);
-            board.addCoordinates(battleship.map);
-            board.addCoordinates(destroyer.map);
-            board.addCoordinates(submarine.map);
-            board.addCoordinates(patrol.map);
+            gameBoard.addCoordinates(aircraft.map);
+            gameBoard.addCoordinates(battleship.map);
+            gameBoard.addCoordinates(destroyer.map);
+            gameBoard.addCoordinates(submarine.map);
+            gameBoard.addCoordinates(patrol.map);
         }
         aircraft.setPlaced(false);
         battleship.setPlaced(false);
@@ -53,29 +57,43 @@ class Player {
      * @return true if it finds a boat at given coordinates
      * false if it does not find a boat at given coordinates
      */
-    boolean shootAtBoard(int x, int y) {
-        if (gameBoard.grid[x][y] >= 1) {
-            int boatID = gameBoard.grid[x][y];
+    boolean shootsAt(Board opponentsBoard, int x, int y) {
+        Log.w("Opponents board", Arrays.deepToString(opponentsBoard.grid));
+        Log.w("X", String.valueOf(x));
+        Log.w("Y", String.valueOf(y));
+        if (opponentsBoard.grid[x][y] >= 1) {
+            int boatID = opponentsBoard.grid[x][y];
             if (boatID == 1) { // Shot aircraft
                 aircraft.hit();
+                opponentsBoard.addCoordinates(aircraft.map);
+                aircraft.addCoordinates(x, y);
                 return true;
             }
             if (boatID == 2) { // Shot battleship
                 battleship.hit();
+                opponentsBoard.addCoordinates(battleship.map);
+                battleship.addCoordinates(x, y);
                 return true;
             }
             if (boatID == 3) { // Shot destroyer
                 destroyer.hit();
+                opponentsBoard.addCoordinates(destroyer.map);
+                destroyer.addCoordinates(x, y);
                 return true;
             }
             if (boatID == 4) { // Shot submarine
                 submarine.hit();
+                opponentsBoard.addCoordinates(submarine.map);
+                submarine.addCoordinates(x, y);
                 return true;
             }
             if (boatID == 5) { // Shot patrol
                 patrol.hit();
+                opponentsBoard.addCoordinates(patrol.map);
+                patrol.addCoordinates(x, y);
                 return true;
             }
+
         }
         return false;
     }

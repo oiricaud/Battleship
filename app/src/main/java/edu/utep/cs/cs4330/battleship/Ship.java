@@ -27,6 +27,11 @@ public class Ship {
         }
     }
 
+    int[][] coordinates() {
+
+        return map;
+    }
+
     private void randomCoordinates() {
         int coordinatesRange = (map.length - getSizeOfBoat());
         int randomX = (int) (Math.random() * coordinatesRange);
@@ -111,5 +116,11 @@ public class Ship {
 
     private void nameShip(String nameOfShip) {
         this.nameOfShip = nameOfShip;
+    }
+
+    public void addCoordinates(int x, int y) {
+        if (getNameOfShip().equals("aircraft")) {
+            map[x][y] = 1;
+        }
     }
 }
