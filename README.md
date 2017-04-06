@@ -1,16 +1,19 @@
 Battleship
 ======
 ### About the program
-Update 1.0 
+Update 1.1 
  *This version allows the user to place boats on the grid while playing a game with the computer.*
 
 To view the Java classes for this project [Click Here](https://github.com/oiricaud/Battleship/tree/master/app/src/main/java/edu/utep/cs/cs4330/battleship).
 
 Visual representations of Class Diagrams [Click Here](https://github.com/oiricaud/Battleship/blob/master/Class-Diagram.png).
 
+To view Assignment #2  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW2-Assignment.md).
+
 To view the requirements for Assignment #1  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW1-Assignment.md).
 
-Assignment #2 
+
+Assignment #3 
 ======
 
 	 CS 4330/5390: Mobile Application Development, Spring 2017
