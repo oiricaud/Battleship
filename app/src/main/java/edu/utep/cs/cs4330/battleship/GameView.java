@@ -161,7 +161,9 @@ public class GameView extends AppCompatActivity {
         findViewById(R.id.humanBoardPlacer).setOnDragListener(new MyDragListener());
 
         Button next = (Button) findViewById(R.id.next);
+        Button back = (Button) findViewById(R.id.back);
         changeFont(this, next);
+        changeFont(this, back);
         next.setVisibility(View.VISIBLE);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,8 +171,20 @@ public class GameView extends AppCompatActivity {
                 computerBoardView(gameModel.humanPlayer.boardView);
             }
         });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseLevelView();
+            }
+        });
     }
 
+    /**
+     * Disable the physical back button
+     */
+    @Override
+    public void onBackPressed() {
+    }
     // Menu icons are inflated just as they were with actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

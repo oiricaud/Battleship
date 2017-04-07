@@ -66,7 +66,6 @@ public class GameController extends AppCompatActivity implements Serializable {
             }
         }
     }
-
     /**
      * The following controller is the beginning to this mobile application. It launches the home
      * screen and allows the user to begin a new game by first updating the @see GameModel to the

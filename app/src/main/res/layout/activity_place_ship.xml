@@ -122,7 +122,7 @@
             android:layout_marginBottom="16dp">
 
         <Button
-                android:id="@+id/quitB"
+                android:id="@+id/back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
