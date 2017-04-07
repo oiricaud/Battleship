@@ -10,12 +10,12 @@ import android.content.Intent;
 
 class GameModel {
     /* Begin Fields for Human */
-    BoardView humanBoardView;
+    //BoardView humanBoardView;
     Player humanPlayer = new Player("Human");
     /* End Fields for Human */
 
     /* Begin Fields for AI */
-    BoardView computerBoardView;
+    // BoardView computerBoardView;
     Player computerPlayer = new Player("Computer");
     /* End Fields for AI */
 

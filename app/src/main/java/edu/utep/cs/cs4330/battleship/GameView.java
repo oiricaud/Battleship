@@ -134,8 +134,8 @@ public class GameView extends AppCompatActivity {
      */
     private void placeBoatsView() {
         setContentView(R.layout.activity_human_game);
-        gameModel.humanBoardView = (BoardView) findViewById(R.id.humanBoardView2);
-        gameModel.humanBoardView.setBoard(gameModel.humanPlayer.getPlayerBoard());
+        gameModel.humanPlayer.boardView = (BoardView) findViewById(R.id.humanBoardView2);
+        gameModel.humanPlayer.boardView.setBoard(gameModel.humanPlayer.gameBoard);
 
         /* Set up the toolbar and define it's title */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -166,7 +166,7 @@ public class GameView extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                computerBoardView(gameModel.humanBoardView);
+                computerBoardView(gameModel.humanPlayer.boardView);
             }
         });
     }
@@ -192,7 +192,7 @@ public class GameView extends AppCompatActivity {
 
             //noinspection ConstantConditions
             getSupportActionBar().setTitle("Tap on Grid to Place Aircraft");
-            gameModel.humanBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+            gameModel.humanPlayer.boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
 
                 @Override
                 public void onTouch(int x, int y) {
@@ -250,18 +250,18 @@ public class GameView extends AppCompatActivity {
 
         /* Define Human Board */
 
-        gameModel.humanBoardView = (BoardView) findViewById(R.id.humanBoard);
-        gameModel.humanBoardView.setBoard(gameModel.humanPlayer.gameBoard);
+        gameModel.humanPlayer.boardView = (BoardView) findViewById(R.id.humanBoard);
+        gameModel.humanPlayer.boardView.setBoard(gameModel.humanPlayer.gameBoard);
 
         // Get the coordinates from the previous activity to this activity
-        gameModel.humanBoardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
+        gameModel.humanPlayer.boardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
         /* End Human Board */
 
         /* Begin Computer Stuff Game */
         final Context activityContext = this;
-        gameModel.computerBoardView = (BoardView) findViewById(R.id.computerBoard);
-        gameModel.computerBoardView.setBoard(gameModel.computerPlayer.gameBoard);
 
+        gameModel.computerPlayer.boardView = (BoardView) findViewById(R.id.computerBoard);
+        gameModel.computerPlayer.boardView.setBoard(gameModel.computerPlayer.gameBoard);
 
         // Define buttons and text views here
         TextView battleshipTitle = (TextView) findViewById(R.id.BattleShip);
@@ -282,17 +282,18 @@ public class GameView extends AppCompatActivity {
         /* End Computer Stuff Game*/
         Log.w("Computers board", Arrays.deepToString(gameModel.computerPlayer.gameBoard.grid));
         Log.w("Humans board", Arrays.deepToString(gameModel.humanPlayer.gameBoard.grid));
-        gameModel.computerBoardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+        gameModel.computerPlayer.boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             /* After player taps on computers board */
             @Override
             public void onTouch(int x, int y) {
+
                 // Human shoots at Computers board
                 if (gameModel.humanPlayer.shootsAt(gameModel.computerPlayer.gameBoard, x, y)) { // Human hits a boat, paint red
                     makeExplosionSound(activityContext);
                     toast("HIT");
-                    gameModel.computerBoardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+                    gameModel.computerPlayer.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
                 } else { // Human misses, paint computers board white
-                    gameModel.computerBoardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
+                    gameModel.computerPlayer.boardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
                     toast("That was close!");
                     makeMissedSound(activityContext);
                     gameModel.humanPlayer.shoots(); // Increment counter for # of shots
@@ -305,14 +306,14 @@ public class GameView extends AppCompatActivity {
                     if (gameModel.computerPlayer.shootsAt(gameModel.humanPlayer.gameBoard, randomX, randomY)) {
                         makeExplosionSound(activityContext);
                         toast("HIT");
-                        gameModel.humanBoardView.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
-                        gameModel.humanBoardView.invalidate();
+                        gameModel.humanPlayer.boardView.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
+                        gameModel.humanPlayer.boardView.invalidate();
                     } else {
-                        gameModel.humanBoardView.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
+                        gameModel.humanPlayer.boardView.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
                         toast("That was close!");
                         makeMissedSound(activityContext);
                     }
-                    gameModel.humanBoardView.invalidate();
+                    gameModel.humanPlayer.boardView.invalidate();
                 }
             }
         });
@@ -567,9 +568,9 @@ public class GameView extends AppCompatActivity {
                                 gameModel.humanPlayer.aircraft.clearCoordinates();
                             }
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = gameModel.humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanPlayer.boardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = gameModel.humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanPlayer.boardView.locateY(convertY);
 
                             for (int i = 0; i < 5; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
@@ -590,9 +591,9 @@ public class GameView extends AppCompatActivity {
                             }
 
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = gameModel.humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanPlayer.boardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = gameModel.humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanPlayer.boardView.locateY(convertY);
 
                             for (int i = 0; i < 4; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
@@ -613,9 +614,9 @@ public class GameView extends AppCompatActivity {
                             }
 
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = gameModel.humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanPlayer.boardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = gameModel.humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanPlayer.boardView.locateY(convertY);
 
                             for (int i = 0; i < 3; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
@@ -636,9 +637,9 @@ public class GameView extends AppCompatActivity {
                             }
 
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = gameModel.humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanPlayer.boardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = gameModel.humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanPlayer.boardView.locateY(convertY);
 
                             for (int i = 0; i < 3; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
@@ -659,9 +660,9 @@ public class GameView extends AppCompatActivity {
                             }
 
                             // Get actual Row from the @see BoardView based on x
-                            int tempX = gameModel.humanBoardView.locateX(convertX);
+                            int tempX = gameModel.humanPlayer.boardView.locateX(convertX);
                             // Get actual Column from the @see BoardView based on y
-                            int tempY = gameModel.humanBoardView.locateY(convertY);
+                            int tempY = gameModel.humanPlayer.boardView.locateY(convertY);
 
                             for (int i = 0; i < 2; i++) {
                                 if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
@@ -681,7 +682,7 @@ public class GameView extends AppCompatActivity {
                         view.setVisibility(View.VISIBLE);
                         toast("Out of bounds");
                         // v.setBackgroundDrawable(error);
-                        gameModel.humanBoardView.invalidate();
+                        gameModel.humanPlayer.boardView.invalidate();
                         getResult = true;
                     }
                     Log.w("Lost.getX()", String.valueOf(event.getX()) + "Lost.getY()" + String.valueOf(event.getY()));
@@ -694,9 +695,10 @@ public class GameView extends AppCompatActivity {
                     view = (View) event.getLocalState();
                     view.setVisibility(View.VISIBLE);
                 default:
-                    gameModel.humanBoardView.coordinatesOfHumanShips = gameModel.humanPlayer.gameBoard.grid; // Prevents from drawing multiple times when the
+                    gameModel.humanPlayer.boardView.coordinatesOfHumanShips = gameModel.humanPlayer.gameBoard.grid; // Prevents from drawing multiple times when the
                     // user changes
-                    gameModel.humanBoardView.invalidate();
+
+                    gameModel.humanPlayer.boardView.invalidate();
                     break;
             }
 

@@ -9,14 +9,15 @@ import java.util.Arrays;
  */
 class Player {
     Board gameBoard = new Board(10);
+    BoardView boardView;
     Ship aircraft = new Ship(5, "aircraft");
     Ship battleship = new Ship(4, "battleship");
     Ship destroyer = new Ship(3, "destroyer");
     Ship submarine = new Ship(3, "submarine");
     Ship patrol = new Ship(2, "patrol");
+    private int numberOfShipsFloating;
     private String typeOfPlayer;
     private int numberOfShots;
-    private Board playerBoard = new Board(10);
 
     /**
      * @param player
@@ -35,6 +36,7 @@ class Player {
             gameBoard.addCoordinates(submarine.map);
             gameBoard.addCoordinates(patrol.map);
         }
+        setNumberOfShipsFloating(5);
         aircraft.setPlaced(false);
         battleship.setPlaced(false);
         destroyer.setPlaced(false);
@@ -96,14 +98,6 @@ class Player {
         return false;
     }
 
-    Board getPlayerBoard() {
-        return playerBoard;
-    }
-
-    private void setPlayerBoard(Board playerBoard) {
-        this.playerBoard = playerBoard;
-    }
-
     /**
      * @return the number of shots the user has shot at boats
      */
@@ -116,5 +110,13 @@ class Player {
      */
     void shoots() {
         this.numberOfShots = 1 + numberOfShots;
+    }
+
+    public int getNumberOfShipsFloating() {
+        return numberOfShipsFloating;
+    }
+
+    public void setNumberOfShipsFloating(int numberOfShipsFloating) {
+        this.numberOfShipsFloating = numberOfShipsFloating;
     }
 }
