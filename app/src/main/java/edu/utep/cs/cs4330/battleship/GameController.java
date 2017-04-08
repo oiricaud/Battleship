@@ -12,10 +12,12 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.*;
+import android.view.DragEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 
 import java.util.Arrays;
@@ -26,14 +28,15 @@ import java.util.Random;
  * This activity will allow the user to place boats. @see activity_place_ship
  */
 
-public class GameController extends AppCompatActivity {
+public class GameController extends FragmentActivity {
     private MediaPlayer mp; // For music background
     private String fontPath;
     private TextView counter;
     private GameModel gameModel = new GameModel();
-
+    private String currentView;
     private boolean getResult = false; // Determine if the an image object has been dragged
 
+    /* BEGIN GETTERS AND SETTERS */
     private String getFontPath() {
         return fontPath;
     }
@@ -42,6 +45,14 @@ public class GameController extends AppCompatActivity {
         this.fontPath = fontPath;
     }
 
+    public String getCurrentView() {
+        return currentView;
+    }
+
+    public void setCurrentView(String currentView) {
+        this.currentView = currentView;
+    }
+    /* END GETTERS AND SETTERS */
     /**
      * @param savedInstanceState This class gets called from @see GameController
      *                           also receiving level_of_difficulty from the human.
@@ -53,25 +64,45 @@ public class GameController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /* CONTROLLER */
+        /* BEGIN CONTROLLER */
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
-                gameModel.playMusic(this);
+                //  gameModel.playMusic(this);
                 setFontPath("fonts/eightbit.TTF");
-                // By default this is the first controller is called when the activity is created.
+                // By default this is the first view that is called when the activity is created.
                 launchHomeView();
             }
+        } else {
+            String viewToLaunch = (String) savedInstanceState.getSerializable("currentView");
+            if (viewToLaunch.equals("launchHomeView")) {
+                launchHomeView();
+            }
+            if (viewToLaunch.equals("chooseLevelView")) {
+                chooseLevelView();
+            }
         }
-        /* CONTROLLER */
+        /* END CONTROLLER */
     }
 
+    /* BEGIN FRAGMENT TO STORE THE CURRENT STATE FOR VIEWS */
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current view state
+        savedInstanceState.putString("currentView", getCurrentView());
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    /* END FRAGMENT TO STORE THE CURRENT STATE */
+
+    /* BEGIN VIEWS */
     /**
      * This method launches the home.xml and waits for the user to begin a new game.
      */
     private void launchHomeView() {
         setContentView(R.layout.home);
+        setCurrentView("launchHomeView");
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
         changeFont(battleshipLabel);
 
@@ -92,6 +123,7 @@ public class GameController extends AppCompatActivity {
      */
     private void chooseLevelView() {
         setContentView(R.layout.activity_level);
+        setCurrentView("chooseLevelView");
         Button easy = (Button) findViewById(R.id.easy);
         Button medium = (Button) findViewById(R.id.medium);
         Button hard = (Button) findViewById(R.id.hard);
@@ -131,22 +163,32 @@ public class GameController extends AppCompatActivity {
      * This method sets the toolbar for the user to tap on the board to place the boats of the ships
      */
     private void placeBoatsView() {
-        setContentView(R.layout.activity_human_game);
-        gameModel.humanPlayer.boardView = (BoardView) findViewById(R.id.humanBoardView2);
-        gameModel.humanPlayer.boardView.setBoard(gameModel.humanPlayer.gameBoard);
+        setContentView(R.layout.activity_human_place_boats);
+        setCurrentView("placeBoatsView");
+
 
         /* Set up the toolbar and define it's title */
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         //noinspection ConstantConditions
-        getSupportActionBar().setTitle("Place Boats");
+        //getSupportActionBar().setTitle("Place Boats");
 
         /* Get the image objects */
+
         ImageView aircraft = (ImageView) findViewById(R.id.aircraft);
         ImageView battleship = (ImageView) findViewById(R.id.battleship);
         ImageView destroyer = (ImageView) findViewById(R.id.destroyer);
         ImageView submarine = (ImageView) findViewById(R.id.submarine);
         ImageView patrol = (ImageView) findViewById(R.id.patrol);
+        gameModel.humanPlayer.boardView = (BoardView) findViewById(R.id.humanBoardView2);
+        gameModel.humanPlayer.boardView.setBoard(gameModel.humanPlayer.gameBoard);
+
+        // This means the user had already placed boats on the grid but decided to go back to this view and perhaps
+        // change the boats.
+        if (gameModel.humanPlayer.gameBoard.grid != null) {
+            gameModel.humanPlayer.boardView.coordinatesOfHumanShips = gameModel.humanPlayer.gameBoard.grid;
+            gameModel.humanPlayer.boardView.invalidate();
+        }
 
         /* Allow these boat images to be draggable, listen when they are touched */
         aircraft.setOnTouchListener(new MyTouchListener());
@@ -166,63 +208,15 @@ public class GameController extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                computerBoardView(gameModel.humanPlayer.boardView);
+                playGameView(gameModel.humanPlayer.boardView);
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chooseLevelView();
+                //chooseLevelView();
             }
         });
-    }
-
-
-    // Menu icons are inflated just as they were with actionbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    /**
-     * @param item are the different ships the user can tap onto.
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.w("humanPlayer.aircraft", gameModel.humanPlayer.getTypeOfPlayer());
-        if (item.getItemId() == R.id.itemAircraft) {
-
-            //noinspection ConstantConditions
-            getSupportActionBar().setTitle("Tap on Grid to Place Aircraft");
-            gameModel.humanPlayer.boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
-
-                @Override
-                public void onTouch(int x, int y) {
-                }
-            });
-        }
-
-        return true;
-
-    }
-
-    /**
-     * Disable the physical back button
-     */
-    @Override
-    public void onBackPressed() {
-
-    }
-
-    /**
-     * Fading Transition Effect
-     */
-    private void fadingTransition() {
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     /**
@@ -235,11 +229,11 @@ public class GameController extends AppCompatActivity {
      * and colors a red circle the position of the boats, else colors a white circle indicating the
      * user missed.
      */
-    private void computerBoardView(BoardView copyOfHumanBoard) {
+    private void playGameView(BoardView copyOfHumanBoard) {
         setContentView(R.layout.current_game);
+        setCurrentView("playGameView");
 
         /* Define Human Board */
-
         gameModel.humanPlayer.boardView = (BoardView) findViewById(R.id.humanBoard);
         gameModel.humanPlayer.boardView.setBoard(gameModel.humanPlayer.gameBoard);
 
@@ -308,6 +302,37 @@ public class GameController extends AppCompatActivity {
             }
         });
     }
+    /* END VIEWS */
+
+
+    /**
+     * Using a stack to keep track the view the user is in.
+     */
+    @Override
+    public void onBackPressed() {
+        if (!getCurrentView().isEmpty()) {
+            String viewToLaunch = getCurrentView();
+            Log.w("temp", viewToLaunch);
+            if (viewToLaunch.equals("chooseLevelView")) {
+                launchHomeView();
+            }
+            if (viewToLaunch.equals("placeBoatsView")) {
+                chooseLevelView();
+            }
+            if (viewToLaunch.equals("playGameView")) {
+                placeBoatsView();
+            }
+        } else {
+            launchHomeView();
+        }
+    }
+
+    /**
+     * Fading Transition Effect
+     */
+    private void fadingTransition() {
+        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 
     private int generateRandomCoordinate() {
         Random random = new Random();
@@ -347,7 +372,7 @@ public class GameController extends AppCompatActivity {
      * @param quitButton Where is the type of button
      * @param context    when the user hits quit, the user is sent back to the first activity
      */
-    public void quitActivity(final Button quitButton, final Context context) {
+    private void quitActivity(final Button quitButton, final Context context) {
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -417,7 +442,7 @@ public class GameController extends AppCompatActivity {
      *
      * @param context is the activity context
      */
-    public void makeMissedSound(Context context) {
+    private void makeMissedSound(Context context) {
         if (mp != null) {
             mp.stop();
             mp.release();
@@ -431,7 +456,7 @@ public class GameController extends AppCompatActivity {
      *
      * @param context is the activity context
      */
-    public void makeExplosionSound(Context context) {
+    private void makeExplosionSound(Context context) {
         if (mp != null) {
             mp.stop();
             mp.release();
@@ -460,11 +485,10 @@ public class GameController extends AppCompatActivity {
      * @param context  Is the
      * @param textView the view we want to change font to
      */
-    public void changeFont(TextView textView) {
+    private void changeFont(TextView textView) {
         Typeface typeface = Typeface.createFromAsset(getAssets(), getFontPath());
         textView.setTypeface(typeface);
     }
-
 
     private class MyDragListener implements View.OnDragListener {
         // Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
@@ -568,6 +592,7 @@ public class GameController extends AppCompatActivity {
                                     boatsCoordinates[tempX + i][tempY] = 1;
                                 }
                             }
+
                             gameModel.humanPlayer.aircraft.map = boatsCoordinates;
                             gameModel.humanPlayer.gameBoard.addCoordinates(gameModel.humanPlayer.aircraft.map);
                             gameModel.humanPlayer.aircraft.setPlaced(true);

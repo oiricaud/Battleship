@@ -2,62 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:background="@drawable/waterbackgroundmain">
 
-    <RelativeLayout
+    <TextView
+            android:id="@+id/chooseDifficulty"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/waterbackgroundmain"/>
-
-        <TextView
-                android:id="@+id/chooseDifficulty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="@string/chooseDifficulty"
-                android:textAlignment="center"
-                android:textColor="@android:color/holo_orange_dark"
-                android:textSize="36sp"/>
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/chooseDifficulty"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="36sp" android:layout_marginTop="20dp"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:gravity="center" android:layout_marginTop="50dp">
 
         <Button
                 android:id="@+id/easy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/medium"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="70dp"
                 android:background="@android:color/holo_orange_light"
-                android:text="Easy"/>
+                android:text="Easy" android:layout_marginLeft="20dp"/>
 
         <Button
                 android:id="@+id/medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/hard"
-                android:layout_alignLeft="@+id/easy"
-                android:layout_alignStart="@+id/easy"
-                android:layout_marginBottom="70dp"
                 android:background="@android:color/holo_orange_dark"
-                android:text="Medium"/>
+                android:text="Medium" android:layout_marginLeft="20dp"/>
 
         <Button
                 android:id="@+id/hard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/medium"
-                android:layout_alignParentBottom="true"
-                android:layout_alignStart="@+id/medium"
-                android:layout_marginBottom="49dp"
                 android:background="@android:color/holo_red_dark"
-                android:text="Hard"/>
-    </RelativeLayout>
+                android:text="Hard" android:layout_marginLeft="20dp"/>
+    </LinearLayout>
 </LinearLayout>

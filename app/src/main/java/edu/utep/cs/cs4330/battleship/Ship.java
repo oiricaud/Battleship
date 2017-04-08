@@ -28,7 +28,6 @@ public class Ship {
     }
 
     int[][] coordinates() {
-
         return map;
     }
 
