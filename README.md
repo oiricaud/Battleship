@@ -17,7 +17,7 @@ Class Diagram
 
 ![alt tag](Screenshots/Home.png "Home") 
 
-![alt tag](Screenshots/PlayingWithPC.png "Playing with pc") 
+![alt tag](Screenshots/Playing.png "Playing") 
 
 Assignment #3 
 ======
