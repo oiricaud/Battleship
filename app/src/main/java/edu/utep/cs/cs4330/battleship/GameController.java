@@ -232,9 +232,9 @@ public class GameController extends Activity {
         findViewById(R.id.humanBoardPlacer).setOnDragListener(new MyDragListener());
 
         Button next = (Button) findViewById(R.id.next);
-        Button back = (Button) findViewById(R.id.random);
+        Button random = (Button) findViewById(R.id.random);
         changeFont(next);
-        changeFont(back);
+        changeFont(random);
         next.setVisibility(View.VISIBLE);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,7 +242,7 @@ public class GameController extends Activity {
                 playGameView(gameModel.humanPlayer.boardView);
             }
         });
-        back.setOnClickListener(new View.OnClickListener() {
+        random.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //chooseLevelView();
