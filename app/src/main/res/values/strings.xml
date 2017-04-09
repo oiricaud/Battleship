@@ -8,4 +8,6 @@
     <string name="next">Next</string>
     <string name="chooseDifficulty">Choose Difficulty</string>
     <string name="Battleship">Battleship</string>
+    <string name="Computer">Computer</string>
+    <string name="OneVersusOne">1 VS 1</string>
 </resources>

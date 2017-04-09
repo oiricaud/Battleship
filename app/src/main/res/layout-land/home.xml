@@ -28,16 +28,32 @@
                 android:textColor="@android:color/holo_orange_dark"
                 android:textSize="42sp"/>
 
-        <Button
-                android:id="@+id/start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="32dp"
-                android:background="@android:color/holo_red_light"
-                android:text="@string/start"
-                android:textStyle="bold"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:gravity="bottom|center" android:layout_marginTop="50dp">
+
+            <Button
+                    android:id="@+id/OneVersusOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_orange_dark"
+                    android:text="@string/OneVersusOne" android:layout_marginLeft="20dp"
+                    android:layout_marginTop="50dp"/>
+
+            <Button
+                    android:id="@+id/start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_blue_dark"
+                    android:text="@string/start" android:layout_marginLeft="20dp"/>
+
+            <Button
+                    android:id="@+id/Computer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_red_light"
+                    android:text="@string/Computer" android:layout_marginLeft="20dp"/>
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

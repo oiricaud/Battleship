@@ -191,13 +191,38 @@ public class GameController extends Activity {
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
         changeFont(battleshipLabel);
 
+        final Button oneVersusOneButton = (Button) findViewById(R.id.OneVersusOne);
+        final Button onlineButton = (Button) findViewById(R.id.Computer);
+        oneVersusOneButton.setVisibility(View.INVISIBLE);
+        onlineButton.setVisibility(View.INVISIBLE);
+        changeFont(oneVersusOneButton);
+        changeFont(onlineButton);
+
         // Begin to the next activity, placing boats on the map
-        Button startButton = (Button) findViewById(R.id.start);
+        final Button startButton = (Button) findViewById(R.id.start);
         changeFont(startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chooseLevelView();
+                oneVersusOneButton.setVisibility(View.VISIBLE);
+                onlineButton.setVisibility(View.VISIBLE);
+                startButton.setVisibility(View.INVISIBLE);
+
+                oneVersusOneButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Set up network
+                        gameModel.setTypeOfGame("1 VS 1");
+                        toast("This feauture will come soon!");
+                    }
+                });
+                onlineButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        gameModel.setTypeOfGame("1 VS PC");
+                        chooseLevelView();
+                    }
+                });
             }
         });
     }

@@ -25,6 +25,13 @@ class GameModel {
             setComputerPlayer(computerPlayer);
             gameStatus = true;
         }
+        if (typeOfGame.equals("1 VS 1")) {
+            humanPlayer = new Player("Human");
+            computerPlayer = new Player("Human");
+            setHumanPlayer(humanPlayer);
+            setComputerPlayer(computerPlayer);
+            gameStatus = true;
+        }
     }
 
     public static boolean isMediaPlaying(MediaPlayer music) {
