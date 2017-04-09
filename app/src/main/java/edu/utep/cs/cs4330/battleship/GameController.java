@@ -33,11 +33,9 @@ import java.util.Random;
 @SuppressWarnings("ALL")
 public class GameController extends Activity {
     private static final String TAG_RETAINED_FRAGMENT = "RetainedFragment";
-
+    private static MediaPlayer mp;                     // For boats sound effects
+    private static MediaPlayer music;                  // For music background
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
-
-    private MediaPlayer mp;                     // For boats sound effects
-    private MediaPlayer music;                  // For music background
     private String fontPath;
     private GameModel gameModel = new GameModel();
 
@@ -60,6 +58,7 @@ public class GameController extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFontPath("fonts/eightbit.TTF");
+
         // find the retained fragment on activity restarts
         FragmentManager fm = getFragmentManager();
         mRetainedFragment = (RetainedFragment) fm.findFragmentByTag(TAG_RETAINED_FRAGMENT);
@@ -75,7 +74,55 @@ public class GameController extends Activity {
         launchHomeView();   // By default, this activity will always display until an event occurs.
     }
 
-/* BEGIN SCREEN CONFIGURATIONS LOGIC */
+    @Override
+    public void onStart() {
+
+        try {
+            if (music != null) {
+                music.stop();
+                music.release();
+                music = null;
+            }
+            music = MediaPlayer.create(this, R.raw.yolo);
+            if (gameModel.getMusicTimer() > 0) {
+                music.seekTo(gameModel.getMusicTimer());
+            }
+            music.setLooping(true);
+            music.start();
+        } catch (Exception e) {
+            Log.w("Wut", "Check onStart(), there might be an issue");
+        }
+        super.onStart();
+    }
+
+
+    @Override
+    protected void onPause() {
+        if (gameModel.isMediaPlaying(music) == true) {
+            music.pause();
+            gameModel.setMusicTimer(music.getCurrentPosition());
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        if (music != null && !music.isPlaying())
+            music.start();
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (music != null) {
+            music.stop();
+            music.release();
+            music = null;
+        }
+        super.onDestroy();
+    }
+
+    /* BEGIN SCREEN CONFIGURATIONS LOGIC */
     /**
      * @param newConfig When the user rotates their phone either from portrait to landscape or landscape to portrait,
      *                  often times activities are destroyed. This method stores the current view the user was currently
@@ -130,7 +177,9 @@ public class GameController extends Activity {
                 break;
         }
     }
-/* END SCREEN CONFIGURATIONS LOGIC */
+
+
+    /* END SCREEN CONFIGURATIONS LOGIC */
 
 /* BEGIN VIEWS */
     /**
@@ -471,25 +520,31 @@ public class GameController extends Activity {
 /* END BUTTONS LOGIC */
 
     /* BEGIN BATTLESHIP MUSIC */
-    void playMusic(Context context) {
+    private void playMusic(Context context) {
         if (music != null) {
             music.stop();
             music.reset();
             music.release();
-        } else {
-            // Play one of these random songs in the background.
-            Random random = new Random();
-            int obtainRandomNumber = random.nextInt(3);
-            if (obtainRandomNumber == 1) {
-                music = MediaPlayer.create(context, R.raw.alterego);
-            }
-            if (obtainRandomNumber == 2) {
-                music = MediaPlayer.create(context, R.raw.oblivion);
-            }
-            if (obtainRandomNumber == 3) {
-                music = MediaPlayer.create(context, R.raw.yolo);
-            }
-            music.start();
+        }
+        // Play one of these random songs in the background.
+        Random random = new Random();
+        int obtainRandomNumber = random.nextInt(3);
+        if (obtainRandomNumber == 1) {
+            music = MediaPlayer.create(context, R.raw.alterego);
+        }
+        if (obtainRandomNumber == 2) {
+            music = MediaPlayer.create(context, R.raw.oblivion);
+        }
+        if (obtainRandomNumber == 3) {
+            music = MediaPlayer.create(context, R.raw.yolo);
+        }
+        music.start();
+
+    }
+
+    private void pauseMusic(Context context) {
+        if (music.isPlaying()) {
+            music.pause();
         }
     }
     /**
