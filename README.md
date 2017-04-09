@@ -6,7 +6,10 @@ Update 1.1
 
 *View Java Classes* [Click Here](https://github.com/oiricaud/Battleship/tree/master/app/src/main/java/edu/utep/cs/cs4330/battleship).
 
-*View Class Diagrams* [Click Here](https://github.com/oiricaud/Battleship/blob/master/Class-Diagram.png).
+Class Diagram
+=
+
+![alt tag](https://github.com/oiricaud/Battleship/blob/master/Class-Diagram.png "Home") 
 
 *View Assignment* #2  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW2-Assignment.md).
 
