@@ -464,7 +464,7 @@ public class GameController extends Activity {
                     launchHomeView();
                     break;
                 case "placeBoatsView":
-                    chooseLevelView();
+                    launchHomeView();
                     break;
                 case "playGameView":
                     placeBoatsView();
