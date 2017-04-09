@@ -1,7 +1,6 @@
 package edu.utep.cs.cs4330.battleship;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 
 import java.util.Random;
@@ -46,16 +45,6 @@ class GameModel {
         }
     }
 
-    /**
-     * @return this returns the difficulty the user chose, which is later retrieved to be displayed
-     * on the android phone.
-     */
-
-    void updateModel(Context context, String viewWeWantToLaunch) {
-        Intent intent = new Intent(context, GameController.class);
-        intent.putExtra("viewWeWantToLaunch", viewWeWantToLaunch);
-        context.startActivity(intent);
-    }
 
     public String getDifficulty() {
         return difficulty;

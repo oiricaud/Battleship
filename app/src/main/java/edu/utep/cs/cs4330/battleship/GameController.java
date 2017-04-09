@@ -54,12 +54,8 @@ public class GameController extends Activity {
     /* END GETTERS AND SETTERS */
 
     /**
-     * @param savedInstanceState This class gets called from @see GameController
-     *                           also receiving level_of_difficulty from the human.
-     *                           It then sets everything for the human and computer.
-     *                           For example the computer based on level of difficulty must place
-     *                           boats at random. The human in the other hand must manually place
-     *                           the objects (boat images) on the board.
+     * @param savedInstanceState The creation of this mobile application. It calls a method that displays the
+     *                           an aesthetic background image with the title of Battleship in 8-bit style.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +84,8 @@ public class GameController extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        gameModel = mRetainedFragment.getCurrentGameState(); // Gets the state the user was on before the screen was
-        // oriented
+        // Gets the state the user was on before the screen was oriented
+        gameModel = mRetainedFragment.getCurrentGameState();
 
         // Checks the orientation of the screen
         switch (newConfig.orientation) {
@@ -110,7 +106,7 @@ public class GameController extends Activity {
                         playGameView(gameModel.humanPlayer.boardView);
                         break;
                 }
-                Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
                 break;
 
             case Configuration.ORIENTATION_PORTRAIT:
@@ -130,7 +126,7 @@ public class GameController extends Activity {
                         playGameView(gameModel.humanPlayer.boardView);
                         break;
                 }
-                Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -431,7 +427,6 @@ public class GameController extends Activity {
                                 dialog.cancel();
                             }
                         });
-
                 AlertDialog alert = builder.create();
                 alert.show();
             }
