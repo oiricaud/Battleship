@@ -12,8 +12,8 @@ Update 1.1
 
 *View Assignment* #1  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW1-Assignment.md).
 
-![alt tag](Screenshots/Home.png "Home")  
-![alt tag](Screenshots/TypeOfGame.png "Choose kind of game") 
+![alt tag](Screenshots/Home.png "Home") 
+
 ![alt tag](Screenshots/PlayingWithPC.png "Playing with pc") 
 
 Assignment #3 
