@@ -34,13 +34,12 @@ import java.util.Random;
 public class GameController extends Activity {
     private static final String TAG_RETAINED_FRAGMENT = "RetainedFragment";
 
-    private RetainedFragment mRetainedFragment;
+    private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
 
-    private MediaPlayer mp; // For music background
+    private MediaPlayer mp;                     // For boats sound effects
+    private MediaPlayer music;                  // For music background
     private String fontPath;
-    private TextView counter;
     private GameModel gameModel = new GameModel();
-    private boolean getResult = false; // Determine if the an image object has been dragged
 
     /* BEGIN GETTERS AND SETTERS */
     private String getFontPath() {
@@ -76,6 +75,7 @@ public class GameController extends Activity {
         launchHomeView();   // By default, this activity will always display until an event occurs.
     }
 
+/* BEGIN SCREEN CONFIGURATIONS LOGIC */
     /**
      * @param newConfig When the user rotates their phone either from portrait to landscape or landscape to portrait,
      *                  often times activities are destroyed. This method stores the current view the user was currently
@@ -130,8 +130,9 @@ public class GameController extends Activity {
                 break;
         }
     }
+/* END SCREEN CONFIGURATIONS LOGIC */
 
-    /* BEGIN VIEWS */
+/* BEGIN VIEWS */
     /**
      * This method launches the home.xml and waits for the user to begin a new game.
      */
@@ -207,7 +208,7 @@ public class GameController extends Activity {
         ImageView destroyer = (ImageView) findViewById(R.id.destroyer);
         ImageView submarine = (ImageView) findViewById(R.id.submarine);
         ImageView patrol = (ImageView) findViewById(R.id.patrol);
-        gameModel.humanPlayer.boardView = (BoardView) findViewById(R.id.humanBoardView2);
+        gameModel.humanPlayer.boardView = (BoardView) findViewById(R.id.humanBoardView);
         gameModel.humanPlayer.boardView.setBoard(gameModel.humanPlayer.gameBoard);
 
         // This means the user had already placed boats on the grid but decided to go back to this view and perhaps
@@ -275,7 +276,7 @@ public class GameController extends Activity {
 
         // Define buttons and text views here
         TextView battleshipTitle = (TextView) findViewById(R.id.BattleShip);
-        counter = (TextView) findViewById(R.id.countOfHits);
+        final TextView counter = (TextView) findViewById(R.id.countOfHits);
         Button newButton = (Button) findViewById(R.id.newButton);
         Button quitButton = (Button) findViewById(R.id.quitButton);
 
@@ -329,8 +330,52 @@ public class GameController extends Activity {
             }
         });
     }
-    /* END VIEWS */
+/* END VIEWS */
 
+    private int generateRandomCoordinate() {
+        Random random = new Random();
+        return random.nextInt(10);
+    }
+
+/* BEGIN ACTIVITIY EFFECTS */
+
+    /**
+     * Fading Transition Effect
+     */
+    private void fadingTransition() {
+        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    /**
+     * Show a toast message.
+     */
+    private void toast(String msg) {
+        final Toast toast = Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT);
+        toast.show();
+        new CountDownTimer(500, 1000) {
+            public void onTick(long millisUntilFinished) {
+                toast.show();
+            }
+            public void onFinish() {
+                toast.cancel();
+            }
+        }.start();
+    }
+/* END ACTIVITIY EFFECTS */
+
+    /**
+     * Restarts the activity
+     */
+    public void restartActivity() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
+
+/* BEGIN BUTTONS LOGIC */
 
     /**
      * Using a stack to keep track the view the user is in.
@@ -354,46 +399,6 @@ public class GameController extends Activity {
                     launchHomeView();
             }
         }
-    }
-
-    /**
-     * Fading Transition Effect
-     */
-    private void fadingTransition() {
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    private int generateRandomCoordinate() {
-        Random random = new Random();
-        return random.nextInt(10);
-    }
-
-    /**
-     * Show a toast message.
-     */
-    private void toast(String msg) {
-        final Toast toast = Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT);
-        toast.show();
-        new CountDownTimer(500, 1000) {
-            public void onTick(long millisUntilFinished) {
-                toast.show();
-            }
-            public void onFinish() {
-                toast.cancel();
-            }
-        }.start();
-    }
-
-    /**
-     * Restarts the activity
-     */
-    public void restartActivity() {
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-        overridePendingTransition(0, 0);
-        startActivity(intent);
     }
 
     /**
@@ -463,7 +468,30 @@ public class GameController extends Activity {
             }
         });
     }
+/* END BUTTONS LOGIC */
 
+    /* BEGIN BATTLESHIP MUSIC */
+    void playMusic(Context context) {
+        if (music != null) {
+            music.stop();
+            music.reset();
+            music.release();
+        } else {
+            // Play one of these random songs in the background.
+            Random random = new Random();
+            int obtainRandomNumber = random.nextInt(3);
+            if (obtainRandomNumber == 1) {
+                music = MediaPlayer.create(context, R.raw.alterego);
+            }
+            if (obtainRandomNumber == 2) {
+                music = MediaPlayer.create(context, R.raw.oblivion);
+            }
+            if (obtainRandomNumber == 3) {
+                music = MediaPlayer.create(context, R.raw.yolo);
+            }
+            music.start();
+        }
+    }
     /**
      * Plays at random 3 default game songs. Makes a swish noise when the player misses a shot.
      *
@@ -505,6 +533,7 @@ public class GameController extends Activity {
         mp = MediaPlayer.create(context, R.raw.sunk);
         mp.start();
     }
+/* END BATTLESHIP MUSIC */
 
     /**
      * Changes the font of the activity
@@ -519,7 +548,6 @@ public class GameController extends Activity {
 
     @SuppressWarnings("deprecation")
     private class MyDragListener implements View.OnDragListener {
-
         @SuppressWarnings("deprecation")
         Drawable accept = getResources().getDrawable(R.drawable.accept);
         @SuppressWarnings("deprecation")
@@ -528,11 +556,11 @@ public class GameController extends Activity {
         Drawable neutral = getResources().getDrawable(R.drawable.neutral);
         @SuppressWarnings("deprecation")
         Drawable board_color = getResources().getDrawable(R.drawable.board_color);
-
         // Make images smaller
         int width = 100;
         int height = 100;
         LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width, height);
+        private boolean getResult = false; // Determine if the an image object has been dragged
         private int tempX = 0;
         private int tempY = 0;
 
@@ -576,6 +604,7 @@ public class GameController extends Activity {
 
                     break;
                 case DragEvent.ACTION_DROP:
+
                     //noinspection deprecation
                     v.setBackgroundDrawable(accept);
                     getResult = true;

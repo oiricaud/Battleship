@@ -70,7 +70,7 @@
                 android:layout_width="300dp" android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" android:layout_height="250dp">
             <edu.utep.cs.cs4330.battleship.BoardView
-                    android:id="@+id/humanBoardView2"
+                    android:id="@+id/humanBoardView"
                     android:layout_height="match_parent" android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"

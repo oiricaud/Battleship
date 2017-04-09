@@ -253,8 +253,7 @@ public class BoardView extends View implements Serializable {
     int locateX(float x) {
         if (x <= maxCoord()) {
             final float placeSize = lineGap();
-            int ix = (int) (x / placeSize);
-            return ix;
+            return (int) (x / placeSize);
         }
         return -1;
     }
