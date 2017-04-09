@@ -70,14 +70,15 @@
                     android:layout_width="match_parent"
                     android:textSize="30sp"
                     android:scaleType="fitXY"
-                    android:background="@drawable/boatstore"
+                    android:background="@android:color/transparent"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/start"
                     android:textColor="?android:attr/textColorPrimaryDisableOnly"
                     android:layout_height="100dp" android:fontFamily="serif-monospace"
                     android:layout_marginBottom="9dp" android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true" android:textStyle="normal|bold"/>
+                    android:layout_alignParentEnd="true" android:textStyle="normal|bold"
+                    android:layout_alignParentTop="true"/>
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

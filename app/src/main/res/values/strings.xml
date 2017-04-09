@@ -4,7 +4,7 @@
     <string name="countOfHits">""</string>
     <string name="number_of_shots_0">Number of Shots: 0</string>
     <string name="battleship">BATTLESHIP</string>
-    <string name="start">Play</string>
+    <string name="start"></string>
     <string name="next">Next</string>
     <string name="chooseDifficulty">Choose Difficulty</string>
     <string name="Battleship">Battleship</string>
