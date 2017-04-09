@@ -44,6 +44,10 @@ class Player {
         patrol.setPlaced(false);
     }
 
+    public Player() {
+
+    }
+
 
     String getTypeOfPlayer() {
         return typeOfPlayer;

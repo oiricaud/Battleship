@@ -109,7 +109,7 @@ public class Ship {
         isPlaced = placed;
     }
 
-    private String getNameOfShip() {
+    String getNameOfShip() {
         return nameOfShip;
     }
 
