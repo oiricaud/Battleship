@@ -57,7 +57,7 @@ public class GameController extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setFontPath("fonts/eightbit.TTF");
+        setFontPath("fonts/brandonlight.TTF");
 
         // find the retained fragment on activity restarts
         FragmentManager fm = getFragmentManager();
@@ -83,7 +83,7 @@ public class GameController extends Activity {
                 music.release();
                 music = null;
             }
-            music = MediaPlayer.create(this, R.raw.yolo);
+            music = MediaPlayer.create(this, R.raw.stratus);
             if (gameModel.getMusicTimer() > 0) {
                 music.seekTo(gameModel.getMusicTimer());
             }
@@ -195,12 +195,10 @@ public class GameController extends Activity {
         final Button onlineButton = (Button) findViewById(R.id.Computer);
         oneVersusOneButton.setVisibility(View.INVISIBLE);
         onlineButton.setVisibility(View.INVISIBLE);
-        changeFont(oneVersusOneButton);
-        changeFont(onlineButton);
 
         // Begin to the next activity, placing boats on the map
         final Button startButton = (Button) findViewById(R.id.start);
-        changeFont(startButton);
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,11 +206,13 @@ public class GameController extends Activity {
                 onlineButton.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.INVISIBLE);
 
+
                 oneVersusOneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Set up network
                         gameModel.setTypeOfGame("1 VS 1");
+
                         toast("This feauture will come soon!");
                     }
                 });
@@ -220,7 +220,7 @@ public class GameController extends Activity {
                     @Override
                     public void onClick(View v) {
                         gameModel.setTypeOfGame("1 VS PC");
-                        chooseLevelView();
+                        placeBoatsView();
                     }
                 });
             }

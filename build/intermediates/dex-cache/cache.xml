@@ -3,6 +3,15 @@
 
     <item
         is-multidex="false"
+        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/design/25.3.1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="38789e20ace9ab7dbd00554bd2673ab424478d3b">
+        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-design-25.3.1_f1ac32c6c7b5d6caf52ecd601c195584ea05197c.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/Users/oscarricaud/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
         jumboMode="false"
         optimize="true"
@@ -99,6 +108,15 @@
         revision="25.0.2"
         sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
         <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-ui-25.3.1_17e071965d0e94e90c1ca4c01199741d9e78016d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/transition/25.3.1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
+        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-transition-25.3.1_780976923b3e8c749ce1bc20a7574bfecb820ca0.jar" />
     </item>
     <item
         is-multidex="false"
@@ -207,6 +225,15 @@
         revision="25.0.2"
         sha1="796f9229948e907471c5595fbe94655ccf03ff73">
         <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/androidTest/debug/com.android.support.test-runner-0.5_5e524a7b28b2933c7ce997743bde233c807242ff.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.3.1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="95519720620b553f63afc789beba9ad582807f7c">
+        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-25.3.1_63d02fbb1bf8a377c6d5c275143fa75145b194dc.jar" />
     </item>
     <item
         is-multidex="false"

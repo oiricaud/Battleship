@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:weightSum="1">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/oceanwclouds"
+        android:orientation="vertical" android:weightSum="1">
 
     <RelativeLayout
             android:layout_width="match_parent"
@@ -13,7 +15,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/waterbackgroundmain"/>
+                android:src="@drawable/sunsetmiami"/>
 
         <TextView
                 android:id="@+id/BattleShip"
@@ -25,35 +27,58 @@
                 android:gravity="center"
                 android:text="@string/battleship"
                 android:textAlignment="center"
-                android:textColor="@android:color/holo_orange_dark"
-                android:textSize="36sp"/>
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:gravity="bottom|center" android:layout_marginTop="50dp">
-
+                android:textColor="@android:color/background_light"
+                android:textSize="44sp"/>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:layout_below="@+id/BattleShip"
+                        android:layout_marginTop="20dp" android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="20dp">
             <Button
                     android:id="@+id/OneVersusOne"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/holo_orange_dark"
-                    android:text="@string/OneVersusOne" android:layout_marginLeft="20dp"
-                    android:layout_marginTop="50dp"/>
+                    android:layout_width="match_parent"
+                    android:text="@string/OneVersusOne"
+                    android:textSize="30dp"
+                    android:background="@drawable/oceanwclouds"
 
-            <Button
-                    android:id="@+id/start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/holo_blue_dark"
-                    android:text="@string/start" android:layout_marginLeft="20dp"/>
 
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:elevation="0dp" style="@android:style/Widget.Material.Button"
+                    android:textColor="@android:color/background_dark"
+                    android:layout_above="@+id/Computer" android:layout_marginBottom="30dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginLeft="5dp" android:layout_marginRight="5dp"
+                    android:layout_marginStart="5dp" android:layout_height="100dp"
+                    android:fontFamily="serif-monospace" android:textStyle="normal|bold"/>
             <Button
                     android:id="@+id/Computer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/holo_red_light"
-                    android:text="@string/Computer" android:layout_marginLeft="20dp"/>
-        </LinearLayout>
-    </RelativeLayout>
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:textSize="30dp"
+                    android:background="@drawable/beach"
 
+                    android:text="@string/Computer" android:layout_weight="1"
+                    android:layout_marginLeft="5dp" android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp" android:layout_marginStart="5dp"
+                    android:textColor="@android:color/background_dark" android:textStyle="normal|bold"
+                    android:fontFamily="serif-monospace"
+                    android:layout_alignParentBottom="true"/>
+            <Button
+                    android:id="@+id/start"
+                    android:layout_width="match_parent"
+                    android:textSize="30sp"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/boatstore"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/start"
+                    android:textColor="?android:attr/textColorPrimaryDisableOnly"
+                    android:layout_height="100dp" android:fontFamily="serif-monospace"
+                    android:layout_marginBottom="9dp" android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true" android:textStyle="normal|bold"/>
+        </RelativeLayout>
+    </RelativeLayout>
 </LinearLayout>
+

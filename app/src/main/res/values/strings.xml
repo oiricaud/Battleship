@@ -3,11 +3,12 @@
     <string name="new_button_label">New</string>
     <string name="countOfHits">""</string>
     <string name="number_of_shots_0">Number of Shots: 0</string>
-    <string name="battleship">BattleShip</string>
-    <string name="start">Start</string>
+    <string name="battleship">BATTLESHIP</string>
+    <string name="start">Play</string>
     <string name="next">Next</string>
     <string name="chooseDifficulty">Choose Difficulty</string>
     <string name="Battleship">Battleship</string>
-    <string name="Computer">Computer</string>
+    <string name="Computer">1 VS PC</string>
     <string name="OneVersusOne">1 VS 1</string>
+
 </resources>

@@ -1,11 +1,14 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.NoActionBar">
+    <style name="AppBaseTheme" parent="android:Widget.Material.Button">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="OneVersusOne" parent="android:style/Widget.Material.Button">
+        <item name="android:background">@drawable/raised_button_background</item>
     </style>
 
 </resources>
