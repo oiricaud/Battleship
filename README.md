@@ -15,9 +15,7 @@ Class Diagram
 
 *View Assignment* #1  [Click Here](https://github.com/oiricaud/Battleship/blob/master/HW1-Assignment.md).
 
-![alt tag](Screenshots/Home.png "Home") 
-
-![alt tag](Screenshots/Playing.png "Playing") 
+![alt tag](Screenshots/Home.png "Home") ![alt tag](Screenshots/Playing.png "Play") 
 
 Assignment #3 
 ======
