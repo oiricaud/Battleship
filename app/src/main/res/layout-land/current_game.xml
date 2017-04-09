@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gamebackground">
+
+        <TextView
+                android:id="@+id/BattleShip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/computerBoard"
+                android:layout_alignLeft="@+id/humanBoard"
+                android:layout_alignRight="@+id/computerBoard"
+                android:layout_alignStart="@+id/humanBoard"
+                android:layout_alignTop="@+id/humanBoard"
+                android:layout_marginLeft="166dp"
+                android:layout_marginStart="166dp"
+                android:text="@string/battleship"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="22sp"/>
+
+        <Button
+                android:id="@+id/quitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/newButton"
+                android:layout_alignStart="@+id/newButton"
+                android:layout_below="@+id/newButton"
+                android:layout_marginTop="38dp"
+                android:background="@android:color/holo_red_light"
+                android:text="Quit"
+                android:textStyle="bold"/>
+
+        <Button
+                android:id="@+id/newButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/BattleShip"
+                android:layout_alignStart="@+id/BattleShip"
+                android:layout_below="@+id/BattleShip"
+                android:layout_marginLeft="22dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="18dp"
+                android:layout_toRightOf="@+id/humanBoard"
+                android:background="@android:color/holo_green_light"
+                android:text="@string/new_button_label"/>
+
+        <TextView
+                android:id="@+id/countOfHits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="250dp"
+                android:fontFamily="casual"
+                android:text="@string/number_of_shots_0"
+                android:textColor="?attr/actionModeSplitBackground"
+                android:textSize="12sp"
+                android:textStyle="normal|bold"/>
+
+        <edu.utep.cs.cs4330.battleship.BoardView
+                android:id="@+id/humanBoard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/countOfHits"
+                android:layout_alignEnd="@+id/computerBoard"
+                android:layout_alignLeft="@+id/computerBoard"
+                android:layout_alignRight="@+id/computerBoard"
+                android:layout_alignStart="@+id/computerBoard"
+                android:layout_marginBottom="106dp"
+                android:layout_marginEnd="172dp"
+                android:layout_marginRight="172dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"/>
+
+        <edu.utep.cs.cs4330.battleship.BoardView
+                android:id="@+id/computerBoard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="280dp"
+                android:layout_weight="1"/>
+
+    </RelativeLayout>
+</LinearLayout>

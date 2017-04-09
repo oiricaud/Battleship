@@ -13,7 +13,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/waterbackgroundmain"/>
+                android:src="@drawable/oceanwclouds"/>
 
         <TextView
                 android:id="@+id/BattleShip"

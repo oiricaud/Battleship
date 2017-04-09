@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 
+import java.util.Random;
+
 /**
- *
  * Created by oscarricaud on 3/19/17.
  */
 
@@ -22,17 +23,16 @@ class GameModel {
     GameModel() {
 
     }
-/*
+
     void playMusic(Context context) {
         if (music != null) {
             music.stop();
             music.reset();
             music.release();
-        }
-        else {
+        } else {
             // Play one of these random songs in the background.
             Random random = new Random();
-            int obtainRandomNumber = random.nextInt(4);
+            int obtainRandomNumber = random.nextInt(3);
             if (obtainRandomNumber == 1) {
                 music = MediaPlayer.create(context, R.raw.alterego);
             }
@@ -45,7 +45,7 @@ class GameModel {
             music.start();
         }
     }
-    */
+
     /**
      * @return this returns the difficulty the user chose, which is later retrieved to be displayed
      * on the android phone.

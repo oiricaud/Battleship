@@ -1,18 +1,20 @@
 package edu.utep.cs.cs4330.battleship;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -28,7 +30,11 @@ import java.util.Random;
  * This activity will allow the user to place boats. @see activity_place_ship
  */
 
-public class GameController extends FragmentActivity {
+public class GameController extends Activity {
+    private static final String TAG_RETAINED_FRAGMENT = "RetainedFragment";
+
+    private RetainedFragment mRetainedFragment;
+
     private MediaPlayer mp; // For music background
     private String fontPath;
     private TextView counter;
@@ -53,6 +59,7 @@ public class GameController extends FragmentActivity {
         this.currentView = currentView;
     }
     /* END GETTERS AND SETTERS */
+
     /**
      * @param savedInstanceState This class gets called from @see GameController
      *                           also receiving level_of_difficulty from the human.
@@ -64,43 +71,73 @@ public class GameController extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* BEGIN CONTROLLER */
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                //  gameModel.playMusic(this);
-                setFontPath("fonts/eightbit.TTF");
-                // By default this is the first view that is called when the activity is created.
+        setFontPath("fonts/eightbit.TTF");
+        // find the retained fragment on activity restarts
+        FragmentManager fm = getFragmentManager();
+        mRetainedFragment = (RetainedFragment) fm.findFragmentByTag(TAG_RETAINED_FRAGMENT);
+
+        // create the fragment and data the first time
+        if (mRetainedFragment == null) {
+            // add the fragment
+            mRetainedFragment = new RetainedFragment();
+            fm.beginTransaction().add(mRetainedFragment, TAG_RETAINED_FRAGMENT).commit();
+            // load data from a data source or perform any calculation
+            mRetainedFragment.setData(loadMyData());
+            mRetainedFragment.setCurrentView("launchHomeView");
+        }
+        launchHomeView();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            gameModel = mRetainedFragment.getData();
+            if (mRetainedFragment.getCurrentView().equals("launchHomeView")) {
                 launchHomeView();
             }
-        } else {
-            String viewToLaunch = (String) savedInstanceState.getSerializable("currentView");
-            if (viewToLaunch.equals("launchHomeView")) {
-                launchHomeView();
-            }
-            if (viewToLaunch.equals("chooseLevelView")) {
+            if (mRetainedFragment.getCurrentView().equals("chooseLevelView")) {
                 chooseLevelView();
             }
+            if (mRetainedFragment.getCurrentView().equals("placeBoatsView")) {
+                placeBoatsView();
+            }
+            if (mRetainedFragment.getCurrentView().equals("playGameView")) {
+                playGameView(gameModel.humanPlayer.boardView);
+            }
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gameModel = mRetainedFragment.getData();
+            if (mRetainedFragment.getCurrentView().equals("launchHomeView")) {
+                launchHomeView();
+            }
+            if (mRetainedFragment.getCurrentView().equals("chooseLevelView")) {
+                chooseLevelView();
+            }
+            if (mRetainedFragment.getCurrentView().equals("placeBoatsView")) {
+                placeBoatsView();
+            }
+            if (mRetainedFragment.getCurrentView().equals("playGameView")) {
+                playGameView(gameModel.humanPlayer.boardView);
+            }
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+            // gameModel = mRetainedFragment.getData();
         }
-        /* END CONTROLLER */
     }
 
-    /* BEGIN FRAGMENT TO STORE THE CURRENT STATE FOR VIEWS */
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the user's current view state
-        savedInstanceState.putString("currentView", getCurrentView());
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
+    private GameModel loadMyData() {
+        return gameModel;
     }
-
-    /* END FRAGMENT TO STORE THE CURRENT STATE */
 
     /* BEGIN VIEWS */
+
     /**
      * This method launches the home.xml and waits for the user to begin a new game.
      */
     private void launchHomeView() {
+        mRetainedFragment.setCurrentView("launchHomeView");
         setContentView(R.layout.home);
         setCurrentView("launchHomeView");
         TextView battleshipLabel = (TextView) findViewById(R.id.BattleShip); // Change font
@@ -124,6 +161,7 @@ public class GameController extends FragmentActivity {
     private void chooseLevelView() {
         setContentView(R.layout.activity_level);
         setCurrentView("chooseLevelView");
+        mRetainedFragment.setCurrentView("chooseLevelView");
         Button easy = (Button) findViewById(R.id.easy);
         Button medium = (Button) findViewById(R.id.medium);
         Button hard = (Button) findViewById(R.id.hard);
@@ -165,14 +203,7 @@ public class GameController extends FragmentActivity {
     private void placeBoatsView() {
         setContentView(R.layout.activity_human_place_boats);
         setCurrentView("placeBoatsView");
-
-
-        /* Set up the toolbar and define it's title */
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
-        //getSupportActionBar().setTitle("Place Boats");
-
+        mRetainedFragment.setCurrentView("placeBoatsView");
         /* Get the image objects */
 
         ImageView aircraft = (ImageView) findViewById(R.id.aircraft);
@@ -201,7 +232,7 @@ public class GameController extends FragmentActivity {
         findViewById(R.id.humanBoardPlacer).setOnDragListener(new MyDragListener());
 
         Button next = (Button) findViewById(R.id.next);
-        Button back = (Button) findViewById(R.id.back);
+        Button back = (Button) findViewById(R.id.random);
         changeFont(next);
         changeFont(back);
         next.setVisibility(View.VISIBLE);
@@ -232,7 +263,7 @@ public class GameController extends FragmentActivity {
     private void playGameView(BoardView copyOfHumanBoard) {
         setContentView(R.layout.current_game);
         setCurrentView("playGameView");
-
+        mRetainedFragment.setCurrentView("playGameView");
         /* Define Human Board */
         gameModel.humanPlayer.boardView = (BoardView) findViewById(R.id.humanBoard);
         gameModel.humanPlayer.boardView.setBoard(gameModel.humanPlayer.gameBoard);
@@ -299,6 +330,7 @@ public class GameController extends FragmentActivity {
                     }
                     gameModel.humanPlayer.boardView.invalidate();
                 }
+                mRetainedFragment.setData(gameModel);
             }
         });
     }
