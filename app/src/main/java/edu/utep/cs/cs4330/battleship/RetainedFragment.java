@@ -4,12 +4,13 @@ import android.app.Fragment;
 import android.os.Bundle;
 
 /**
+ *
  * Created by oscarricaud on 4/8/17.
  */
 public class RetainedFragment extends Fragment {
 
     // data object we want to retain
-    private GameModel data = new GameModel();
+    private GameModel gameState = new GameModel();
     private String currentView;
 
     // this method is only called once for this fragment
@@ -20,19 +21,19 @@ public class RetainedFragment extends Fragment {
         setRetainInstance(true);
     }
 
-    public GameModel getData() {
-        return data;
+    GameModel getCurrentGameState() {
+        return gameState;
     }
 
     public void setData(GameModel data) {
-        this.data = data;
+        this.gameState = data;
     }
 
-    public String getCurrentView() {
+    String getCurrentView() {
         return currentView;
     }
 
-    public void setCurrentView(String currentView) {
+    void setCurrentView(String currentView) {
         this.currentView = currentView;
     }
 }
