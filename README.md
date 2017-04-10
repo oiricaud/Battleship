@@ -15,7 +15,7 @@ Class Diagram
 
 ![alt tag](https://github.com/oiricaud/Battleship/blob/master/Class-Diagram.png "Home") 
 
-![alt tag](Screenshots/Home.png "Home") ![alt tag](Screenshots/Playing.png "Play") 
+![alt tag](Screenshots/Home.png "Hom") ![alt tag](Screenshots/TypeOfGame.png "Pl") ![alt tag](Screenshots/Playing.png "Play")
 
 Assignment #3 
 ======
