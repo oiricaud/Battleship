@@ -13,7 +13,7 @@ Update 1.1
 Class Diagram
 =
 
-![alt tag](https://github.com/oiricaud/Battleship/blob/master/Class-Diagram.png "Home") 
+![alt tag](Screenshots/Class-Diagram.png "Home") 
 
 ![alt tag](Screenshots/Home.png "Hom") ![alt tag](Screenshots/TypeOfGame.png "Pl") ![alt tag](Screenshots/Playing.png "Play")
 
