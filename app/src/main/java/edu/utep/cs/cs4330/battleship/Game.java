@@ -3,6 +3,7 @@ package edu.utep.cs.cs4330.battleship;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ClipData;
 import android.content.Context;
@@ -31,13 +32,13 @@ import java.util.Random;
  */
 
 @SuppressWarnings("ALL")
-public class GameController extends Activity {
+public class Game extends Activity {
     private static final String TAG_RETAINED_FRAGMENT = "RetainedFragment";
     private static MediaPlayer mp;                     // For boats sound effects
     private static MediaPlayer music;                  // For music background
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
-    private GameModel gameModel = new GameModel();
+    private GameModel game = new GameModel();
 
     /* BEGIN GETTERS AND SETTERS */
     private String getFontPath() {
@@ -69,7 +70,7 @@ public class GameController extends Activity {
             mRetainedFragment = new RetainedFragment();
             fm.beginTransaction().add(mRetainedFragment, TAG_RETAINED_FRAGMENT).commit();
             // load data from a data source or perform any calculation
-            mRetainedFragment.setData(gameModel);
+            mRetainedFragment.setData(game);
         }
         launchHomeView();   // By default, this activity will always display until an event occurs.
     }
@@ -84,8 +85,8 @@ public class GameController extends Activity {
                 music = null;
             }
             music = MediaPlayer.create(this, R.raw.stratus);
-            if (gameModel.getMusicTimer() > 0) {
-                music.seekTo(gameModel.getMusicTimer());
+            if (game.getMusicTimer() > 0) {
+                music.seekTo(game.getMusicTimer());
             }
             music.setLooping(true);
             music.start();
@@ -98,9 +99,9 @@ public class GameController extends Activity {
 
     @Override
     protected void onPause() {
-        if (gameModel.isMediaPlaying(music) == true) {
+        if (game.isMediaPlaying(music) == true) {
             music.pause();
-            gameModel.setMusicTimer(music.getCurrentPosition());
+            game.setMusicTimer(music.getCurrentPosition());
         }
         super.onPause();
     }
@@ -132,7 +133,7 @@ public class GameController extends Activity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Gets the state the user was on before the screen was oriented
-        gameModel = mRetainedFragment.getCurrentGameState();
+        game = mRetainedFragment.getCurrentGameState();
 
         // Checks the orientation of the screen
         switch (newConfig.orientation) {
@@ -150,14 +151,14 @@ public class GameController extends Activity {
                         placeBoatsView();
                         break;
                     case "playGameView":
-                        playGameView(gameModel.getHumanPlayer().boardView);
+                        playGameView(game.getHumanPlayer().boardView);
                         break;
                 }
                 //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
                 break;
 
             case Configuration.ORIENTATION_PORTRAIT:
-                gameModel = mRetainedFragment.getCurrentGameState();
+                game = mRetainedFragment.getCurrentGameState();
                 //noinspection Duplicates
                 switch (mRetainedFragment.getCurrentView()) {
                     case "launchHomeView":
@@ -170,7 +171,7 @@ public class GameController extends Activity {
                         placeBoatsView();
                         break;
                     case "playGameView":
-                        playGameView(gameModel.getHumanPlayer().boardView);
+                        playGameView(game.getHumanPlayer().boardView);
                         break;
                 }
                 //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
@@ -178,10 +179,6 @@ public class GameController extends Activity {
         }
     }
 
-
-    /* END SCREEN CONFIGURATIONS LOGIC */
-
-/* BEGIN VIEWS */
     /**
      * This method launches the home.xml and waits for the user to begin a new game.
      */
@@ -211,7 +208,7 @@ public class GameController extends Activity {
                     @Override
                     public void onClick(View v) {
                         // Set up network
-                        gameModel.setTypeOfGame("1 VS 1");
+                        game.setTypeOfGame("1 VS 1");
 
                         toast("This feauture will come soon!");
                     }
@@ -219,13 +216,16 @@ public class GameController extends Activity {
                 onlineButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gameModel.setTypeOfGame("1 VS PC");
+                        game.setTypeOfGame("1 VS PC");
                         placeBoatsView();
                     }
                 });
             }
         });
     }
+    /* END SCREEN CONFIGURATIONS LOGIC */
+
+/* BEGIN VIEWS */
 
     /**
      * This method launches the activity_level.xml and waits for the user to enter a
@@ -249,21 +249,21 @@ public class GameController extends Activity {
         easy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameModel.setDifficulty("easy");
+                game.setDifficulty("easy");
                 placeBoatsView();
             }
         });
         medium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameModel.setDifficulty("medium");
+                game.setDifficulty("medium");
                 placeBoatsView();
             }
         });
         hard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameModel.setDifficulty("hard");
+                game.setDifficulty("hard");
                 placeBoatsView();
             }
         });
@@ -282,14 +282,14 @@ public class GameController extends Activity {
         ImageView destroyer = (ImageView) findViewById(R.id.destroyer);
         ImageView submarine = (ImageView) findViewById(R.id.submarine);
         ImageView patrol = (ImageView) findViewById(R.id.patrol);
-        gameModel.getHumanPlayer().boardView = (BoardView) findViewById(R.id.humanBoardView);
-        gameModel.getHumanPlayer().boardView.setBoard(gameModel.getHumanPlayer().gameBoard);
+        game.getHumanPlayer().boardView = (BoardView) findViewById(R.id.humanBoardView);
+        game.getHumanPlayer().boardView.setBoard(game.getHumanPlayer().gameBoard);
 
         // This means the user had already placed boats on the grid but decided to go back to this view and perhaps
         // change the boats.
-        if (gameModel.getHumanPlayer().gameBoard.grid != null) {
-            gameModel.getHumanPlayer().boardView.coordinatesOfHumanShips = gameModel.getHumanPlayer().gameBoard.grid;
-            gameModel.getHumanPlayer().boardView.invalidate();
+        if (game.getHumanPlayer().gameBoard.grid != null) {
+            game.getHumanPlayer().boardView.coordinatesOfHumanShips = game.getHumanPlayer().gameBoard.grid;
+            game.getHumanPlayer().boardView.invalidate();
         }
 
         /* Allow these boat images to be draggable, listen when they are touched */
@@ -310,7 +310,7 @@ public class GameController extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playGameView(gameModel.getHumanPlayer().boardView);
+                playGameView(game.getHumanPlayer().boardView);
             }
         });
         random.setOnClickListener(new View.OnClickListener() {
@@ -335,18 +335,18 @@ public class GameController extends Activity {
         setContentView(R.layout.current_game);
         mRetainedFragment.setCurrentView("playGameView");
         /* Define Human Board */
-        gameModel.getHumanPlayer().boardView = (BoardView) findViewById(R.id.humanBoard);
-        gameModel.getHumanPlayer().boardView.setBoard(gameModel.getHumanPlayer().gameBoard);
+        game.getHumanPlayer().boardView = (BoardView) findViewById(R.id.humanBoard);
+        game.getHumanPlayer().boardView.setBoard(game.getHumanPlayer().gameBoard);
 
         // Get the coordinates from the previous activity to this activity
-        gameModel.getHumanPlayer().boardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
+        game.getHumanPlayer().boardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
         /* End Human Board */
 
         /* Begin Computer Stuff Game */
         final Context activityContext = this;
 
-        gameModel.getComputerPlayer().boardView = (BoardView) findViewById(R.id.computerBoard);
-        gameModel.getComputerPlayer().boardView.setBoard(gameModel.getComputerPlayer().gameBoard);
+        game.getComputerPlayer().boardView = (BoardView) findViewById(R.id.computerBoard);
+        game.getComputerPlayer().boardView.setBoard(game.getComputerPlayer().gameBoard);
 
         // Define buttons and text views here
         TextView battleshipTitle = (TextView) findViewById(R.id.BattleShip);
@@ -365,60 +365,60 @@ public class GameController extends Activity {
         quitActivity(quitButton, activityContext);
 
         /* End Computer Stuff Game*/
-        Log.w("Computers board", Arrays.deepToString(gameModel.getComputerPlayer().gameBoard.grid));
-        Log.w("Humans board", Arrays.deepToString(gameModel.getHumanPlayer().gameBoard.grid));
-        gameModel.getComputerPlayer().boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+        Log.w("Computers board", Arrays.deepToString(game.getComputerPlayer().gameBoard.grid));
+        Log.w("Humans board", Arrays.deepToString(game.getHumanPlayer().gameBoard.grid));
+        game.getComputerPlayer().boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             /* After player taps on computers board */
             @Override
             public void onTouch(int x, int y) {
 
                 // Human shoots at Computers board
-                if (gameModel.getHumanPlayer().shootsAt(gameModel.getComputerPlayer().gameBoard, x, y)) { // Human hits a boat, paint red
+                if (game.getHumanPlayer().shootsAt(game.getComputerPlayer().gameBoard, x, y)) { // Human hits a boat, paint red
                     makeExplosionSound(activityContext);
                     toast("HIT");
-                    gameModel.getComputerPlayer().boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+                    game.getComputerPlayer().boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
                 } else { // Human misses, paint computers board white
-                    gameModel.getComputerPlayer().boardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
+                    game.getComputerPlayer().boardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
                     toast("That was close!");
                     makeMissedSound(activityContext);
-                    gameModel.getHumanPlayer().shoots(); // Increment counter for # of shots
-                    counter.setText(String.valueOf("Number of Shots: " + gameModel.getHumanPlayer().getNumberOfShots()));
+                    game.getHumanPlayer().shoots(); // Increment counter for # of shots
+                    counter.setText(String.valueOf("Number of Shots: " + game.getHumanPlayer().getNumberOfShots()));
 
                     // COMPUTER SHOOT AT HUMAN BOARD
                     int randomX = generateRandomCoordinate(); // Generate random coordinates
                     int randomY = generateRandomCoordinate(); // Generate random coordinates
 
-                    if (gameModel.getComputerPlayer().shootsAt(gameModel.getHumanPlayer().gameBoard, randomX, randomY)) {
+                    if (game.getComputerPlayer().shootsAt(game.getHumanPlayer().gameBoard, randomX, randomY)) {
                         makeExplosionSound(activityContext);
                         toast("HIT");
-                        gameModel.getHumanPlayer().boardView.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
-                        gameModel.getHumanPlayer().boardView.invalidate();
+                        game.getHumanPlayer().boardView.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
+                        game.getHumanPlayer().boardView.invalidate();
                     } else {
-                        gameModel.getHumanPlayer().boardView.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
+                        game.getHumanPlayer().boardView.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
                         toast("That was close!");
                         makeMissedSound(activityContext);
                     }
-                    gameModel.getHumanPlayer().boardView.invalidate();
+                    game.getHumanPlayer().boardView.invalidate();
                 }
-                mRetainedFragment.setData(gameModel);
+                mRetainedFragment.setData(game);
             }
         });
     }
-/* END VIEWS */
 
     private int generateRandomCoordinate() {
         Random random = new Random();
         return random.nextInt(10);
     }
-
-/* BEGIN ACTIVITIY EFFECTS */
+/* END VIEWS */
 
     /**
      * Fading Transition Effect
      */
     private void fadingTransition() {
-        GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        Game.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
+/* BEGIN ACTIVITIY EFFECTS */
 
     /**
      * Show a toast message.
@@ -435,7 +435,6 @@ public class GameController extends Activity {
             }
         }.start();
     }
-/* END ACTIVITIY EFFECTS */
 
     /**
      * Restarts the activity
@@ -448,8 +447,7 @@ public class GameController extends Activity {
         overridePendingTransition(0, 0);
         startActivity(intent);
     }
-
-/* BEGIN BUTTONS LOGIC */
+/* END ACTIVITIY EFFECTS */
 
     /**
      * Using a stack to keep track the view the user is in.
@@ -474,6 +472,8 @@ public class GameController extends Activity {
             }
         }
     }
+
+/* BEGIN BUTTONS LOGIC */
 
     /**
      * @param quitButton Where is the type of button
@@ -542,7 +542,6 @@ public class GameController extends Activity {
             }
         });
     }
-/* END BUTTONS LOGIC */
 
     /* BEGIN BATTLESHIP MUSIC */
     private void playMusic(Context context) {
@@ -566,12 +565,14 @@ public class GameController extends Activity {
         music.start();
 
     }
+/* END BUTTONS LOGIC */
 
     private void pauseMusic(Context context) {
         if (music.isPlaying()) {
             music.pause();
         }
     }
+
     /**
      * Plays at random 3 default game songs. Makes a swish noise when the player misses a shot.
      *
@@ -613,7 +614,6 @@ public class GameController extends Activity {
         mp = MediaPlayer.create(context, R.raw.sunk);
         mp.start();
     }
-/* END BATTLESHIP MUSIC */
 
     /**
      * Changes the font of the activity
@@ -624,6 +624,41 @@ public class GameController extends Activity {
     private void changeFont(TextView textView) {
         Typeface typeface = Typeface.createFromAsset(getAssets(), getFontPath());
         textView.setTypeface(typeface);
+    }
+/* END BATTLESHIP MUSIC */
+
+    /**
+     * Created by oscarricaud on 4/8/17.
+     */
+    public class RetainedFragment extends Fragment {
+
+        // data object we want to retain
+        private GameModel gameState = new GameModel();
+        private String currentView;
+
+        // this method is only called once for this fragment
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            // retain this fragment
+            setRetainInstance(true);
+        }
+
+        GameModel getCurrentGameState() {
+            return gameState;
+        }
+
+        public void setData(GameModel data) {
+            this.gameState = data;
+        }
+
+        String getCurrentView() {
+            return currentView;
+        }
+
+        void setCurrentView(String currentView) {
+            this.currentView = currentView;
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -720,15 +755,15 @@ public class GameController extends Activity {
                         /* AIRCRAFT */
                         switch (boatWeAreDragging) {
                             case "aircraft":
-                                if (gameModel.getHumanPlayer().aircraft.isPlaced()) { // Boat has already been placed
-                                    gameModel.getHumanPlayer().gameBoard.removeCoordinates(gameModel.getHumanPlayer().aircraft.map);
+                                if (game.getHumanPlayer().aircraft.isPlaced()) { // Boat has already been placed
+                                    game.getHumanPlayer().gameBoard.removeCoordinates(game.getHumanPlayer().aircraft.map);
                                     // Delete all coordinates for this ship
-                                    gameModel.getHumanPlayer().aircraft.clearCoordinates();
+                                    game.getHumanPlayer().aircraft.clearCoordinates();
                                 }
                                 // Get actual Row from the @see BoardView based on x
-                                tempX = gameModel.getHumanPlayer().boardView.locateX(convertX);
+                                tempX = game.getHumanPlayer().boardView.locateX(convertX);
                                 // Get actual Column from the @see BoardView based on y
-                                tempY = gameModel.getHumanPlayer().boardView.locateY(convertY);
+                                tempY = game.getHumanPlayer().boardView.locateY(convertY);
 
                                 for (int i = 0; i < 5; i++) {
                                     if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
@@ -736,97 +771,97 @@ public class GameController extends Activity {
                                     }
                                 }
 
-                                gameModel.getHumanPlayer().aircraft.map = boatsCoordinates;
-                                gameModel.getHumanPlayer().gameBoard.addCoordinates(gameModel.getHumanPlayer().aircraft.map);
-                                gameModel.getHumanPlayer().aircraft.setPlaced(true);
+                                game.getHumanPlayer().aircraft.map = boatsCoordinates;
+                                game.getHumanPlayer().gameBoard.addCoordinates(game.getHumanPlayer().aircraft.map);
+                                game.getHumanPlayer().aircraft.setPlaced(true);
                                 break;
 
                             case "battleship":
-                                if (gameModel.getHumanPlayer().battleship.isPlaced()) { // If boat is already placed
-                                    gameModel.getHumanPlayer().gameBoard.removeCoordinates(gameModel.getHumanPlayer().battleship.map);
+                                if (game.getHumanPlayer().battleship.isPlaced()) { // If boat is already placed
+                                    game.getHumanPlayer().gameBoard.removeCoordinates(game.getHumanPlayer().battleship.map);
                                     // Delete all coordinates for this ship
-                                    gameModel.getHumanPlayer().battleship.clearCoordinates();
+                                    game.getHumanPlayer().battleship.clearCoordinates();
                                 }
 
                                 // Get actual Row from the @see BoardView based on x
-                                tempX = gameModel.getHumanPlayer().boardView.locateX(convertX);
+                                tempX = game.getHumanPlayer().boardView.locateX(convertX);
                                 // Get actual Column from the @see BoardView based on y
-                                tempY = gameModel.getHumanPlayer().boardView.locateY(convertY);
+                                tempY = game.getHumanPlayer().boardView.locateY(convertY);
 
                                 for (int i = 0; i < 4; i++) {
                                     if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                         boatsCoordinates[tempX + i][tempY] = 2;
                                     }
                                 }
-                                gameModel.getHumanPlayer().battleship.map = boatsCoordinates;
-                                gameModel.getHumanPlayer().gameBoard.addCoordinates(gameModel.getHumanPlayer().battleship.map);
-                                gameModel.getHumanPlayer().battleship.setPlaced(true);
+                                game.getHumanPlayer().battleship.map = boatsCoordinates;
+                                game.getHumanPlayer().gameBoard.addCoordinates(game.getHumanPlayer().battleship.map);
+                                game.getHumanPlayer().battleship.setPlaced(true);
                                 break;
 
                             case "destroyer":
-                                if (gameModel.getHumanPlayer().destroyer.isPlaced()) { // If boat is already placed
-                                    gameModel.getHumanPlayer().gameBoard.removeCoordinates(gameModel.getHumanPlayer().destroyer.map);
+                                if (game.getHumanPlayer().destroyer.isPlaced()) { // If boat is already placed
+                                    game.getHumanPlayer().gameBoard.removeCoordinates(game.getHumanPlayer().destroyer.map);
                                     // Delete all coordinates for this ship
-                                    gameModel.getHumanPlayer().destroyer.clearCoordinates();
+                                    game.getHumanPlayer().destroyer.clearCoordinates();
                                 }
 
                                 // Get actual Row from the @see BoardView based on x
-                                tempX = gameModel.getHumanPlayer().boardView.locateX(convertX);
+                                tempX = game.getHumanPlayer().boardView.locateX(convertX);
                                 // Get actual Column from the @see BoardView based on y
-                                tempY = gameModel.getHumanPlayer().boardView.locateY(convertY);
+                                tempY = game.getHumanPlayer().boardView.locateY(convertY);
 
                                 for (int i = 0; i < 3; i++) {
                                     if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                         boatsCoordinates[tempX + i][tempY] = 3;
                                     }
                                 }
-                                gameModel.getHumanPlayer().destroyer.map = boatsCoordinates;
-                                gameModel.getHumanPlayer().gameBoard.addCoordinates(gameModel.getHumanPlayer().destroyer.map);
-                                gameModel.getHumanPlayer().destroyer.setPlaced(true);
+                                game.getHumanPlayer().destroyer.map = boatsCoordinates;
+                                game.getHumanPlayer().gameBoard.addCoordinates(game.getHumanPlayer().destroyer.map);
+                                game.getHumanPlayer().destroyer.setPlaced(true);
                                 break;
 
                             case "submarine":
-                                if (gameModel.getHumanPlayer().submarine.isPlaced()) { // If boat is already placed
-                                    gameModel.getHumanPlayer().gameBoard.removeCoordinates(gameModel.getHumanPlayer().submarine.map);
+                                if (game.getHumanPlayer().submarine.isPlaced()) { // If boat is already placed
+                                    game.getHumanPlayer().gameBoard.removeCoordinates(game.getHumanPlayer().submarine.map);
                                     // Hence, delete all coordinates for this ship
-                                    gameModel.getHumanPlayer().submarine.clearCoordinates();
+                                    game.getHumanPlayer().submarine.clearCoordinates();
                                 }
 
                                 // Get actual Row from the @see BoardView based on x
-                                tempX = gameModel.getHumanPlayer().boardView.locateX(convertX);
+                                tempX = game.getHumanPlayer().boardView.locateX(convertX);
                                 // Get actual Column from the @see BoardView based on y
-                                tempY = gameModel.getHumanPlayer().boardView.locateY(convertY);
+                                tempY = game.getHumanPlayer().boardView.locateY(convertY);
 
                                 for (int i = 0; i < 3; i++) {
                                     if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                         boatsCoordinates[tempX + i][tempY] = 4;
                                     }
                                 }
-                                gameModel.getHumanPlayer().submarine.map = boatsCoordinates;
-                                gameModel.getHumanPlayer().gameBoard.addCoordinates(gameModel.getHumanPlayer().submarine.map);
-                                gameModel.getHumanPlayer().submarine.setPlaced(true);
+                                game.getHumanPlayer().submarine.map = boatsCoordinates;
+                                game.getHumanPlayer().gameBoard.addCoordinates(game.getHumanPlayer().submarine.map);
+                                game.getHumanPlayer().submarine.setPlaced(true);
                                 break;
 
                             case "patrol":
-                                if (gameModel.getHumanPlayer().patrol.isPlaced()) { // If boat is already placed
-                                    gameModel.getHumanPlayer().gameBoard.removeCoordinates(gameModel.getHumanPlayer().patrol.map);
-                                    gameModel.getHumanPlayer().patrol.clearCoordinates(); // Hence, delete all coordinates for this ship
+                                if (game.getHumanPlayer().patrol.isPlaced()) { // If boat is already placed
+                                    game.getHumanPlayer().gameBoard.removeCoordinates(game.getHumanPlayer().patrol.map);
+                                    game.getHumanPlayer().patrol.clearCoordinates(); // Hence, delete all coordinates for this ship
                                     // Save the coordinates for other boats
                                 }
 
                                 // Get actual Row from the @see BoardView based on x
-                                tempX = gameModel.getHumanPlayer().boardView.locateX(convertX);
+                                tempX = game.getHumanPlayer().boardView.locateX(convertX);
                                 // Get actual Column from the @see BoardView based on y
-                                tempY = gameModel.getHumanPlayer().boardView.locateY(convertY);
+                                tempY = game.getHumanPlayer().boardView.locateY(convertY);
 
                                 for (int i = 0; i < 2; i++) {
                                     if (tempX + i >= 0 && tempX + i < 10 && tempY < 10 && tempY >= 0) {
                                         boatsCoordinates[tempX + i][tempY] = 5;
                                     }
                                 }
-                                gameModel.getHumanPlayer().patrol.map = boatsCoordinates;
-                                gameModel.getHumanPlayer().gameBoard.addCoordinates(gameModel.getHumanPlayer().patrol.map);
-                                gameModel.getHumanPlayer().patrol.setPlaced(true);
+                                game.getHumanPlayer().patrol.map = boatsCoordinates;
+                                game.getHumanPlayer().gameBoard.addCoordinates(game.getHumanPlayer().patrol.map);
+                                game.getHumanPlayer().patrol.setPlaced(true);
                                 break;
                         }
 
@@ -839,7 +874,7 @@ public class GameController extends Activity {
                         view.setVisibility(View.VISIBLE);
                         toast("Out of bounds");
                         // v.setBackgroundDrawable(error);
-                        gameModel.getHumanPlayer().boardView.invalidate();
+                        game.getHumanPlayer().boardView.invalidate();
                         getResult = true;
                     }
                     Log.w("Lost.getX()", String.valueOf(event.getX()) + "Lost.getY()" + String.valueOf(event.getY()));
@@ -852,10 +887,10 @@ public class GameController extends Activity {
                     view = (View) event.getLocalState();
                     view.setVisibility(View.VISIBLE);
                 default:
-                    gameModel.getHumanPlayer().boardView.coordinatesOfHumanShips = gameModel.getHumanPlayer().gameBoard.grid; // Prevents from drawing multiple times when the
+                    game.getHumanPlayer().boardView.coordinatesOfHumanShips = game.getHumanPlayer().gameBoard.grid; // Prevents from drawing multiple times when the
                     // user changes
 
-                    gameModel.getHumanPlayer().boardView.invalidate();
+                    game.getHumanPlayer().boardView.invalidate();
                     break;
             }
 

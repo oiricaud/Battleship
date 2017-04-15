@@ -14,7 +14,7 @@
             android:label="@string/app_name"
             android:supportsRtl="true">
 
-        <activity android:name=".GameController"
+        <activity android:name=".Game"
                   android:configChanges="orientation|keyboardHidden|screenSize"
                   android:label="@string/Battleship"
                   android:theme="@style/Theme.AppCompat.NoActionBar">
