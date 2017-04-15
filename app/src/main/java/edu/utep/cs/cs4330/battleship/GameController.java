@@ -211,7 +211,6 @@ public class GameController extends Activity {
                         // Set up network
                         game.setTypeOfGame("1 VS 1");
                         checkBluetoothConnection();
-                        toast("This feauture will come soon!");
                     }
                 });
                 onlineButton.setOnClickListener(new View.OnClickListener() {
@@ -231,8 +230,11 @@ public class GameController extends Activity {
             toast("Device does not support Blueetooth");
         } else {
             if (!mBluetoothAdapter.isEnabled()) {
+                mBluetoothAdapter.enable();// Set up HERE the bluetooth screen.
                 toast("Bluetooth is not enable");
-                // Set up HERE the bluetooth screen.
+            }
+            if (mBluetoothAdapter.isEnabled()) {
+                toast("Bluetooth is enabled");
             }
         }
     }
