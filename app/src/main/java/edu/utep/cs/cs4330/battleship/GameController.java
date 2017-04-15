@@ -230,11 +230,11 @@ public class GameController extends Activity {
             toast("Device does not support Blueetooth");
         } else {
             if (!mBluetoothAdapter.isEnabled()) {
-                mBluetoothAdapter.enable();// Set up HERE the bluetooth screen.
-                toast("Bluetooth is not enable");
+                toast("Bluetooth is not on");
+                enableBluetooth(this, mBluetoothAdapter); // Opens up a yes/no dialog to enable bluetooth connection
             }
             if (mBluetoothAdapter.isEnabled()) {
-                toast("Bluetooth is enabled");
+                toast("Bluetooth is already on");
             }
         }
     }
@@ -441,7 +441,7 @@ public class GameController extends Activity {
     private void toast(String msg) {
         final Toast toast = Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT);
         toast.show();
-        new CountDownTimer(500, 1000) {
+        new CountDownTimer(500, 2000) {
             public void onTick(long millisUntilFinished) {
                 toast.show();
             }
@@ -527,6 +527,31 @@ public class GameController extends Activity {
         });
     }
 
+    private void enableBluetooth(final Context context, final BluetoothAdapter mBluetoothAdapter) {
+        // Alert Dialogue
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Bluetooth is off. Would you like to turn on Bluetooth?");
+        builder.setCancelable(true);
+        builder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        toast("Bluetooth Enabled");
+                        mBluetoothAdapter.enable();// Set up HERE the bluetooth screen.
+                    }
+                });
+
+        builder.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        toast("Can't play multiplayer if bluetooth is not enabled");
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
     private void newActivity(Button newButton, final Context context) {
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
