@@ -48,6 +48,14 @@ class Game {
         return false;
     }
 
+    public String getTypeOfGame() {
+        return typeOfGame;
+    }
+
+    void setTypeOfGame(String typeOfGame) {
+        this.typeOfGame = typeOfGame;
+    }
+
     public String getDifficulty() {
         return difficulty;
     }
@@ -62,10 +70,6 @@ class Game {
 
     public void changeGameStatus(boolean gameStarted) {
         this.gameStatus = gameStarted;
-    }
-
-    void setTypeOfGame(String typeOfGame) {
-        this.typeOfGame = typeOfGame;
     }
 
     Player getHumanPlayer() {
