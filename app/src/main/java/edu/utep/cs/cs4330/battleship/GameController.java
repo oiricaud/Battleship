@@ -75,7 +75,6 @@ public class GameController extends Activity {
                         Log.w("ParcelUUid", String.valueOf(parcelUuid.getUuid()));
                         if (parcelUuid.getUuid().equals(ftpUID)) {
                             toast("Sending data");
-
                             isFileTransferSupported = true;
                             break;
                         }
@@ -346,6 +345,9 @@ public class GameController extends Activity {
                         if (checkBluetoothConnection()) {
                             placeBoatsView();
                         }
+                        if (mBluetoothAdapter.isEnabled() && device != null) {
+                            placeBoatsView();
+                        }
                     }
                 });
                 onlineButton.setOnClickListener(new View.OnClickListener() {
@@ -368,19 +370,14 @@ public class GameController extends Activity {
             toast("Device does not support Blueetooth");
             return false;
         } else {
-            if (!mBluetoothAdapter.isEnabled()) {
-                toast("Bluetooth is not on");
-                // OPEN DEFAULT NETWORK SETTINGS FROM PHONE DEVICE
+            if (device == null) {
+                toast("Son, you must have at least another player to play with you");
                 Intent intentOpenBluetoothSettings = new Intent();
                 intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
                 startActivity(intentOpenBluetoothSettings);
-                return true;
-            }
-            if (mBluetoothAdapter.isEnabled()) {
-                toast("Bluetooth is already on");
-                return true;
             }
         }
+
         return false;
     }
 
@@ -469,9 +466,11 @@ public class GameController extends Activity {
             public void onClick(View view) {
                 if (game.getTypeOfGame().equals("1 VS 1")) {
                     //OPEN CONNECTION TO GET DATA BOARD FROM OTHER PLAYER BOARD
-                    Log.w("device name", device.getName());
-                    ProgressDialog.show(GameController.this, "Loading", "Wait for other player to place boats...");
-                    Log.w("Get name", mBluetoothAdapter.getName());
+                    if (device.getName() != null) {
+                        Log.w("device name", device.getName());
+                        ProgressDialog.show(GameController.this, "Loading", "Wait for other player to place boats...");
+                        Log.w("Get name", mBluetoothAdapter.getName());
+                    }
                 } else {
                     playGameView(game.getHumanPlayer().boardView);
                 }
