@@ -11,6 +11,7 @@ import android.util.Log;
 class Game {
 
     private Player humanPlayer;
+    private Player humanPlayer2;
     private Player computerPlayer;
     private String difficulty;
     private boolean gameStatus;
@@ -27,9 +28,11 @@ class Game {
         }
         if (typeOfGame.equals("1 VS 1")) {
             humanPlayer = new Player("Human");
-            computerPlayer = new Player("Human");
+            humanPlayer2 = new Player("Human");
             setHumanPlayer(humanPlayer);
-            setComputerPlayer(computerPlayer);
+            setHumanPlayer2(humanPlayer2);
+            getHumanPlayer().setAddress("empty");
+            getHumanPlayer2().setAddress("empty");
             gameStatus = true;
         }
     }
@@ -91,5 +94,13 @@ class Game {
 
     void setMusicTimer(int musicTimer) {
         this.musicTimer = musicTimer;
+    }
+
+    Player getHumanPlayer2() {
+        return humanPlayer2;
+    }
+
+    private void setHumanPlayer2(Player humanPlayer2) {
+        this.humanPlayer2 = humanPlayer2;
     }
 }

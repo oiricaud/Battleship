@@ -6,17 +6,14 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
-import android.content.ClipData;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.*;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.os.*;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -24,8 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by oscarricaud on 3/12/17.
@@ -37,9 +38,50 @@ public class GameController extends Activity {
     private static final String TAG_RETAINED_FRAGMENT = "RetainedFragment";
     private static MediaPlayer mp;                     // For boats sound effects
     private static MediaPlayer music;                  // For music background
+    //The BroadcastReceiver that listens for bluetooth broadcasts
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                toast("Device found");
+            } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+                toast("Device is now connected");
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                toast("Done searching");
+            } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
+                toast("Device is about to disconnect");
+            } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+                toast("Device has been disconnected");
+            }
+        }
+    };
+    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            byte[] writeBuf = (byte[]) msg.obj;
+            int begin = (int) msg.arg1;
+            int end = (int) msg.arg2;
+
+            switch (msg.what) {
+                case 1:
+                    String writeMessage = new String(writeBuf);
+                    writeMessage = writeMessage.substring(begin, end);
+                    break;
+            }
+        }
+    };
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
     private Game game = new Game();
+    private BluetoothDevice mDevice;
+    private ConnectedThread mConnectedThread;
+    private BluetoothSocket mmSocket;
+
+    /* END GETTERS AND SETTERS */
 
     /* BEGIN GETTERS AND SETTERS */
     private String getFontPath() {
@@ -50,8 +92,6 @@ public class GameController extends Activity {
         this.fontPath = fontPath;
     }
 
-    /* END GETTERS AND SETTERS */
-
     /**
      * @param savedInstanceState The creation of this mobile application. It calls a method that displays the
      *                           an aesthetic background image with the title of Battleship in 8-bit style.
@@ -60,6 +100,11 @@ public class GameController extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFontPath("fonts/brandonlight.TTF");
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        this.registerReceiver(mReceiver, filter);
 
         // find the retained fragment on activity restarts
         FragmentManager fm = getFragmentManager();
@@ -74,6 +119,19 @@ public class GameController extends Activity {
             mRetainedFragment.setData(game);
         }
         launchHomeView();   // By default, this activity will always display until an event occurs.
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                mDevice = device;
+            }
+            super.onActivityResult(requestCode, resultCode, data);
+            mConnectedThread = new ConnectedThread(mmSocket);
+            mConnectedThread.start();
+        }
     }
 
     @Override
@@ -97,7 +155,6 @@ public class GameController extends Activity {
         super.onStart();
     }
 
-
     @Override
     protected void onPause() {
         if (game.isMediaPlaying(music) == true) {
@@ -114,6 +171,8 @@ public class GameController extends Activity {
         super.onResume();
     }
 
+    /* BEGIN SCREEN CONFIGURATIONS LOGIC */
+
     @Override
     public void onDestroy() {
         if (music != null) {
@@ -124,7 +183,6 @@ public class GameController extends Activity {
         super.onDestroy();
     }
 
-    /* BEGIN SCREEN CONFIGURATIONS LOGIC */
     /**
      * @param newConfig When the user rotates their phone either from portrait to landscape or landscape to portrait,
      *                  often times activities are destroyed. This method stores the current view the user was currently
@@ -223,14 +281,18 @@ public class GameController extends Activity {
             }
         });
     }
+    /* END SCREEN CONFIGURATIONS LOGIC */
+
+/* BEGIN VIEWS */
 
     private void checkBluetoothConnection() {
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
         if (mBluetoothAdapter == null) {
             toast("Device does not support Blueetooth");
         } else {
             if (!mBluetoothAdapter.isEnabled()) {
                 toast("Bluetooth is not on");
+                // OPEN DEFAULT NETWORK SETTINGS FROM PHONE DEVICE
                 Intent intentOpenBluetoothSettings = new Intent();
                 intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
                 startActivity(intentOpenBluetoothSettings);
@@ -240,9 +302,6 @@ public class GameController extends Activity {
             }
         }
     }
-    /* END SCREEN CONFIGURATIONS LOGIC */
-
-/* BEGIN VIEWS */
 
     /**
      * This method launches the activity_level.xml and waits for the user to enter a
@@ -421,12 +480,14 @@ public class GameController extends Activity {
             }
         });
     }
+/* END VIEWS */
 
     private int generateRandomCoordinate() {
         Random random = new Random();
         return random.nextInt(10);
     }
-/* END VIEWS */
+
+/* BEGIN ACTIVITIY EFFECTS */
 
     /**
      * Fading Transition Effect
@@ -434,8 +495,6 @@ public class GameController extends Activity {
     private void fadingTransition() {
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-
-/* BEGIN ACTIVITIY EFFECTS */
 
     /**
      * Show a toast message.
@@ -452,6 +511,7 @@ public class GameController extends Activity {
             }
         }.start();
     }
+/* END ACTIVITIY EFFECTS */
 
     /**
      * Restarts the activity
@@ -464,7 +524,8 @@ public class GameController extends Activity {
         overridePendingTransition(0, 0);
         startActivity(intent);
     }
-/* END ACTIVITIY EFFECTS */
+
+/* BEGIN BUTTONS LOGIC */
 
     /**
      * Using a stack to keep track the view the user is in.
@@ -489,8 +550,6 @@ public class GameController extends Activity {
             }
         }
     }
-
-/* BEGIN BUTTONS LOGIC */
 
     /**
      * @param quitButton Where is the type of button
@@ -529,7 +588,6 @@ public class GameController extends Activity {
         });
     }
 
-
     private void newActivity(Button newButton, final Context context) {
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -560,6 +618,7 @@ public class GameController extends Activity {
             }
         });
     }
+/* END BUTTONS LOGIC */
 
     /* BEGIN BATTLESHIP MUSIC */
     private void playMusic(Context context) {
@@ -583,7 +642,6 @@ public class GameController extends Activity {
         music.start();
 
     }
-/* END BUTTONS LOGIC */
 
     private void pauseMusic(Context context) {
         if (music.isPlaying()) {
@@ -632,6 +690,7 @@ public class GameController extends Activity {
         mp = MediaPlayer.create(context, R.raw.sunk);
         mp.start();
     }
+/* END BATTLESHIP MUSIC */
 
     /**
      * Changes the font of the activity
@@ -643,7 +702,6 @@ public class GameController extends Activity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), getFontPath());
         textView.setTypeface(typeface);
     }
-/* END BATTLESHIP MUSIC */
 
     /**
      * Created by oscarricaud on 4/8/17.
@@ -935,6 +993,62 @@ public class GameController extends Activity {
             }
         }
 
+    }
+
+    private class ConnectedThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final InputStream mmInStream;
+        private final OutputStream mmOutStream;
+
+        public ConnectedThread(BluetoothSocket socket) {
+            mmSocket = socket;
+            InputStream tmpIn = null;
+            OutputStream tmpOut = null;
+            try {
+                tmpIn = socket.getInputStream();
+                tmpOut = socket.getOutputStream();
+            } catch (IOException e) {
+            }
+            mmInStream = tmpIn;
+            mmOutStream = tmpOut;
+        }
+
+        public void run() {
+            byte[] buffer = new byte[1024];
+            int begin = 0;
+            int bytes = 0;
+            while (true) {
+                try {
+                    bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
+                    for (int i = begin; i < bytes; i++) {
+                        if (buffer[i] == "#".getBytes()[0]) {
+                            mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
+                            begin = i + 1;
+                            if (i == bytes - 1) {
+                                bytes = 0;
+                                begin = 0;
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    break;
+                }
+            }
+        }
+
+        public void write(byte[] bytes) {
+            try {
+                mmOutStream.write(bytes);
+            } catch (IOException e) {
+            }
+        }
+
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) {
+            }
+        }
     }
 }
 

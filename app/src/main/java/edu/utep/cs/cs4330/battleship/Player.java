@@ -18,7 +18,7 @@ class Player {
     private int numberOfShipsFloating;
     private String typeOfPlayer;
     private int numberOfShots;
-
+    private String address;
     /**
      * @param player
      * @param board
@@ -122,5 +122,13 @@ class Player {
 
     public void setNumberOfShipsFloating(int numberOfShipsFloating) {
         this.numberOfShipsFloating = numberOfShipsFloating;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
