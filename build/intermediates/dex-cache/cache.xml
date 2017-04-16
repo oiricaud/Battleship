@@ -2,121 +2,22 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/design/25.3.1/jars/classes.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="/Users/ralva2/Documents/Classes/MoblieApp/Battleship2/Battleship/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="38789e20ace9ab7dbd00554bd2673ab424478d3b">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-design-25.3.1_f1ac32c6c7b5d6caf52ecd601c195584ea05197c.jar" />
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/Users/ralva2/Documents/Classes/MoblieApp/Battleship2/Battleship/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_5773752777ad632e5548e99d9af2ff9c7445113f/classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/oscarricaud/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="/Users/ralva2/Documents/Classes/MoblieApp/Battleship2/Battleship/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/support-annotations-25.3.1_215e3dd2fe4238fc10feb01844fb3151baf50f21.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-25.3.1_6aaa0dab6967c1b5f3cef50e70a3011e20cae6fd.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-25.3.1_3dc5ba042f10b1b45a5d7138f08b2656ec452eb7.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-support-fragment-25.3.1_6caa9495099439475cc205dd31b10ced5e0e96a0.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-utils-25.3.1_7d27cbce481a8d8000c515a8f226569a420646f1.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-25.3.1_4ef4645da0b2e0180a827d1213dbdf6959e9f804.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-ui-25.3.1_17e071965d0e94e90c1ca4c01199741d9e78016d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/transition/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-transition-25.3.1_780976923b3e8c749ce1bc20a7574bfecb820ca0.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-25.3.1_1c6244b66220e097aba7133d8321b073c0dac04d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-support-media-compat-25.3.1_bce420cfc386a27a506be78ff6ea4a21b5c74737.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-support-compat-25.3.1_82904f044d47417765699ab82c6b81e360be05ed.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="95519720620b553f63afc789beba9ad582807f7c">
-        <dex dex="/Volumes/plug/mobile_apps/Battleship/Battleship/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-25.3.1_63d02fbb1bf8a377c6d5c275143fa75145b194dc.jar" />
+        sha1="ed1c189e166083624b3490853f8b2f20fd35c61f">
+        <dex dex="/Users/ralva2/Documents/Classes/MoblieApp/Battleship2/Battleship/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e001c33e93e523b1ecb77449c14a283bb1c0230d/classes.dex" />
     </item>
 
 </items>

@@ -262,13 +262,14 @@ public class GameController extends Activity {
                 onlineButton.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.INVISIBLE);
 
-
                 oneVersusOneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Set up network
                         game.setTypeOfGame("1 VS 1");
-                        checkBluetoothConnection();
+                        if(checkBluetoothConnection() ){
+
+                        }
                     }
                 });
                 onlineButton.setOnClickListener(new View.OnClickListener() {
@@ -285,10 +286,11 @@ public class GameController extends Activity {
 
 /* BEGIN VIEWS */
 
-    private void checkBluetoothConnection() {
+    private boolean checkBluetoothConnection() {
 
         if (mBluetoothAdapter == null) {
             toast("Device does not support Blueetooth");
+            return false;
         } else {
             if (!mBluetoothAdapter.isEnabled()) {
                 toast("Bluetooth is not on");
@@ -296,11 +298,14 @@ public class GameController extends Activity {
                 Intent intentOpenBluetoothSettings = new Intent();
                 intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
                 startActivity(intentOpenBluetoothSettings);
+                return true;
             }
             if (mBluetoothAdapter.isEnabled()) {
                 toast("Bluetooth is already on");
+                return true;
             }
         }
+        return false;
     }
 
     /**
