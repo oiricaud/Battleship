@@ -22,11 +22,9 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by oscarricaud on 3/12/17.
@@ -38,6 +36,7 @@ public class GameController extends Activity {
     private static final String TAG_RETAINED_FRAGMENT = "RetainedFragment";
     private static MediaPlayer mp;                     // For boats sound effects
     private static MediaPlayer music;                  // For music background
+    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     //The BroadcastReceiver that listens for bluetooth broadcasts
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -49,6 +48,12 @@ public class GameController extends Activity {
                 toast("Device found");
             } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
                 toast("Device is now connected");
+                device.setPairingConfirmation(true);
+                Log.w("Get uuids", String.valueOf(device.getUuids()));
+                Log.w("Get bond state", String.valueOf(device.getBondState()));
+                Log.w("Get name", device.getName());
+                ConnectThread mConnectedThread = new ConnectThread(device);
+                mConnectedThread.start();
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 toast("Done searching");
             } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
@@ -57,8 +62,44 @@ public class GameController extends Activity {
                 toast("Device has been disconnected");
             }
         }
+
+        class ConnectThread extends Thread {
+            private final BluetoothSocket mmSocket;
+            private final BluetoothDevice mmDevice;
+            private final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+
+            public ConnectThread(BluetoothDevice device) {
+                BluetoothSocket tmp = null;
+                mmDevice = device;
+                try {
+                    tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+                    Log.w("UUID", String.valueOf(tmp));
+                } catch (IOException e) {
+                }
+                mmSocket = tmp;
+            }
+
+            public void run() {
+                mBluetoothAdapter.cancelDiscovery();
+                try {
+                    mmSocket.connect();
+                } catch (IOException connectException) {
+                    try {
+                        mmSocket.close();
+                    } catch (IOException closeException) {
+                    }
+                    return;
+                }
+            }
+
+            public void cancel() {
+                try {
+                    mmSocket.close();
+                } catch (IOException e) {
+                }
+            }
+        }
     };
-    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -68,18 +109,18 @@ public class GameController extends Activity {
 
             switch (msg.what) {
                 case 1:
-                    String writeMessage = new String(writeBuf);
+                    String writeMessage = "bonjour";
                     writeMessage = writeMessage.substring(begin, end);
                     break;
             }
         }
     };
+    private BluetoothDevice mDevice;
+    private BluetoothSocket mmSocket;
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
     private Game game = new Game();
-    private BluetoothDevice mDevice;
-    private ConnectedThread mConnectedThread;
-    private BluetoothSocket mmSocket;
+
 
     /* END GETTERS AND SETTERS */
 
@@ -121,19 +162,22 @@ public class GameController extends Activity {
         launchHomeView();   // By default, this activity will always display until an event occurs.
     }
 
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
                 mDevice = device;
+                Log.w("mDevice", mDevice.ACTION_ACL_CONNECTED);
             }
-            super.onActivityResult(requestCode, resultCode, data);
+
             mConnectedThread = new ConnectedThread(mmSocket);
             mConnectedThread.start();
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
-
+*/
     @Override
     public void onStart() {
 
@@ -995,60 +1039,6 @@ public class GameController extends Activity {
 
     }
 
-    private class ConnectedThread extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final InputStream mmInStream;
-        private final OutputStream mmOutStream;
 
-        public ConnectedThread(BluetoothSocket socket) {
-            mmSocket = socket;
-            InputStream tmpIn = null;
-            OutputStream tmpOut = null;
-            try {
-                tmpIn = socket.getInputStream();
-                tmpOut = socket.getOutputStream();
-            } catch (IOException e) {
-            }
-            mmInStream = tmpIn;
-            mmOutStream = tmpOut;
-        }
-
-        public void run() {
-            byte[] buffer = new byte[1024];
-            int begin = 0;
-            int bytes = 0;
-            while (true) {
-                try {
-                    bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
-                    for (int i = begin; i < bytes; i++) {
-                        if (buffer[i] == "#".getBytes()[0]) {
-                            mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
-                            begin = i + 1;
-                            if (i == bytes - 1) {
-                                bytes = 0;
-                                begin = 0;
-                            }
-                        }
-                    }
-                } catch (IOException e) {
-                    break;
-                }
-            }
-        }
-
-        public void write(byte[] bytes) {
-            try {
-                mmOutStream.write(bytes);
-            } catch (IOException e) {
-            }
-        }
-
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-            }
-        }
-    }
 }
 
