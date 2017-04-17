@@ -3,6 +3,8 @@ package edu.utep.cs.cs4330.battleship;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import java.util.Arrays;
+
 /**
  *
  * Created by oscarricaud on 3/19/17.
@@ -10,9 +12,8 @@ import android.util.Log;
 
 class Game {
 
-    private Player humanPlayer;
-    private Player humanPlayer2;
-    private Player computerPlayer;
+    private Board player1Board;
+    private Board player2Board;
     private String difficulty;
     private boolean gameStatus;
     private String typeOfGame = "1 VS PC"; // 1 VS 1 OR 1 VS PC
@@ -20,17 +21,14 @@ class Game {
 
     Game() {
         if (typeOfGame.equals("1 VS PC")) {
-            humanPlayer = new Player("Human");
-            computerPlayer = new Player("Computer");
-            setHumanPlayer(humanPlayer);
-            setComputerPlayer(computerPlayer);
+            Board humanBoard = new Board(10, "Human");
+            Board computerBoard = new Board(10, "Computer");
+            setPlayer1Board(humanBoard);
+            setPlayer2Board(computerBoard);
+
             gameStatus = true;
         }
         if (typeOfGame.equals("1 VS 1")) {
-            humanPlayer = new Player("Human");
-            humanPlayer2 = new Player("Human");
-            setHumanPlayer(humanPlayer);
-            setHumanPlayer2(humanPlayer2);
             gameStatus = true;
         }
     }
@@ -46,7 +44,50 @@ class Game {
         return false;
     }
 
+    /**
+     * @return true if it finds a boat at given coordinates
+     * false if it does not find a boat at given coordinates
+     */
+    boolean shootsAt(Board opponentsBoard, int x, int y) {
+        Log.w("Opponents board", Arrays.deepToString(opponentsBoard.grid));
+        Log.w("X", String.valueOf(x));
+        Log.w("Y", String.valueOf(y));
+        if (opponentsBoard.grid[x][y] >= 1) {
+            int boatID = opponentsBoard.grid[x][y];
+            if (boatID == 1) { // Shot aircraft
+                opponentsBoard.aircraft.hit();
+                opponentsBoard.addCoordinates(opponentsBoard.aircraft.map);
+                opponentsBoard.aircraft.addCoordinates(x, y);
+                return true;
+            }
+            if (boatID == 2) { // Shot battleship
+                opponentsBoard.battleship.hit();
+                opponentsBoard.addCoordinates(opponentsBoard.battleship.map);
+                opponentsBoard.battleship.addCoordinates(x, y);
+                return true;
+            }
+            if (boatID == 3) { // Shot destroyer
+                opponentsBoard.destroyer.hit();
+                opponentsBoard.addCoordinates(opponentsBoard.destroyer.map);
+                opponentsBoard.destroyer.addCoordinates(x, y);
+                return true;
+            }
+            if (boatID == 4) { // Shot submarine
+                opponentsBoard.submarine.hit();
+                opponentsBoard.addCoordinates(opponentsBoard.submarine.map);
+                opponentsBoard.submarine.addCoordinates(x, y);
+                return true;
+            }
+            if (boatID == 5) { // Shot patrol
+                opponentsBoard.patrol.hit();
+                opponentsBoard.addCoordinates(opponentsBoard.patrol.map);
+                opponentsBoard.patrol.addCoordinates(x, y);
+                return true;
+            }
 
+        }
+        return false;
+    }
     public String getTypeOfGame() {
         return typeOfGame;
     }
@@ -71,22 +112,6 @@ class Game {
         this.gameStatus = gameStarted;
     }
 
-    Player getHumanPlayer() {
-        return humanPlayer;
-    }
-
-    private void setHumanPlayer(Player humanPlayer) {
-        this.humanPlayer = humanPlayer;
-    }
-
-    Player getComputerPlayer() {
-        return computerPlayer;
-    }
-
-    private void setComputerPlayer(Player computerPlayer) {
-        this.computerPlayer = computerPlayer;
-    }
-
     boolean hasThisBoatBeenPlaced(Ship boat) {
         return boat.isPlaced();
     }
@@ -99,11 +124,19 @@ class Game {
         this.musicTimer = musicTimer;
     }
 
-    Player getHumanPlayer2() {
-        return humanPlayer2;
+    public Board getPlayer1Board() {
+        return player1Board;
     }
 
-    private void setHumanPlayer2(Player humanPlayer2) {
-        this.humanPlayer2 = humanPlayer2;
+    public void setPlayer1Board(Board player1Board) {
+        this.player1Board = player1Board;
+    }
+
+    public Board getPlayer2Board() {
+        return player2Board;
+    }
+
+    public void setPlayer2Board(Board player2Board) {
+        this.player2Board = player2Board;
     }
 }

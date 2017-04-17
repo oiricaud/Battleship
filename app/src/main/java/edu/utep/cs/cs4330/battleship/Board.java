@@ -17,12 +17,49 @@ class Board {
     int[][] grid = new int[10][10];
     private int x;
     private int y;
+    private int numberOfShipsFloating;
+    private String typeOfPlayer;
+    private int numberOfShots;
+    private String address;
+    BoardView boardView;
+    Ship aircraft = new Ship(5, "aircraft");
+    Ship battleship = new Ship(4, "battleship");
+    Ship destroyer = new Ship(3, "destroyer");
+    Ship submarine = new Ship(3, "submarine");
+    Ship patrol = new Ship(2, "patrol");
 
     /**
      * Create a new board of the given size.
      */
-    Board(int size) {
+    Board(int size, String player) {
         this.size = size;
+        if (player.equals("Human")) {
+            setTypeOfPlayer("Human");
+
+        }
+        if (player.equals("Computer")) {
+            setTypeOfPlayer("Computer");
+            // Add random coordinates for a specific boat to the players board grid
+            addRandomCoordinatesForComputer();
+        }
+        defaultSettingsForBoats();
+    }
+
+    private void defaultSettingsForBoats() {
+        aircraft.setPlaced(false);
+        battleship.setPlaced(false);
+        destroyer.setPlaced(false);
+        submarine.setPlaced(false);
+        patrol.setPlaced(false);
+        setNumberOfShipsFloating(5);
+    }
+    
+    private void addRandomCoordinatesForComputer() {
+        addCoordinates(aircraft.map);
+        addCoordinates(battleship.map);
+        addCoordinates(destroyer.map);
+        addCoordinates(submarine.map);
+        addCoordinates(patrol.map);
     }
 
     /**
@@ -93,4 +130,41 @@ class Board {
         return size;
     }
 
+    String getTypeOfPlayer() {
+        return typeOfPlayer;
+    }
+
+    private void setTypeOfPlayer(String typeOfPlayer) {
+        this.typeOfPlayer = typeOfPlayer;
+    }
+
+    /**
+     * @return the number of shots the user has shot at boats
+     */
+    public int getNumberOfShots() {
+        return numberOfShots;
+    }
+
+    /**
+     * @param countShots set the count of shots each time the user fires.
+     */
+    void shoots() {
+        this.numberOfShots = 1 + numberOfShots;
+    }
+
+    public int getNumberOfShipsFloating() {
+        return numberOfShipsFloating;
+    }
+
+    public void setNumberOfShipsFloating(int numberOfShipsFloating) {
+        this.numberOfShipsFloating = numberOfShipsFloating;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
