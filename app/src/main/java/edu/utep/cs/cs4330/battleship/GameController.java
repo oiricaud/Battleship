@@ -137,6 +137,7 @@ public class GameController extends Activity {
     }
 
 /* BEGING BLUETOOTH STUFF */
+
 private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -188,7 +189,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         }
     }
 };
-        
+
     /**
      * @return if the device has bluetooth setting on.
      */
@@ -222,6 +223,8 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
     private int[][] receiveDataOverBluetooth() {
         int[][] opponentsBoatCoordinates = new int[10][10];
         // Do bluetooth stuff here
+
+        playGameView();
         return opponentsBoatCoordinates;
         /*
         private void init() throws IOException {
@@ -466,8 +469,9 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                         //OPEN CONNECTION TO GET DATA BOARD FROM OTHER PLAYER BOARD
                         if (device.getName() != null) {
                             Log.w("device name", device.getName());
-                            ProgressDialog.show(GameController.this, "Loading", "Wait for other player to place boats...");
                             Log.w("Get name", mBluetoothAdapter.getName());
+                            ProgressDialog.show(GameController.this, "Loading", "Wait for other player to finish " +
+                                    "place thier boats...");
                             receiveDataOverBluetooth();
                         }
                         break;
@@ -486,6 +490,85 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         });
     }
 
+    /**
+     * This method only gets called for 1 VS 1 and is constantly talking to the bluetooth methods when receiving, and
+     * sending data.
+     */
+    private void playGameView() {
+        setContentView(R.layout.current_game);
+        mRetainedFragment.setCurrentView("playGameView");
+        /* Define Human Board */
+        game.getHumanPlayer().boardView = (BoardView) findViewById(R.id.humanBoard);
+        game.getHumanPlayer().boardView.setBoard(game.getHumanPlayer().gameBoard);
+        TextView nameOfOpponentsPlayer = (TextView) findViewById(R.id.opponentsName);
+        nameOfOpponentsPlayer.setText(device.getName());
+        
+        // Get the coordinates from the previous activity to this activity
+        //game.getHumanPlayer().boardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
+        /* End Human Board */
+
+        /* Begin Computer Stuff GameController */
+        final Context activityContext = this;
+
+        game.getComputerPlayer().boardView = (BoardView) findViewById(R.id.computerBoard);
+        game.getComputerPlayer().boardView.setBoard(game.getComputerPlayer().gameBoard);
+
+        // Define buttons and text views here
+        TextView battleshipTitle = (TextView) findViewById(R.id.BattleShip);
+        final TextView counter = (TextView) findViewById(R.id.countOfHits);
+        Button newButton = (Button) findViewById(R.id.newButton);
+        Button quitButton = (Button) findViewById(R.id.quitButton);
+
+        // Change font
+        changeFont(newButton);
+        changeFont(quitButton);
+        changeFont(battleshipTitle);
+        changeFont(counter);
+
+        // The predefined methods that allow the user to quit or start a new game
+        newActivity(newButton, activityContext);
+        quitActivity(quitButton, activityContext);
+
+        /* End Computer Stuff GameController*/
+        Log.w("Computers board", Arrays.deepToString(game.getComputerPlayer().gameBoard.grid));
+        Log.w("Humans board", Arrays.deepToString(game.getHumanPlayer().gameBoard.grid));
+        game.getComputerPlayer().boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+            /* After player taps on computers board */
+            @Override
+            public void onTouch(int x, int y) {
+
+                // Human shoots at Computers board
+                if (game.getHumanPlayer().shootsAt(game.getComputerPlayer().gameBoard, x, y)) { // Human hits a boat, paint red
+                    makeExplosionSound(activityContext);
+                    toast("HIT");
+                    game.getComputerPlayer().boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+                } else { // Human misses, paint computers board white
+                    game.getComputerPlayer().boardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
+                    toast("That was close!");
+                    makeMissedSound(activityContext);
+                    game.getHumanPlayer().shoots(); // Increment counter for # of shots
+                    counter.setText(String.valueOf("Number of Shots: " + game.getHumanPlayer().getNumberOfShots()));
+
+                    // COMPUTER SHOOT AT HUMAN BOARD
+                    int randomX = generateRandomCoordinate(); // Generate random coordinates
+                    int randomY = generateRandomCoordinate(); // Generate random coordinates
+
+                    if (game.getComputerPlayer().shootsAt(game.getHumanPlayer().gameBoard, randomX, randomY)) {
+                        makeExplosionSound(activityContext);
+                        toast("HIT");
+                        game.getHumanPlayer().boardView.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
+                        game.getHumanPlayer().boardView.invalidate();
+                    } else {
+                        game.getHumanPlayer().boardView.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
+                        toast("That was close!");
+                        makeMissedSound(activityContext);
+                    }
+                    game.getHumanPlayer().boardView.invalidate();
+                }
+                mRetainedFragment.setData(game);
+            }
+        });
+    }
     /**
      * At random, ships are placed either horizontally or vertically on a 10x10 board.
      * The user is able to interact with this board and creates (x,y) coordinates.
@@ -590,7 +673,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
     private void longToast(String msg) {
         final Toast toast = Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT);
         toast.show();
-        new CountDownTimer(500, 10000) {
+        new CountDownTimer(5000, 10000) {
             public void onTick(long millisUntilFinished) {
                 toast.show();
             }
