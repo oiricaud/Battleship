@@ -54,10 +54,10 @@ public class GameController extends Activity {
             device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                toast("Device found");
+                longToast("Device found");
 
             } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-                toast("Device is now connected");
+                longToast("Device is now connected");
                 device.setPairingConfirmation(true);
                 Log.w("Get uuids", String.valueOf(device.getUuids()));
                 Log.w("Get bond state", String.valueOf(device.getBondState()));
@@ -74,7 +74,7 @@ public class GameController extends Activity {
                     for (ParcelUuid parcelUuid : uuids) {
                         Log.w("ParcelUUid", String.valueOf(parcelUuid.getUuid()));
                         if (parcelUuid.getUuid().equals(ftpUID)) {
-                            toast("Sending data");
+                            longToast("Sending data");
                             isFileTransferSupported = true;
                             break;
                         }
@@ -89,60 +89,14 @@ public class GameController extends Activity {
                     return;
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                toast("Done searching");
+                longToast("Done searching");
 
             } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
-                toast("Device is about to disconnect");
+                longToast("Device is about to disconnect");
             } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                toast("Device has been disconnected");
+                longToast("Device has been disconnected");
             }
         }
-        /*
-        private void init() throws IOException {
-
-            BluetoothAdapter blueAdapter = BluetoothAdapter.getDefaultAdapter();
-            if (blueAdapter != null) {
-                if (blueAdapter.isEnabled()) {
-                    Set<BluetoothDevice> bondedDevices = blueAdapter.getBondedDevices();
-
-                    if (bondedDevices.size() > 0) {
-                        Object[] devices = (Object[]) bondedDevices.toArray();
-                        BluetoothDevice device = (BluetoothDevice) devices[0];
-                        ParcelUuid[] uuids = device.getUuids();
-                        BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuids[0].getUuid());
-                        socket.connect();
-                        outputStream = socket.getOutputStream();
-                        inStream = socket.getInputStream();
-                    }
-
-                    Log.e("error", "No appropriate paired devices.");
-                } else {
-                    Log.e("error", "Bluetooth is disabled.");
-                }
-            }
-        }
-
-        public void write(String s) throws IOException {
-            outputStream.write(s.getBytes());
-        }
-
-
-        public void run() {
-            final int BUFFER_SIZE = 1024;
-            byte[] buffer = new byte[BUFFER_SIZE];
-            int bytes = 0;
-            int b = BUFFER_SIZE;
-
-            while (true) {
-                try {
-                    bytes = inStream.read(buffer, bytes, BUFFER_SIZE - bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
-    */
     };
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
@@ -235,22 +189,11 @@ public class GameController extends Activity {
         super.onDestroy();
     }
 
-    /*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                mDevice = device;
-                Log.w("mDevice", mDevice.ACTION_ACL_CONNECTED);
-            }
+/* BEGING BLUETOOTH STUFF */
 
-            mConnectedThread = new ConnectedThread(mmSocket);
-            mConnectedThread.start();
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-*/
+    /**
+     * @return if the device has bluetooth setting on.
+     */
     private boolean checkBluetoothConnection() {
 
         if (mBluetoothAdapter == null) {
@@ -266,6 +209,67 @@ public class GameController extends Activity {
         }
 
         return false;
+    }
+
+    /**
+     * @param playerBoatCoordinates is the current coordinates of the player sending data over
+     * @return true if there is a success sending data to other device
+     * false if there is a failure of sending data to other device
+     */
+    private boolean sendDataOverBluetooth(int[][] playerBoatCoordinates) {
+        return true;
+    }
+
+    private int[][] receiveDataOverBluetooth() {
+        int[][] opponentsBoatCoordinates = new int[10][10];
+        // Do bluetooth stuff here
+        return opponentsBoatCoordinates;
+        /*
+        private void init() throws IOException {
+
+            BluetoothAdapter blueAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (blueAdapter != null) {
+                if (blueAdapter.isEnabled()) {
+                    Set<BluetoothDevice> bondedDevices = blueAdapter.getBondedDevices();
+
+                    if (bondedDevices.size() > 0) {
+                        Object[] devices = (Object[]) bondedDevices.toArray();
+                        BluetoothDevice device = (BluetoothDevice) devices[0];
+                        ParcelUuid[] uuids = device.getUuids();
+                        BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuids[0].getUuid());
+                        socket.connect();
+                        outputStream = socket.getOutputStream();
+                        inStream = socket.getInputStream();
+                    }
+
+                    Log.e("error", "No appropriate paired devices.");
+                } else {
+                    Log.e("error", "Bluetooth is disabled.");
+                }
+            }
+        }
+
+        public void write(String s) throws IOException {
+            outputStream.write(s.getBytes());
+        }
+
+
+        public void run() {
+            final int BUFFER_SIZE = 1024;
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int bytes = 0;
+            int b = BUFFER_SIZE;
+
+            while (true) {
+                try {
+                    bytes = inStream.read(buffer, bytes, BUFFER_SIZE - bytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+    */
     }
 /* END BLUETOOTH STUFF */
 
@@ -450,30 +454,35 @@ public class GameController extends Activity {
         /* Define the particular location where these boat images are allowed to be dragged onto */
         findViewById(R.id.humanBoardPlacer).setOnDragListener(new MyDragListener());
 
-        Button next = (Button) findViewById(R.id.next);
-        Button random = (Button) findViewById(R.id.random);
+        Button next = (Button) findViewById(R.id.next); // Advance to the next view
+        Button random = (Button) findViewById(R.id.random); // Place boats at random
         changeFont(next);
         changeFont(random);
         next.setVisibility(View.VISIBLE);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (game.getTypeOfGame().equals("1 VS 1")) {
-                    //OPEN CONNECTION TO GET DATA BOARD FROM OTHER PLAYER BOARD
-                    if (device.getName() != null) {
-                        Log.w("device name", device.getName());
-                        ProgressDialog.show(GameController.this, "Loading", "Wait for other player to place boats...");
-                        Log.w("Get name", mBluetoothAdapter.getName());
-                    }
-                } else {
-                    playGameView(game.getHumanPlayer().boardView);
+                switch (game.getTypeOfGame()) {
+                    case "1 VS 1":
+                        //OPEN CONNECTION TO GET DATA BOARD FROM OTHER PLAYER BOARD
+                        if (device.getName() != null) {
+                            Log.w("device name", device.getName());
+                            ProgressDialog.show(GameController.this, "Loading", "Wait for other player to place boats...");
+                            Log.w("Get name", mBluetoothAdapter.getName());
+                            receiveDataOverBluetooth();
+                        }
+                        break;
+
+                    case "1 VS PC":
+                        playGameView(game.getHumanPlayer().boardView);
+                        break;
                 }
             }
         });
         random.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //chooseLevelView();
+                // Obtain a grid of boat coordinates at random and place them here
             }
         });
     }
@@ -576,6 +585,22 @@ public class GameController extends Activity {
     private void fadingTransition() {
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+    /**
+     * Show a long toast message.
+     */
+    private void longToast(String msg) {
+        final Toast toast = Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT);
+        toast.show();
+        new CountDownTimer(500, 10000) {
+            public void onTick(long millisUntilFinished) {
+                toast.show();
+            }
+
+            public void onFinish() {
+                toast.cancel();
+            }
+        }.start();
+    }
 
     /**
      * Show a toast message.
@@ -587,6 +612,7 @@ public class GameController extends Activity {
             public void onTick(long millisUntilFinished) {
                 toast.show();
             }
+
             public void onFinish() {
                 toast.cancel();
             }

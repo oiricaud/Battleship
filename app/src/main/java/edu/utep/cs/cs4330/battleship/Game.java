@@ -31,8 +31,6 @@ class Game {
             humanPlayer2 = new Player("Human");
             setHumanPlayer(humanPlayer);
             setHumanPlayer2(humanPlayer2);
-            getHumanPlayer().setAddress("empty");
-            getHumanPlayer2().setAddress("empty");
             gameStatus = true;
         }
     }
