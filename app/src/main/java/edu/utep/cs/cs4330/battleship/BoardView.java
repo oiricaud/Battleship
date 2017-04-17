@@ -61,7 +61,8 @@ public class BoardView extends View implements Serializable {
      */
     private final Paint boardLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    int[][] coordinatesOfHumanShips = new int[10][10];
+    int[][] coordinatesOfPlayer1Ships = new int[10][10];
+    int[][] coordinatesOfPlayer2Ships = new int[10][10];
     int[][] gameCoordinates = new int[10][10];
 
     /**
@@ -152,17 +153,17 @@ public class BoardView extends View implements Serializable {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawHumanShips(canvas);
+        drawPlayer1Ships(canvas);
         drawBoard(canvas);
         drawGrid(canvas);
     }
 
-    private void drawHumanShips(Canvas canvas) {
+    private void drawPlayer1Ships(Canvas canvas) {
         // Iterate and look for "1" which indicate position of boats, hence do some coloring.
-        if (coordinatesOfHumanShips != null) {
-            for (int i = 0; i < coordinatesOfHumanShips.length; i++) {
-                for (int j = 0; j < coordinatesOfHumanShips.length; j++) {
-                    if (coordinatesOfHumanShips[i][j] >= 1) {       // DRAW ALL BOATS HERE
+        if (coordinatesOfPlayer1Ships != null) {
+            for (int i = 0; i < coordinatesOfPlayer1Ships.length; i++) {
+                for (int j = 0; j < coordinatesOfPlayer1Ships.length; j++) {
+                    if (coordinatesOfPlayer1Ships[i][j] >= 1) {       // DRAW ALL BOATS HERE
                         float drawX = (i * lineGap()) + (lineGap() / 2);
                         float drawY = (j * lineGap()) + (lineGap() / 2);
                         int left = (int) (drawX - (lineGap() / 2));

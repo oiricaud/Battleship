@@ -304,6 +304,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                         placeBoatsView();
                         break;
                     case "playGameView":
+                        game.getPlayer2Board().boardView.coordinatesOfPlayer1Ships = game.getPlayer2Board().readBoatCoordinates();
                         playGameView();
                         break;
                 }
@@ -443,7 +444,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         // This means the user had already placed boats on the grid but decided to go back to this view and perhaps
         // change the boats.
         if (game.getPlayer1Board().grid != null) {
-            game.getPlayer1Board().boardView.coordinatesOfHumanShips = game.getPlayer1Board().grid;
+            game.getPlayer1Board().boardView.coordinatesOfPlayer1Ships = game.getPlayer1Board().grid;
             game.getPlayer1Board().boardView.invalidate();
         }
 
@@ -476,14 +477,11 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                             //playGameView();
                             ProgressDialog.show(GameController.this, "Loading", "Wait for other player to finish " +
                                     "place thier boats...");
-
-
                         }
                         break;
 
                     case "1 VS PC":
                         if (game.getPlayer1Board().playerPlacedAllBoats()) {
-                            game.getPlayer1Board().boardView.coordinatesOfHumanShips = game.getPlayer1Board().boardView.coordinatesOfHumanShips;
                             playGameView();
                         } else {
                             longToast("Brother, you must place all boats before starting an awesome game.");
@@ -512,25 +510,27 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
     private void playGameView() {
         setContentView(R.layout.current_game);
         mRetainedFragment.setCurrentView("playGameView");
-        /* Define Player's 1 Board, and draw its boats accordingly */
-        game.getPlayer1Board().boardView = (BoardView) findViewById(R.id.humanBoard);
-        game.getPlayer1Board().boardView.setBoard(game.getPlayer1Board());
-
-        // Get the coordinates from the previous activity to this activity
-        //game.getPlayer1Board().boardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
-        /* End Human Board */
-
-        /* Begin Computer Stuff GameController */
         final Context activityContext = this;
 
+        /* Define Player's 1 Board */
+        game.getPlayer1Board().boardView = (BoardView) findViewById(R.id.humanBoard);
+        game.getPlayer1Board().boardView.setBoard(game.getPlayer1Board());
+        // And then draw its boats accordingly, so Player 1 can visually see their current boats //
+        game.getPlayer1Board().boardView.coordinatesOfPlayer1Ships = game.getPlayer1Board().readBoatCoordinates();
+
+        /* Define Player's 2 Board */
         game.getPlayer2Board().boardView = (BoardView) findViewById(R.id.computerBoard);
         game.getPlayer2Board().boardView.setBoard(game.getPlayer2Board());
 
         // Define buttons and text views here
+        TextView currentPlayerName = (TextView) findViewById(R.id.currentPlayerName);
+        TextView opponentsName = (TextView) findViewById(R.id.opponentsName);
         TextView battleshipTitle = (TextView) findViewById(R.id.BattleShip);
         final TextView counter = (TextView) findViewById(R.id.countOfHits);
         Button newButton = (Button) findViewById(R.id.newButton);
         Button quitButton = (Button) findViewById(R.id.quitButton);
+        currentPlayerName.setText(game.getPlayer1Board().getTypeOfPlayer());
+        opponentsName.setText(game.getPlayer2Board().getTypeOfPlayer());
 
         // Change font
         changeFont(newButton);
@@ -545,6 +545,8 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         /* End Computer Stuff GameController*/
         Log.w("Computers board", Arrays.deepToString(game.getPlayer2Board().grid));
         Log.w("Humans board", Arrays.deepToString(game.getPlayer1Board().grid));
+        longToast("Player " + game.getPlayer1Board().getTypeOfPlayer() + " tap " + game.getPlayer2Board()
+                .getTypeOfPlayer() + "'s board to shooot!");
         game.getPlayer2Board().boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             /* After player taps on computers board */
             @Override
@@ -718,8 +720,8 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("New GameController successfully created!");
-                                chooseLevelView();
                                 fadingTransition(); // Fading Transition Effect
+                                restartActivity();
                             }
                         });
 
@@ -1080,7 +1082,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                     view = (View) event.getLocalState();
                     view.setVisibility(View.VISIBLE);
                 default:
-                    game.getPlayer1Board().boardView.coordinatesOfHumanShips = game.getPlayer1Board().grid; // Prevents from drawing multiple times when the
+                    game.getPlayer1Board().boardView.coordinatesOfPlayer1Ships = game.getPlayer1Board().grid; // Prevents from drawing multiple times when the
                     // user changes
 
                     game.getPlayer1Board().boardView.invalidate();

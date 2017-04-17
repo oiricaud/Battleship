@@ -15,22 +15,24 @@ class Game {
     private Board player1Board;
     private Board player2Board;
     private String difficulty;
-    private boolean gameStatus;
+    private boolean isGameOver;
     private String typeOfGame = "1 VS PC"; // 1 VS 1 OR 1 VS PC
     private int musicTimer = 0;
 
     Game() {
         if (typeOfGame.equals("1 VS PC")) {
-            Board humanBoard = new Board(10, "Human");
+            Board playerBoard = new Board(10, "Human");
             Board computerBoard = new Board(10, "Computer");
-            setPlayer1Board(humanBoard);
+            setPlayer1Board(playerBoard);
             setPlayer2Board(computerBoard);
-
-            gameStatus = true;
         }
         if (typeOfGame.equals("1 VS 1")) {
-            gameStatus = true;
+            Board playerBoard1 = new Board(10, "Human");
+            Board playerBoard2 = new Board(10, "Human");
+            setPlayer1Board(playerBoard1);
+            setPlayer2Board(playerBoard2);
         }
+        setGameOver(false);
     }
 
     static boolean isMediaPlaying(MediaPlayer music) {
@@ -104,14 +106,6 @@ class Game {
         this.difficulty = difficulty;
     }
 
-    public boolean getGameStatus() {
-        return gameStatus;
-    }
-
-    public void changeGameStatus(boolean gameStarted) {
-        this.gameStatus = gameStarted;
-    }
-
     boolean hasThisBoatBeenPlaced(Ship boat) {
         return boat.isPlaced();
     }
@@ -138,5 +132,13 @@ class Game {
 
     public void setPlayer2Board(Board player2Board) {
         this.player2Board = player2Board;
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        isGameOver = gameOver;
     }
 }

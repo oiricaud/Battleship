@@ -69,7 +69,7 @@ class Board {
      * @see BoardView class to draw the boats on the grid
      * specifically for the user to visually see where the boats are placed.
      */
-    int[][] readCoordinates() {
+    int[][] readBoatCoordinates() {
         return grid;
     }
 
