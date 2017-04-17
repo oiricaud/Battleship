@@ -46,58 +46,7 @@ public class GameController extends Activity {
     private BluetoothDevice mDevice;
     private BluetoothSocket mmSocket;
     private BluetoothDevice device;
-    /* BEGING BLUETOOTH STUFF */
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                longToast("Device found");
-
-            } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-                longToast("Device is now connected");
-                device.setPairingConfirmation(true);
-                Log.w("Get uuids", String.valueOf(device.getUuids()));
-                Log.w("Get bond state", String.valueOf(device.getBondState()));
-                Log.w("Get name", device.getName());
-
-                device = mBluetoothAdapter.getRemoteDevice(device.getAddress());
-                BluetoothSocket clientSocket;
-                try {
-                    Log.w(TAG, "Remote device " + device);
-                    ParcelUuid[] uuids = device.getUuids();
-                    boolean isFileTransferSupported = false;
-                    UUID ftpUID = UUID.fromString("00000000-0000-1000-8000-00805f9b34fb");
-                    // Check if remote device supports file transfer
-                    for (ParcelUuid parcelUuid : uuids) {
-                        Log.w("ParcelUUid", String.valueOf(parcelUuid.getUuid()));
-                        if (parcelUuid.getUuid().equals(ftpUID)) {
-                            longToast("Sending data");
-                            isFileTransferSupported = true;
-                            break;
-                        }
-                    }
-                    if (!isFileTransferSupported) {
-                        Log.w(TAG, "Remote bluetooth device does not supports file transfer ");
-                        return;
-                    }
-                    clientSocket = device.createRfcommSocketToServiceRecord(ftpUID);
-                    clientSocket.connect();
-                } catch (IOException e) {
-                    return;
-                }
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                longToast("Done searching");
-
-            } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
-                longToast("Device is about to disconnect");
-            } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                longToast("Device has been disconnected");
-            }
-        }
-    };
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
     private Game game = new Game();
@@ -170,8 +119,6 @@ public class GameController extends Activity {
         super.onPause();
     }
 
-    /* BEGIN SCREEN CONFIGURATIONS LOGIC */
-
     @Override
     protected void onResume() {
         if (music != null && !music.isPlaying())
@@ -190,7 +137,58 @@ public class GameController extends Activity {
     }
 
 /* BEGING BLUETOOTH STUFF */
+private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
+        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+            longToast("Device found");
+
+        } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+            longToast("Device is now connected");
+            device.setPairingConfirmation(true);
+            Log.w("Get uuids", String.valueOf(device.getUuids()));
+            Log.w("Get bond state", String.valueOf(device.getBondState()));
+            Log.w("Get name", device.getName());
+
+            device = mBluetoothAdapter.getRemoteDevice(device.getAddress());
+            BluetoothSocket clientSocket;
+            try {
+                Log.w(TAG, "Remote device " + device);
+                ParcelUuid[] uuids = device.getUuids();
+                boolean isFileTransferSupported = false;
+                UUID ftpUID = UUID.fromString("00000000-0000-1000-8000-00805f9b34fb");
+                // Check if remote device supports file transfer
+                for (ParcelUuid parcelUuid : uuids) {
+                    Log.w("ParcelUUid", String.valueOf(parcelUuid.getUuid()));
+                    if (parcelUuid.getUuid().equals(ftpUID)) {
+                        longToast("Sending data");
+                        isFileTransferSupported = true;
+                        break;
+                    }
+                }
+                if (!isFileTransferSupported) {
+                    Log.w(TAG, "Remote bluetooth device does not supports file transfer ");
+                    return;
+                }
+                clientSocket = device.createRfcommSocketToServiceRecord(ftpUID);
+                clientSocket.connect();
+            } catch (IOException e) {
+                return;
+            }
+        } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+            longToast("Done searching");
+
+        } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
+            longToast("Device is about to disconnect");
+        } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+            longToast("Device has been disconnected");
+        }
+    }
+};
+        
     /**
      * @return if the device has bluetooth setting on.
      */
@@ -213,8 +211,9 @@ public class GameController extends Activity {
 
     /**
      * @param playerBoatCoordinates is the current coordinates of the player sending data over
+     *
      * @return true if there is a success sending data to other device
-     * false if there is a failure of sending data to other device
+     *         false if there is a failure of sending data to other device
      */
     private boolean sendDataOverBluetooth(int[][] playerBoatCoordinates) {
         return true;
@@ -273,7 +272,7 @@ public class GameController extends Activity {
     }
 /* END BLUETOOTH STUFF */
 
-/* BEGIN SCREEN ORIENTATION CONFIGURATIONS LOGIC */
+/* BEGIN SCREEN CONFIGURATIONS LOGIC */
     /**
      * @param newConfig When the user rotates their phone either from portrait to landscape or landscape to portrait,
      *                  often times activities are destroyed. This method stores the current view the user was currently
@@ -328,7 +327,7 @@ public class GameController extends Activity {
                 break;
         }
     }
-/* END SCREEN  ORIENTATION CONFIGURATIONS LOGIC */
+/* END SCREEN CONFIGURATIONS LOGIC */
 
 /* BEGIN VIEWS */
     /**
@@ -595,7 +594,6 @@ public class GameController extends Activity {
             public void onTick(long millisUntilFinished) {
                 toast.show();
             }
-
             public void onFinish() {
                 toast.cancel();
             }
@@ -612,7 +610,6 @@ public class GameController extends Activity {
             public void onTick(long millisUntilFinished) {
                 toast.show();
             }
-
             public void onFinish() {
                 toast.cancel();
             }
