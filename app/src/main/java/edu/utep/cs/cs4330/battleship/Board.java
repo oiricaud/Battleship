@@ -35,7 +35,6 @@ class Board {
         this.size = size;
         if (player.equals("Human")) {
             setTypeOfPlayer("Human");
-
         }
         if (player.equals("Computer")) {
             setTypeOfPlayer("Computer");
@@ -53,7 +52,7 @@ class Board {
         patrol.setPlaced(false);
         setNumberOfShipsFloating(5);
     }
-    
+
     private void addRandomCoordinatesForComputer() {
         addCoordinates(aircraft.map);
         addCoordinates(battleship.map);
