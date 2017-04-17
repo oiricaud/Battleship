@@ -501,8 +501,9 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         game.getHumanPlayer().boardView = (BoardView) findViewById(R.id.humanBoard);
         game.getHumanPlayer().boardView.setBoard(game.getHumanPlayer().gameBoard);
         TextView nameOfOpponentsPlayer = (TextView) findViewById(R.id.opponentsName);
+        TextView currentPlayerName = (TextView) findViewById(R.id.currentPlayerName);
         nameOfOpponentsPlayer.setText(device.getName());
-        
+        currentPlayerName.setText(mBluetoothAdapter.getName());
         // Get the coordinates from the previous activity to this activity
         //game.getHumanPlayer().boardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
         /* End Human Board */

@@ -55,7 +55,7 @@
                 android:id="@+id/countOfHits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="250dp"
                 android:layout_marginTop="250dp"
                 android:fontFamily="casual"
                 android:text="@string/number_of_shots_0"
@@ -96,6 +96,13 @@
                 android:layout_height="wrap_content" android:layout_alignTop="@+id/BattleShip"
                 android:layout_alignEnd="@+id/BattleShip" android:layout_marginEnd="14dp"
                 android:id="@+id/opponentsName"/>
+        <TextView
+                android:text="Type of Player2:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/currentPlayerName"
+                android:layout_alignTop="@+id/countOfHits" android:layout_alignStart="@+id/computerBoard"/>
+
 
     </RelativeLayout>
 </LinearLayout>
