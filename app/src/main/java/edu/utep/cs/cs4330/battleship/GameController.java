@@ -74,7 +74,7 @@ public class GameController extends Activity {
         filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-//        mBluetoothAdapter.disable(); uncomment for testing purposes
+        mBluetoothAdapter.disable();
         this.registerReceiver(mReceiver, filter);
 
         // find the retained fragment on activity restarts
@@ -226,8 +226,6 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
     private int[][] receiveDataOverBluetooth() {
         int[][] opponentsBoatCoordinates = new int[10][10];
         // Do bluetooth stuff here
-
-        //playGameView();
         return opponentsBoatCoordinates;
         /*
         private void init() throws IOException {
@@ -306,7 +304,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                         placeBoatsView();
                         break;
                     case "playGameView":
-                        playGameView(game.getPlayer1Board().boardView);
+                        playGameView();
                         break;
                 }
                 //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
@@ -326,7 +324,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                         placeBoatsView();
                         break;
                     case "playGameView":
-                        playGameView(game.getPlayer1Board().boardView);
+                        playGameView();
                         break;
                 }
                 //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
@@ -473,14 +471,23 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                         if (device.getName() != null) {
                             Log.w("device name", device.getName());
                             Log.w("Get name", mBluetoothAdapter.getName());
+                            receiveDataOverBluetooth();
+
+                            //playGameView();
                             ProgressDialog.show(GameController.this, "Loading", "Wait for other player to finish " +
                                     "place thier boats...");
-                            receiveDataOverBluetooth();
+
+
                         }
                         break;
 
                     case "1 VS PC":
-                        playGameView(game.getPlayer1Board().boardView);
+                        if (game.getPlayer1Board().playerPlacedAllBoats()) {
+                            game.getPlayer1Board().boardView.coordinatesOfHumanShips = game.getPlayer1Board().boardView.coordinatesOfHumanShips;
+                            playGameView();
+                        } else {
+                            longToast("Brother, you must place all boats before starting an awesome game.");
+                        }
                         break;
                 }
             }
@@ -502,15 +509,15 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
      * and colors a red circle the position of the boats, else colors a white circle indicating the
      * user missed.
      */
-    private void playGameView(BoardView copyOfHumanBoard) {
+    private void playGameView() {
         setContentView(R.layout.current_game);
         mRetainedFragment.setCurrentView("playGameView");
-        /* Define Human Board */
+        /* Define Player's 1 Board, and draw its boats accordingly */
         game.getPlayer1Board().boardView = (BoardView) findViewById(R.id.humanBoard);
         game.getPlayer1Board().boardView.setBoard(game.getPlayer1Board());
 
         // Get the coordinates from the previous activity to this activity
-        game.getPlayer1Board().boardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
+        //game.getPlayer1Board().boardView.coordinatesOfHumanShips = copyOfHumanBoard.coordinatesOfHumanShips;
         /* End Human Board */
 
         /* Begin Computer Stuff GameController */

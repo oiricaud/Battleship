@@ -166,4 +166,12 @@ class Board {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    /**
+     * @return Checks if all boats have been placed for this specific board, if so it returns true and allows player
+     * to advance to the next activity.
+     */
+    public boolean playerPlacedAllBoats() {
+        return aircraft.isPlaced() && battleship.isPlaced() && destroyer.isPlaced() && submarine.isPlaced() && patrol.isPlaced();
+    }
 }
