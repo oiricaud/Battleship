@@ -33,11 +33,9 @@ import static android.content.ContentValues.TAG;
 /**
  * Created by oscarricaud on 3/12/17.
  * This class calls all the layouts and creates controllers to store the current state the user(s) is in. It loads
- * accordingly the views. The views contains home, placement of boats and on-going game layouts.
- * {@link #launchHomeView()}, {@link #chooseLevelView()}, {@link #placeBoatsView()}
- 
- 
- * views that are used  will allow the user to place boats. @see activity_place_ship
+ * accordingly the views. The views section of this class contains home, placement of boats and on-going game
+ * layouts, {@link #launchHomeView()}, {@link #chooseLevelView()}, {@link #placeBoatsView()}. This class also creates
+ * bluetooth sockets for the players to play via bluetooth.
  */
 
 @SuppressWarnings("ALL")
