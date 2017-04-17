@@ -48,6 +48,7 @@ class Game {
         return false;
     }
 
+
     public String getTypeOfGame() {
         return typeOfGame;
     }

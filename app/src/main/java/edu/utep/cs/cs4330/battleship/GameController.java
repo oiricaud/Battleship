@@ -46,7 +46,7 @@ public class GameController extends Activity {
     private BluetoothDevice mDevice;
     private BluetoothSocket mmSocket;
     private BluetoothDevice device;
-    //The BroadcastReceiver that listens for bluetooth broadcasts
+    /* BEGING BLUETOOTH STUFF */
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -144,16 +144,10 @@ public class GameController extends Activity {
     };
     */
     };
-
-
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
     private Game game = new Game();
 
-
-    /* END GETTERS AND SETTERS */
-
-    /* BEGIN GETTERS AND SETTERS */
     private String getFontPath() {
         return fontPath;
     }
@@ -192,22 +186,6 @@ public class GameController extends Activity {
         launchHomeView();   // By default, this activity will always display until an event occurs.
     }
 
-    /*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                mDevice = device;
-                Log.w("mDevice", mDevice.ACTION_ACL_CONNECTED);
-            }
-
-            mConnectedThread = new ConnectedThread(mmSocket);
-            mConnectedThread.start();
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-*/
     @Override
     public void onStart() {
 
@@ -238,14 +216,14 @@ public class GameController extends Activity {
         super.onPause();
     }
 
+    /* BEGIN SCREEN CONFIGURATIONS LOGIC */
+
     @Override
     protected void onResume() {
         if (music != null && !music.isPlaying())
             music.start();
         super.onResume();
     }
-
-    /* BEGIN SCREEN CONFIGURATIONS LOGIC */
 
     @Override
     public void onDestroy() {
@@ -257,6 +235,41 @@ public class GameController extends Activity {
         super.onDestroy();
     }
 
+    /*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                mDevice = device;
+                Log.w("mDevice", mDevice.ACTION_ACL_CONNECTED);
+            }
+
+            mConnectedThread = new ConnectedThread(mmSocket);
+            mConnectedThread.start();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+*/
+    private boolean checkBluetoothConnection() {
+
+        if (mBluetoothAdapter == null) {
+            toast("Device does not support Blueetooth");
+            return false;
+        } else {
+            if (device == null) {
+                toast("Son, you must have at least another player to play with you");
+                Intent intentOpenBluetoothSettings = new Intent();
+                intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+                startActivity(intentOpenBluetoothSettings);
+            }
+        }
+
+        return false;
+    }
+/* END BLUETOOTH STUFF */
+
+/* BEGIN SCREEN ORIENTATION CONFIGURATIONS LOGIC */
     /**
      * @param newConfig When the user rotates their phone either from portrait to landscape or landscape to portrait,
      *                  often times activities are destroyed. This method stores the current view the user was currently
@@ -311,7 +324,9 @@ public class GameController extends Activity {
                 break;
         }
     }
+/* END SCREEN  ORIENTATION CONFIGURATIONS LOGIC */
 
+/* BEGIN VIEWS */
     /**
      * This method launches the home.xml and waits for the user to begin a new game.
      */
@@ -336,7 +351,6 @@ public class GameController extends Activity {
                 onlineButton.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.INVISIBLE);
 
-
                 oneVersusOneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -359,26 +373,6 @@ public class GameController extends Activity {
                 });
             }
         });
-    }
-    /* END SCREEN CONFIGURATIONS LOGIC */
-
-/* BEGIN VIEWS */
-
-    private boolean checkBluetoothConnection() {
-
-        if (mBluetoothAdapter == null) {
-            toast("Device does not support Blueetooth");
-            return false;
-        } else {
-            if (device == null) {
-                toast("Son, you must have at least another player to play with you");
-                Intent intentOpenBluetoothSettings = new Intent();
-                intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
-                startActivity(intentOpenBluetoothSettings);
-            }
-        }
-
-        return false;
     }
 
     /**

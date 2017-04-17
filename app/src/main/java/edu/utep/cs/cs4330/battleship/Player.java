@@ -26,6 +26,7 @@ class Player {
     Player(String player) {
         if (player.equals("Human")) {
             setTypeOfPlayer("Human");
+
         }
         if (player.equals("Computer")) {
             setTypeOfPlayer("Computer");
@@ -43,11 +44,6 @@ class Player {
         submarine.setPlaced(false);
         patrol.setPlaced(false);
     }
-
-    public Player() {
-
-    }
-
 
     String getTypeOfPlayer() {
         return typeOfPlayer;
