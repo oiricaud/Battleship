@@ -556,33 +556,30 @@ public class GameController extends Activity {
             @Override
             public void onTouch(int x, int y) {
                 if (!game.isGameOver()) {
-                    // Human shoots at Computers board
+                    counter.setText(String.valueOf("Number of Shots: " + game.getPlayer1Board().getNumberOfShots()));
+
+                    // PLAYER 1 SHOOTS AT COMPUTERS BOARD
                     if (game.shootsAt(game.getPlayer2Board(), x, y)) { // Human hits a boat, paint red
                         toast("HIT");
                         makeExplosionSound(activityContext);
                     } else { // Human misses, paint computers board white
                         toast("MISS");
                         makeMissedSound(activityContext);
-
-                        game.getPlayer1Board().shoots(); // Increment counter for # of shots
-                        counter.setText(String.valueOf("Number of Shots: " + game.getPlayer1Board().getNumberOfShots()));
-
-                        // COMPUTER SHOOT AT HUMAN BOARD
-                        int randomX = generateRandomCoordinate(); // Generate random coordinates
-                        int randomY = generateRandomCoordinate(); // Generate random coordinates
-
-                        if (game.shootsAt(game.getPlayer1Board(), randomX, randomY)) {
-                            makeExplosionSound(activityContext);
-                            toast("Your boat has been shot!");
-                            game.getPlayer1Board().boardView.invalidate();
-                        } else {
-                            game.getPlayer1Board().boardView.invalidate();
-                            makeMissedSound(activityContext);
-                        }
-                        game.getPlayer1Board().boardView.invalidate();
                     }
+
+                    // COMPUTER SHOOTS AT PLAYER'S 1 BOARD
+                    int randomX = generateRandomCoordinate(); // Generate random coordinates
+                    int randomY = generateRandomCoordinate(); // Generate random coordinates
+                    if (game.shootsAt(game.getPlayer1Board(), randomX, randomY)) {
+                        toast("Your boat has been shot!");
+                        makeExplosionSound(activityContext);
+                    } else {
+                        makeMissedSound(activityContext);
+                    }
+                    // STORE FRAGMENT, IN CASE PHONE SCREEN ORIENTATION HAS CHANGED
                     mRetainedFragment.setData(game);
-                } else {
+                }
+                if (game.isGameOver()) {
                     gameEnded(activityContext); // Game has ended display what player won.
                 }
             }
@@ -638,7 +635,7 @@ public class GameController extends Activity {
             @Override
             public void onTouch(int x, int y) {
                 if (!game.isGameOver()) {
-                    // Human shoots at Computers board
+                    // PLAYER 1 SHOOTS AT PLAYER 2
                     if (game.shootsAt(game.getPlayer2Board(), x, y)) { // Human hits a boat, paint red
                         toast("HIT");
                         makeExplosionSound(activityContext);
@@ -648,21 +645,12 @@ public class GameController extends Activity {
 
                         game.getPlayer1Board().shoots(); // Increment counter for # of shots
                         counter.setText(String.valueOf("Number of Shots: " + game.getPlayer1Board().getNumberOfShots()));
-
-                        // COMPUTER SHOOT AT HUMAN BOARD
-                        int randomX = generateRandomCoordinate(); // Generate random coordinates
-                        int randomY = generateRandomCoordinate(); // Generate random coordinates
-
-                        if (game.shootsAt(game.getPlayer1Board(), randomX, randomY)) {
-                            makeExplosionSound(activityContext);
-                            toast("Your boat has been shot!");
-                            game.getPlayer1Board().boardView.invalidate();
-                        } else {
-                            game.getPlayer1Board().boardView.invalidate();
-                            makeMissedSound(activityContext);
-                        }
-                        game.getPlayer1Board().boardView.invalidate();
                     }
+                    // PLAYER 2 SHOOTS AT PLAYER 1
+                    // DO BLUETOOTH STUFF HERE SUCH AS OBTAINING THE X & Y COORDINATES FROM PLAYER 2
+
+                    
+                    // STORE FRAGMENT, IN CASE PHONE SCREEN ORIENTATION HAS CHANGED
                     mRetainedFragment.setData(game);
                 } else {
                     gameEnded(activityContext); // Game has ended display what player won.

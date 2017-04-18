@@ -63,8 +63,8 @@ class Game {
                     opponentsBoard.addBoatToGrid(opponentsBoard.aircraft.map);
                     opponentsBoard.aircraft.addCoordinates(x, y);
                     opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
-
-                    getPlayer2Board().boardView.invalidate();
+                    getPlayer1Board().shoots(); // Increment counter for # of shots
+                    opponentsBoard.boardView.invalidate();
                     return true;
 
                 case 2:  // Shot battleship
@@ -72,8 +72,8 @@ class Game {
                     opponentsBoard.addBoatToGrid(opponentsBoard.battleship.map);
                     opponentsBoard.battleship.addCoordinates(x, y);
                     opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
-
-                    getPlayer2Board().boardView.invalidate();
+                    getPlayer1Board().shoots(); // Increment counter for # of shots
+                    opponentsBoard.boardView.invalidate();
                     return true;
 
                 case 3:  // Shot destroyer
@@ -81,8 +81,8 @@ class Game {
                     opponentsBoard.addBoatToGrid(opponentsBoard.destroyer.map);
                     opponentsBoard.destroyer.addCoordinates(x, y);
                     opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
-
-                    getPlayer2Board().boardView.invalidate();
+                    getPlayer1Board().shoots(); // Increment counter for # of shots
+                    opponentsBoard.boardView.invalidate();
                     return true;
 
                 case 4:  // Shot submarine
@@ -90,8 +90,8 @@ class Game {
                     opponentsBoard.addBoatToGrid(opponentsBoard.submarine.map);
                     opponentsBoard.submarine.addCoordinates(x, y);
                     opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
-
-                    getPlayer2Board().boardView.invalidate();
+                    getPlayer1Board().shoots(); // Increment counter for # of shots
+                    opponentsBoard.boardView.invalidate();
                     return true;
 
                 case 5:  // Shot patrol
@@ -99,13 +99,13 @@ class Game {
                     opponentsBoard.addBoatToGrid(opponentsBoard.patrol.map);
                     opponentsBoard.patrol.addCoordinates(x, y);
                     opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
-
-                    getPlayer2Board().boardView.invalidate();
+                    getPlayer1Board().shoots(); // Increment counter for # of shots
+                    opponentsBoard.boardView.invalidate();
                     return true;
             }
         }
         opponentsBoard.boardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
-        getPlayer2Board().boardView.invalidate();
+        opponentsBoard.boardView.invalidate();
         return false;
     }
     public String getTypeOfGame() {
