@@ -37,6 +37,16 @@ import static android.content.ContentValues.TAG;
 
 @SuppressWarnings( "ALL" )
 public class GameController extends Activity {
+    // Defines several constants used when transmitting messages between the
+    // service and the UI.
+    private interface MessageConstants {
+        public static final int MESSAGE_READ = 0;
+        public static final int MESSAGE_WRITE = 1;
+        public static final int MESSAGE_TOAST = 2;
+
+        // ... (Add other message types here as needed.)
+    }
+
     private static final String TAG_RETAINED_FRAGMENT = "RetainedFragment";
     private static MediaPlayer mp;                     // For boats sound effects
     private static MediaPlayer music;                  // For music background
@@ -44,9 +54,13 @@ public class GameController extends Activity {
     private OutputStream outputStream;
     private InputStream inStream;
     private BluetoothDevice mDevice;
+    private Handler mHandler; // handler that gets info from Bluetooth service
     private BluetoothSocket mmSocket;
     private BluetoothDevice device;
+    private BluetoothSocket clientSocket;
     private ProgressDialog mDialog;
+    private byte[] mmBuffer; // mmBuffer store for the stream
+    private BluetoothChatService mChatService = null;
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
     private Game game = new Game();
@@ -67,6 +81,7 @@ public class GameController extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFontPath("fonts/brandonlight.TTF");
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
@@ -153,9 +168,8 @@ public class GameController extends Activity {
                 Log.w("Get uuids", String.valueOf(device.getUuids()));
                 Log.w("Get bond state", String.valueOf(device.getBondState()));
                 Log.w("Get name", device.getName());
-
+                placeBoatsView();
                 device = mBluetoothAdapter.getRemoteDevice(device.getAddress());
-                BluetoothSocket clientSocket;
                 try {
                     Log.w(TAG, "Remote device " + device);
                     ParcelUuid[] uuids = device.getUuids();
@@ -165,7 +179,7 @@ public class GameController extends Activity {
                     for (ParcelUuid parcelUuid : uuids) {
                         Log.w("ParcelUUid", String.valueOf(parcelUuid.getUuid()));
                         if (parcelUuid.getUuid().equals(ftpUID)) {
-                            longToast("Sending data");
+                            //longToast("Sending data");
                             isFileTransferSupported = true;
                             break;
                         }
@@ -204,72 +218,86 @@ public class GameController extends Activity {
                 Intent intentOpenBluetoothSettings = new Intent();
                 intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
                 startActivity(intentOpenBluetoothSettings);
+                return false;
+            }
+            if (device != null) {
+                //  placeBoatsView();
             }
         }
-
         return false;
     }
 
+    /**
+     * String buffer for outgoing messages
+     */
+    private StringBuffer mOutStringBuffer;
     /**
      * @param playerBoatCoordinates is the current coordinates of the player sending data over
      * @return true if there is a success sending data to other device
      * false if there is a failure of sending data to other device
      */
-    private boolean sendDataOverBluetooth(int[][] playerBoatCoordinates) {
-        return true;
+    private void sendDataOverBluetooth() {
+        // Check that we're actually connected before trying anything
+        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+            longToast("Device not counnected");
+            return;
+        }
+        String message = "Hello";
+        // Check that there's actually something to send
+        if (message.length() > 0) {
+            // Get the message bytes and tell the BluetoothChatService to write
+            byte[] send = message.getBytes();
+            mChatService.write(send);
+
+            // Reset out string buffer to zero and clear the edit text field
+            mOutStringBuffer.setLength(0);
+            //mOutEditText.setText(mOutStringBuffer);
+        }
     }
 
-    private Board receiveDataOverBluetooth() {
-        int[][] opponentsBoatCoordinates = new int[10][10];
-        // Do bluetooth stuff here
-        Board playersData = new Board(10, "Online player");
-        return playersData;
-        /*
-        private void init() throws IOException {
+    public void run() {
+        mmBuffer = new byte[1024];
+        int numBytes; // bytes returned from read()
 
-            BluetoothAdapter blueAdapter = BluetoothAdapter.getDefaultAdapter();
-            if (blueAdapter != null) {
-                if (blueAdapter.isEnabled()) {
-                    Set<BluetoothDevice> bondedDevices = blueAdapter.getBondedDevices();
-
-                    if (bondedDevices.size() > 0) {
-                        Object[] devices = (Object[]) bondedDevices.toArray();
-                        BluetoothDevice device = (BluetoothDevice) devices[0];
-                        ParcelUuid[] uuids = device.getUuids();
-                        BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuids[0].getUuid());
-                        socket.connect();
-                        outputStream = socket.getOutputStream();
-                        inStream = socket.getInputStream();
-                    }
-
-                    Log.e("error", "No appropriate paired devices.");
-                } else {
-                    Log.e("error", "Bluetooth is disabled.");
-                }
+        // Keep listening to the InputStream until an exception occurs.
+        while (true) {
+            try {
+                // Read from the InputStream.
+                numBytes = inStream.read(mmBuffer);
+                // Send the obtained bytes to the UI activity.
+                Message readMsg = mHandler.obtainMessage(
+                        MessageConstants.MESSAGE_READ, numBytes, -1,
+                        mmBuffer);
+                readMsg.sendToTarget();
+                Log.w("Messages", String.valueOf(readMsg));
+            } catch (IOException e) {
+                Log.d(TAG, "Input stream was disconnected", e);
+                break;
             }
         }
+    }
 
-        public void write(String s) throws IOException {
-            outputStream.write(s.getBytes());
+    // Call this from the main activity to send data to the remote device.
+    public void write(byte[] bytes) {
+        try {
+            outputStream.write(bytes);
+
+            // Share the sent message with the UI activity.
+            Message writtenMsg = mHandler.obtainMessage(
+                    MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
+            writtenMsg.sendToTarget();
+        } catch (IOException e) {
+            Log.e(TAG, "Error occurred when sending data", e);
+
+            // Send a failure message back to the activity.
+            Message writeErrorMsg =
+                    mHandler.obtainMessage(MessageConstants.MESSAGE_TOAST);
+            Bundle bundle = new Bundle();
+            bundle.putString("toast",
+                    "Couldn't send data to the other device");
+            writeErrorMsg.setData(bundle);
+            mHandler.sendMessage(writeErrorMsg);
         }
-
-
-        public void run() {
-            final int BUFFER_SIZE = 1024;
-            byte[] buffer = new byte[BUFFER_SIZE];
-            int bytes = 0;
-            int b = BUFFER_SIZE;
-
-            while (true) {
-                try {
-                    bytes = inStream.read(buffer, bytes, BUFFER_SIZE - bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
-    */
     }
 /* END BLUETOOTH STUFF */
 
@@ -466,9 +494,7 @@ public class GameController extends Activity {
                     case "1 VS 1":
                         //OPEN CONNECTION TO GET DATA BOARD FROM OTHER PLAYER BOARD
                         if (device.getName() != null) {
-                            Log.w("device name", device.getName());
-                            Log.w("Get name", mBluetoothAdapter.getName());
-                            receiveDataOverBluetooth();
+                            longToast("Playing with player " + device.getName());
                             playingViaBluetooth();
                         }
                         break;
@@ -529,8 +555,6 @@ public class GameController extends Activity {
         // Change font
         changeFont(newButton);
         changeFont(quitButton);
-        changeFont(battleshipTitle);
-        changeFont(counter);
 
         // The predefined methods that allow the user to quit or start a new game
         newActivity(newButton, activityContext);
@@ -591,8 +615,8 @@ public class GameController extends Activity {
         game.getPlayer1Board().boardView.coordinatesOfPlayer1Ships = game.getPlayer1Board().readBoatCoordinates();
 
         /* Define Player's 2 Board */
-        Board player2Data = receiveDataOverBluetooth(); // Receives data over bluetooth
-        game.setPlayer2Board(player2Data);
+        // Board player2Data = receiveDataOverBluetooth(); // Receives data over bluetooth
+        // game.setPlayer2Board(player2Data);
         game.getPlayer2Board().boardView = (BoardView) findViewById(R.id.computerBoard);
         game.getPlayer2Board().boardView.setBoard(game.getPlayer2Board());
 
@@ -610,10 +634,11 @@ public class GameController extends Activity {
             String opponentsDeviceName = device.getName();
             game.getPlayer1Board().setNameOfPlayer(player1DeviceName); // Player 1 phone device name
             game.getPlayer2Board().setNameOfPlayer(opponentsDeviceName);  // Player 2 phone device name
-            currentPlayerName.setText(player1DeviceName + "'s phone");
-            opponentsName.setText(opponentsDeviceName + "'s phone"); // Opponents phone device name
+            currentPlayerName.setText(player1DeviceName + "'s board");
+            opponentsName.setText(opponentsDeviceName + "'s board"); // Opponents phone device name
+            //sendDataOverBluetooth();
 
-            // Give the opponents player 10 seconds to look place boats.
+            // Give the opponent player 10 seconds to place boats.
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
@@ -627,8 +652,6 @@ public class GameController extends Activity {
         // Change font
         changeFont(newButton);
         changeFont(quitButton);
-        changeFont(battleshipTitle);
-        changeFont(counter);
 
         // The predefined methods that allow the user to quit or start a new game
         newActivity(newButton, activityContext);
@@ -637,8 +660,6 @@ public class GameController extends Activity {
         /* End Computer Stuff GameController*/
         Log.w("Computers board", Arrays.deepToString(game.getPlayer2Board().grid));
         Log.w("Humans board", Arrays.deepToString(game.getPlayer1Board().grid));
-        longToast("Player " + game.getPlayer1Board().getTypeOfPlayer() + " tap " + game.getPlayer2Board()
-                .getTypeOfPlayer() + "'s board to shooot!");
 
         // Handles the instance where the player1 touches player2's board.
         game.getPlayer2Board().boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
@@ -655,11 +676,10 @@ public class GameController extends Activity {
                         makeMissedSound(activityContext);
 
                         game.getPlayer1Board().shoots(); // Increment counter for # of shots
-                        counter.setText(String.valueOf("Number of Shots: " + game.getPlayer1Board().getNumberOfShots()));
+                        counter.setText(String.valueOf("# Shots Fired: " + game.getPlayer1Board().getNumberOfShots()));
                     }
                     // PLAYER 2 SHOOTS AT PLAYER 1
                     // DO BLUETOOTH STUFF HERE SUCH AS OBTAINING THE X & Y COORDINATES FROM PLAYER 2
-
 
                     // STORE FRAGMENT, IN CASE PHONE SCREEN ORIENTATION HAS CHANGED
                     mRetainedFragment.setData(game);
@@ -768,7 +788,7 @@ public class GameController extends Activity {
             public void onClick(View view) {
                 // Alert Dialogue
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure you want to quit?");
+                builder.setMessage("Do you want to store your progress for later?");
                 builder.setCancelable(true);
 
                 builder.setPositiveButton(
@@ -776,9 +796,8 @@ public class GameController extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 toast("Quiting GameController!");
-                                launchHomeView();
                                 fadingTransition(); // Fading Transition Effect
-                                dialog.cancel();
+                                launchHomeView();
                             }
                         });
 
@@ -787,6 +806,9 @@ public class GameController extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
+                                toast("New game is successfully created!");
+                                fadingTransition(); // Fading Transition Effect
+                                restartActivity();
                             }
                         });
                 AlertDialog alert = builder.create();

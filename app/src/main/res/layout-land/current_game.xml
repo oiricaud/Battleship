@@ -23,7 +23,7 @@
                 android:text="@string/battleship"
                 android:textAlignment="viewStart"
                 android:textColor="@android:color/holo_orange_dark"
-                android:textSize="22sp"/>
+                android:textSize="22sp" android:textStyle="normal|bold"/>
 
         <Button
                 android:id="@+id/quitButton"
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:layout_alignTop="@+id/BattleShip"
                 android:layout_alignEnd="@+id/BattleShip" android:layout_marginEnd="14dp"
-                android:id="@+id/opponentsName"/>
+                android:id="@+id/opponentsName" android:textStyle="normal|bold"/>
         <TextView
                 android:text="Type of Player2:"
                 android:layout_width="wrap_content"

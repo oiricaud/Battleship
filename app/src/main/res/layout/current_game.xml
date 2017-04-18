@@ -21,9 +21,9 @@
                 android:layout_marginLeft="166dp"
                 android:layout_marginStart="166dp"
                 android:text="@string/battleship"
-                android:textAlignment="viewStart"
+                android:textAlignment="center"
                 android:textColor="@android:color/holo_orange_dark"
-                android:textSize="22sp"/>
+                android:textSize="22sp" android:textStyle="normal|bold"/>
 
         <Button
                 android:id="@+id/quitButton"
@@ -89,18 +89,19 @@
                 android:id="@+id/countOfHits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="250dp"
+                android:layout_marginLeft="220dp"
                 android:layout_marginTop="250dp"
-                android:fontFamily="casual"
+                android:fontFamily="sans-serif"
                 android:text="@string/number_of_shots_0"
-                android:textColor="?attr/actionModeSplitBackground"
-                android:textSize="12sp"
+                android:textColor="@android:color/background_dark"
+                android:textSize="14sp"
                 android:textStyle="normal|bold"/>
         <TextView
                 android:text="Type of Player2:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/opponentsName"
+                android:fontFamily="sans-serif"
                 android:textStyle="normal|bold"
                 android:textColor="@android:color/background_dark"
                 android:layout_alignTop="@+id/countOfHits" android:layout_alignStart="@+id/computerBoard"/>
