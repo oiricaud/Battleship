@@ -10,10 +10,7 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.ParcelUuid;
+import android.os.*;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -49,7 +46,7 @@ public class GameController extends Activity {
     private BluetoothDevice mDevice;
     private BluetoothSocket mmSocket;
     private BluetoothDevice device;
-
+    private ProgressDialog mDialog;
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
     private Game game = new Game();
@@ -431,7 +428,6 @@ public class GameController extends Activity {
     private void placeBoatsView() {
         setContentView(R.layout.activity_human_place_boats);
         mRetainedFragment.setCurrentView("placeBoatsView");
-        game.getPlayer1Board().setNameOfPlayer(device.getName()); // Player 1 phone device name
         /* Define the image objects */
         ImageView aircraft = (ImageView) findViewById(R.id.aircraft);
         ImageView battleship = (ImageView) findViewById(R.id.battleship);
@@ -474,8 +470,6 @@ public class GameController extends Activity {
                             Log.w("Get name", mBluetoothAdapter.getName());
                             receiveDataOverBluetooth();
                             playingViaBluetooth();
-                            ProgressDialog.show(GameController.this, "Loading", "Wait for other player to finish " +
-                                    "place thier boats...");
                         }
                         break;
 
@@ -588,9 +582,9 @@ public class GameController extends Activity {
         setContentView(R.layout.current_game);
         mRetainedFragment.setCurrentView("playGameView");
         final Context activityContext = this;
-
+        mDialog = ProgressDialog.show(GameController.this, "Loading", "Wait for other player to " +
+                "finish place thier boats...", true);
         /* Define Player's 1 Board */
-
         game.getPlayer1Board().boardView = (BoardView) findViewById(R.id.humanBoard);
         game.getPlayer1Board().boardView.setBoard(game.getPlayer1Board());
         // And then draw its boats accordingly, so Player 1 can visually see their current boats //
@@ -614,8 +608,18 @@ public class GameController extends Activity {
             BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
             String player1DeviceName = myDevice.getName();
             String opponentsDeviceName = device.getName();
-            currentPlayerName.setText(player1DeviceName);
-            opponentsName.setText(opponentsDeviceName); // Opponents phone device name
+            game.getPlayer1Board().setNameOfPlayer(player1DeviceName); // Player 1 phone device name
+            game.getPlayer2Board().setNameOfPlayer(opponentsDeviceName);  // Player 2 phone device name
+            currentPlayerName.setText(player1DeviceName + "'s phone");
+            opponentsName.setText(opponentsDeviceName + "'s phone"); // Opponents phone device name
+
+            // Give the opponents player 10 seconds to look place boats.
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    mDialog.dismiss();
+                }
+            }, 10000);
         } catch (Exception e) {
             e.printStackTrace();
         }
