@@ -6,9 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
     <style name="OneVersusOne" parent="android:style/Widget.Material.Button">
         <item name="android:background">@drawable/raised_button_background</item>
+    </style>
+    <style name="MyRedButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">#d9534f</item>
+        <item name="android:textColor">#ffff</item>
     </style>
 
 </resources>

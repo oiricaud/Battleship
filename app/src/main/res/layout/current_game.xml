@@ -27,13 +27,13 @@
 
         <Button
                 android:id="@+id/quitButton"
+                android:theme="@style/MyRedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/newButton"
                 android:layout_alignStart="@+id/newButton"
                 android:layout_below="@+id/newButton"
                 android:layout_marginTop="38dp"
-                android:background="@android:color/holo_red_light"
                 android:text="Quit"
                 android:textStyle="bold"/>
 
@@ -48,7 +48,6 @@
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="18dp"
                 android:layout_toRightOf="@+id/humanBoard"
-                android:background="@android:color/holo_green_light"
                 android:text="@string/new_button_label"/>
 
         <edu.utep.cs.cs4330.battleship.BoardView
@@ -88,14 +87,13 @@
         <TextView
                 android:id="@+id/countOfHits"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="220dp"
+                android:layout_marginLeft="200dp"
                 android:layout_marginTop="250dp"
                 android:fontFamily="sans-serif"
                 android:text="@string/number_of_shots_0"
                 android:textColor="@android:color/background_dark"
                 android:textSize="14sp"
-                android:textStyle="normal|bold"/>
+                android:textStyle="normal|bold" android:layout_height="50dp"/>
         <TextView
                 android:text="Type of Player2:"
                 android:layout_width="wrap_content"

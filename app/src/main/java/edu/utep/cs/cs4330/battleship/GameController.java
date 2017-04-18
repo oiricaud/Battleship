@@ -180,6 +180,7 @@ public class GameController extends Activity {
                         Log.w("ParcelUUid", String.valueOf(parcelUuid.getUuid()));
                         if (parcelUuid.getUuid().equals(ftpUID)) {
                             //longToast("Sending data");
+
                             isFileTransferSupported = true;
                             break;
                         }
@@ -551,7 +552,7 @@ public class GameController extends Activity {
         Button quitButton = (Button) findViewById(R.id.quitButton);
         currentPlayerName.setText(game.getPlayer1Board().getTypeOfPlayer());
         opponentsName.setText(game.getPlayer2Board().getTypeOfPlayer());
-
+        quitButton.setBackgroundResource(android.R.color.holo_red_dark);
         // Change font
         changeFont(newButton);
         changeFont(quitButton);
