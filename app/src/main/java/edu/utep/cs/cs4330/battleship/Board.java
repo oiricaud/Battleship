@@ -35,16 +35,16 @@ class Board {
         this.size = size;
         if (player.equals("Human")) {
             setTypeOfPlayer("Human");
+            defaultSettingsForHumanPlayer();
         }
         if (player.equals("Computer")) {
             setTypeOfPlayer("Computer");
             // Add random coordinates for a specific boat to the players board grid
-            addRandomCoordinatesForComputer();
+            defaultSettingsForComputerPlayer();
         }
-        defaultSettingsForBoats();
     }
 
-    private void defaultSettingsForBoats() {
+    private void defaultSettingsForHumanPlayer() {
         aircraft.setPlaced(false);
         battleship.setPlaced(false);
         destroyer.setPlaced(false);
@@ -53,12 +53,22 @@ class Board {
         setNumberOfShipsFloating(5);
     }
 
-    private void addRandomCoordinatesForComputer() {
-        addCoordinates(aircraft.map);
-        addCoordinates(battleship.map);
-        addCoordinates(destroyer.map);
-        addCoordinates(submarine.map);
-        addCoordinates(patrol.map);
+    private void defaultSettingsForComputerPlayer() {
+
+        addBoatToGrid(aircraft.randomCoordinates());
+        aircraft.setPlaced(true);
+
+        addBoatToGrid(battleship.randomCoordinates());
+        battleship.setPlaced(true);
+
+        addBoatToGrid(destroyer.randomCoordinates());
+        destroyer.setPlaced(true);
+
+        addBoatToGrid(submarine.randomCoordinates());
+        submarine.setPlaced(true);
+
+        addBoatToGrid(patrol.randomCoordinates());
+        patrol.setPlaced(true);
     }
 
     /**
@@ -73,7 +83,7 @@ class Board {
         return grid;
     }
 
-    void addCoordinates(int[][] coordinates) {
+    void addBoatToGrid(int[][] coordinates) {
         for (int i = 0; i < coordinates.length; i++) {
             for (int j = 0; j < coordinates.length; j++) {
                 if (coordinates[i][j] == 1) { // Aircraft ID

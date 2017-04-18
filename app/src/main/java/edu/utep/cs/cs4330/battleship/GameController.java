@@ -38,7 +38,7 @@ import static android.content.ContentValues.TAG;
  * bluetooth sockets for the players to play via bluetooth.
  */
 
-@SuppressWarnings("ALL")
+@SuppressWarnings( "ALL" )
 public class GameController extends Activity {
     private static final String TAG_RETAINED_FRAGMENT = "RetainedFragment";
     private static MediaPlayer mp;                     // For boats sound effects
@@ -141,57 +141,57 @@ public class GameController extends Activity {
 
 /* BEGIN BLUETOOTH STUFF */
 
-private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-            longToast("Device found");
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                longToast("Device found");
 
-        } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-            longToast("Device is now connected");
-            device.setPairingConfirmation(true);
-            Log.w("Get uuids", String.valueOf(device.getUuids()));
-            Log.w("Get bond state", String.valueOf(device.getBondState()));
-            Log.w("Get name", device.getName());
+            } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+                longToast("Device is now connected");
+                device.setPairingConfirmation(true);
+                Log.w("Get uuids", String.valueOf(device.getUuids()));
+                Log.w("Get bond state", String.valueOf(device.getBondState()));
+                Log.w("Get name", device.getName());
 
-            device = mBluetoothAdapter.getRemoteDevice(device.getAddress());
-            BluetoothSocket clientSocket;
-            try {
-                Log.w(TAG, "Remote device " + device);
-                ParcelUuid[] uuids = device.getUuids();
-                boolean isFileTransferSupported = false;
-                UUID ftpUID = UUID.fromString("00000000-0000-1000-8000-00805f9b34fb");
-                // Check if remote device supports file transfer
-                for (ParcelUuid parcelUuid : uuids) {
-                    Log.w("ParcelUUid", String.valueOf(parcelUuid.getUuid()));
-                    if (parcelUuid.getUuid().equals(ftpUID)) {
-                        longToast("Sending data");
-                        isFileTransferSupported = true;
-                        break;
+                device = mBluetoothAdapter.getRemoteDevice(device.getAddress());
+                BluetoothSocket clientSocket;
+                try {
+                    Log.w(TAG, "Remote device " + device);
+                    ParcelUuid[] uuids = device.getUuids();
+                    boolean isFileTransferSupported = false;
+                    UUID ftpUID = UUID.fromString("00000000-0000-1000-8000-00805f9b34fb");
+                    // Check if remote device supports file transfer
+                    for (ParcelUuid parcelUuid : uuids) {
+                        Log.w("ParcelUUid", String.valueOf(parcelUuid.getUuid()));
+                        if (parcelUuid.getUuid().equals(ftpUID)) {
+                            longToast("Sending data");
+                            isFileTransferSupported = true;
+                            break;
+                        }
                     }
-                }
-                if (!isFileTransferSupported) {
-                    Log.w(TAG, "Remote bluetooth device does not supports file transfer ");
+                    if (!isFileTransferSupported) {
+                        Log.w(TAG, "Remote bluetooth device does not supports file transfer ");
+                        return;
+                    }
+                    clientSocket = device.createRfcommSocketToServiceRecord(ftpUID);
+                    clientSocket.connect();
+                } catch (IOException e) {
                     return;
                 }
-                clientSocket = device.createRfcommSocketToServiceRecord(ftpUID);
-                clientSocket.connect();
-            } catch (IOException e) {
-                return;
-            }
-        } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-            longToast("Done searching");
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                longToast("Done searching");
 
-        } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
-            longToast("Device is about to disconnect");
-        } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-            longToast("Device has been disconnected");
+            } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
+                longToast("Device is about to disconnect");
+            } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+                longToast("Device has been disconnected");
+            }
         }
-    }
-};
+    };
 
     /**
      * @return if the device has bluetooth setting on.
@@ -215,9 +215,8 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
     /**
      * @param playerBoatCoordinates is the current coordinates of the player sending data over
-     *
      * @return true if there is a success sending data to other device
-     *         false if there is a failure of sending data to other device
+     * false if there is a failure of sending data to other device
      */
     private boolean sendDataOverBluetooth(int[][] playerBoatCoordinates) {
         return true;
@@ -277,6 +276,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 /* END BLUETOOTH STUFF */
 
 /* BEGIN SCREEN CONFIGURATIONS LOGIC */
+
     /**
      * @param newConfig When the user rotates their phone either from portrait to landscape or landscape to portrait,
      *                  often times activities are destroyed. This method stores the current view the user was currently
@@ -335,6 +335,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 /* END SCREEN CONFIGURATIONS LOGIC */
 
 /* BEGIN VIEWS */
+
     /**
      * This method launches the home.xml and waits for the user to begin a new game.
      */
@@ -497,6 +498,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
             }
         });
     }
+
     /**
      * At random, ships are placed either horizontally or vertically on a 10x10 board.
      * The user is able to interact with this board and creates (x,y) coordinates.
@@ -547,40 +549,42 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         Log.w("Humans board", Arrays.deepToString(game.getPlayer1Board().grid));
         longToast("Player " + game.getPlayer1Board().getTypeOfPlayer() + " tap " + game.getPlayer2Board()
                 .getTypeOfPlayer() + "'s board to shooot!");
+
+        // Handles the instance where the player1 touches player2's board.
         game.getPlayer2Board().boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
             /* After player taps on computers board */
             @Override
             public void onTouch(int x, int y) {
-
-                // Human shoots at Computers board
-                if (game.shootsAt(game.getPlayer2Board(), x, y)) { // Human hits a boat, paint red
-                    makeExplosionSound(activityContext);
-                    toast("HIT");
-                    game.getPlayer2Board().boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
-                } else { // Human misses, paint computers board white
-                    game.getPlayer2Board().boardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
-                    toast("That was close!");
-                    makeMissedSound(activityContext);
-                    game.getPlayer1Board().shoots(); // Increment counter for # of shots
-                    counter.setText(String.valueOf("Number of Shots: " + game.getPlayer1Board().getNumberOfShots()));
-
-                    // COMPUTER SHOOT AT HUMAN BOARD
-                    int randomX = generateRandomCoordinate(); // Generate random coordinates
-                    int randomY = generateRandomCoordinate(); // Generate random coordinates
-
-                    if (game.shootsAt(game.getPlayer1Board(), randomX, randomY)) {
-                        makeExplosionSound(activityContext);
+                if (!game.isGameOver()) {
+                    // Human shoots at Computers board
+                    if (game.shootsAt(game.getPlayer2Board(), x, y)) { // Human hits a boat, paint red
                         toast("HIT");
-                        game.getPlayer1Board().boardView.gameCoordinates[randomX][randomY] = 8; // Set it to 8 to indicate it is a hit
-                        game.getPlayer1Board().boardView.invalidate();
-                    } else {
-                        game.getPlayer1Board().boardView.gameCoordinates[randomX][randomY] = -9; // Set it to -9 to indicate it is a miss
-                        toast("That was close!");
+                        makeExplosionSound(activityContext);
+                    } else { // Human misses, paint computers board white
+                        toast("MISS");
                         makeMissedSound(activityContext);
+
+                        game.getPlayer1Board().shoots(); // Increment counter for # of shots
+                        counter.setText(String.valueOf("Number of Shots: " + game.getPlayer1Board().getNumberOfShots()));
+
+                        // COMPUTER SHOOT AT HUMAN BOARD
+                        int randomX = generateRandomCoordinate(); // Generate random coordinates
+                        int randomY = generateRandomCoordinate(); // Generate random coordinates
+
+                        if (game.shootsAt(game.getPlayer1Board(), randomX, randomY)) {
+                            makeExplosionSound(activityContext);
+                            toast("Your boat has been shot!");
+                            game.getPlayer1Board().boardView.invalidate();
+                        } else {
+                            game.getPlayer1Board().boardView.invalidate();
+                            makeMissedSound(activityContext);
+                        }
+                        game.getPlayer1Board().boardView.invalidate();
                     }
-                    game.getPlayer1Board().boardView.invalidate();
+                    mRetainedFragment.setData(game);
+                } else {
+                    gameEnded(activityContext); // Game has ended display what player won.
                 }
-                mRetainedFragment.setData(game);
             }
         });
     }
@@ -599,6 +603,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
     private void fadingTransition() {
         GameController.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
     /**
      * Show a long toast message.
      */
@@ -609,6 +614,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
             public void onTick(long millisUntilFinished) {
                 toast.show();
             }
+
             public void onFinish() {
                 toast.cancel();
             }
@@ -625,6 +631,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
             public void onTick(long millisUntilFinished) {
                 toast.show();
             }
+
             public void onFinish() {
                 toast.cancel();
             }
@@ -719,7 +726,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                         "Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                toast("New GameController successfully created!");
+                                toast("New game is successfully created!");
                                 fadingTransition(); // Fading Transition Effect
                                 restartActivity();
                             }
@@ -736,6 +743,32 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                 alert.show();
             }
         });
+    }
+
+    private void gameEnded(Context context) {
+        // Alert Dialogue
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Game has ended player: " + " won the game. Want to start a new game?");
+        builder.setCancelable(true);
+        builder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        toast("New game is successfully created!");
+                        fadingTransition(); // Fading Transition Effect
+                        restartActivity();
+                    }
+                });
+
+        builder.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 /* END BUTTONS LOGIC */
 
@@ -856,15 +889,15 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         }
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings( "deprecation" )
     private class MyDragListener implements View.OnDragListener {
-        @SuppressWarnings("deprecation")
+        @SuppressWarnings( "deprecation" )
         Drawable accept = getResources().getDrawable(R.drawable.accept);
-        @SuppressWarnings("deprecation")
+        @SuppressWarnings( "deprecation" )
         Drawable reject = getResources().getDrawable(R.drawable.reject);
-        @SuppressWarnings("deprecation")
+        @SuppressWarnings( "deprecation" )
         Drawable neutral = getResources().getDrawable(R.drawable.neutral);
-        @SuppressWarnings("deprecation")
+        @SuppressWarnings( "deprecation" )
         Drawable board_color = getResources().getDrawable(R.drawable.board_color);
         // Make images smaller
         int width = 100;
@@ -874,7 +907,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         private int tempX = 0;
         private int tempY = 0;
 
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+        @TargetApi( Build.VERSION_CODES.JELLY_BEAN )
         @Override
         public boolean onDrag(View v, DragEvent event) {
             int sdk = android.os.Build.VERSION.SDK_INT;
@@ -967,7 +1000,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                                 }
 
                                 game.getPlayer1Board().aircraft.map = boatsCoordinates;
-                                game.getPlayer1Board().addCoordinates(game.getPlayer1Board().aircraft.map);
+                                game.getPlayer1Board().addBoatToGrid(game.getPlayer1Board().aircraft.map);
                                 game.getPlayer1Board().aircraft.setPlaced(true);
                                 break;
 
@@ -989,7 +1022,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                                     }
                                 }
                                 game.getPlayer1Board().battleship.map = boatsCoordinates;
-                                game.getPlayer1Board().addCoordinates(game.getPlayer1Board().battleship.map);
+                                game.getPlayer1Board().addBoatToGrid(game.getPlayer1Board().battleship.map);
                                 game.getPlayer1Board().battleship.setPlaced(true);
                                 break;
 
@@ -1011,7 +1044,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                                     }
                                 }
                                 game.getPlayer1Board().destroyer.map = boatsCoordinates;
-                                game.getPlayer1Board().addCoordinates(game.getPlayer1Board().destroyer.map);
+                                game.getPlayer1Board().addBoatToGrid(game.getPlayer1Board().destroyer.map);
                                 game.getPlayer1Board().destroyer.setPlaced(true);
                                 break;
 
@@ -1033,7 +1066,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                                     }
                                 }
                                 game.getPlayer1Board().submarine.map = boatsCoordinates;
-                                game.getPlayer1Board().addCoordinates(game.getPlayer1Board().submarine.map);
+                                game.getPlayer1Board().addBoatToGrid(game.getPlayer1Board().submarine.map);
                                 game.getPlayer1Board().submarine.setPlaced(true);
                                 break;
 
@@ -1055,7 +1088,7 @@ private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                                     }
                                 }
                                 game.getPlayer1Board().patrol.map = boatsCoordinates;
-                                game.getPlayer1Board().addCoordinates(game.getPlayer1Board().patrol.map);
+                                game.getPlayer1Board().addBoatToGrid(game.getPlayer1Board().patrol.map);
                                 game.getPlayer1Board().patrol.setPlaced(true);
                                 break;
                         }

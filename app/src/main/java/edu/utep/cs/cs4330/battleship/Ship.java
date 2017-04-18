@@ -10,12 +10,12 @@ public class Ship {
     private boolean isPlaced;
     private boolean shootShip;
     private String nameOfShip;
+    private String position;
 
     Ship(int size, String ship) {
         setSize(size);
         setSink(false);
         nameShip(ship);
-        randomCoordinates();
     }
 
     void clearCoordinates() {
@@ -31,14 +31,14 @@ public class Ship {
         return map;
     }
 
-    private void randomCoordinates() {
+    int[][] randomCoordinates() {
         int coordinatesRange = (map.length - getSizeOfBoat());
         int randomX = (int) (Math.random() * coordinatesRange);
         int randomY = (int) (Math.random() * coordinatesRange);
         int direction = (int) (Math.random() * 2);
 
         if (direction == 1) { // if boat is horizontal
-            setPosition();
+            setPosition("horizontal");
             for (int i = 0; i < getSizeOfBoat(); i++) { // place boat horizontal
                 if (getNameOfShip().equals("aircraft")) {
                     map[randomX][randomY + i] = 1; // Adding to the right of the head
@@ -57,7 +57,7 @@ public class Ship {
                 }
             }
         } else {
-            setPosition();
+            setPosition("vertical");
             for (int j = 0; j < getSizeOfBoat(); j++) { // place boat vertical
                 if (getNameOfShip().equals("aircraft")) {
                     map[randomX + j][randomY] = 1; // Adding below of the head
@@ -76,6 +76,7 @@ public class Ship {
                 }
             }
         }
+        return map;
     }
 
 
@@ -87,9 +88,13 @@ public class Ship {
         this.size = size;
     }
 
-    private void setPosition() {
+    private void setPosition(String position) {
+        this.position = position;
     }
 
+    private String getPosition() {
+        return position;
+    }
     private void setSink(boolean sink) {
     }
 

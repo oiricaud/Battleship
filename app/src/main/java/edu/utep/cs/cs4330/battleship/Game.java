@@ -56,38 +56,56 @@ class Game {
         Log.w("Y", String.valueOf(y));
         if (opponentsBoard.grid[x][y] >= 1) {
             int boatID = opponentsBoard.grid[x][y];
-            if (boatID == 1) { // Shot aircraft
-                opponentsBoard.aircraft.hit();
-                opponentsBoard.addCoordinates(opponentsBoard.aircraft.map);
-                opponentsBoard.aircraft.addCoordinates(x, y);
-                return true;
-            }
-            if (boatID == 2) { // Shot battleship
-                opponentsBoard.battleship.hit();
-                opponentsBoard.addCoordinates(opponentsBoard.battleship.map);
-                opponentsBoard.battleship.addCoordinates(x, y);
-                return true;
-            }
-            if (boatID == 3) { // Shot destroyer
-                opponentsBoard.destroyer.hit();
-                opponentsBoard.addCoordinates(opponentsBoard.destroyer.map);
-                opponentsBoard.destroyer.addCoordinates(x, y);
-                return true;
-            }
-            if (boatID == 4) { // Shot submarine
-                opponentsBoard.submarine.hit();
-                opponentsBoard.addCoordinates(opponentsBoard.submarine.map);
-                opponentsBoard.submarine.addCoordinates(x, y);
-                return true;
-            }
-            if (boatID == 5) { // Shot patrol
-                opponentsBoard.patrol.hit();
-                opponentsBoard.addCoordinates(opponentsBoard.patrol.map);
-                opponentsBoard.patrol.addCoordinates(x, y);
-                return true;
-            }
 
+            switch (boatID) {
+                case 1:  // Shot aircraft
+                    opponentsBoard.aircraft.hit();
+                    opponentsBoard.addBoatToGrid(opponentsBoard.aircraft.map);
+                    opponentsBoard.aircraft.addCoordinates(x, y);
+                    opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+
+                    getPlayer2Board().boardView.invalidate();
+                    return true;
+
+                case 2:  // Shot battleship
+                    opponentsBoard.battleship.hit();
+                    opponentsBoard.addBoatToGrid(opponentsBoard.battleship.map);
+                    opponentsBoard.battleship.addCoordinates(x, y);
+                    opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+
+                    getPlayer2Board().boardView.invalidate();
+                    return true;
+
+                case 3:  // Shot destroyer
+                    opponentsBoard.destroyer.hit();
+                    opponentsBoard.addBoatToGrid(opponentsBoard.destroyer.map);
+                    opponentsBoard.destroyer.addCoordinates(x, y);
+                    opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+
+                    getPlayer2Board().boardView.invalidate();
+                    return true;
+
+                case 4:  // Shot submarine
+                    opponentsBoard.submarine.hit();
+                    opponentsBoard.addBoatToGrid(opponentsBoard.submarine.map);
+                    opponentsBoard.submarine.addCoordinates(x, y);
+                    opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+
+                    getPlayer2Board().boardView.invalidate();
+                    return true;
+
+                case 5:  // Shot patrol
+                    opponentsBoard.patrol.hit();
+                    opponentsBoard.addBoatToGrid(opponentsBoard.patrol.map);
+                    opponentsBoard.patrol.addCoordinates(x, y);
+                    opponentsBoard.boardView.gameCoordinates[x][y] = 8; // Set it to 8 to indicate it is a hit
+
+                    getPlayer2Board().boardView.invalidate();
+                    return true;
+            }
         }
+        opponentsBoard.boardView.gameCoordinates[x][y] = -9; // Set it to -9 to indicate it is a miss
+        getPlayer2Board().boardView.invalidate();
         return false;
     }
     public String getTypeOfGame() {
