@@ -222,10 +222,11 @@ public class GameController extends Activity {
         return true;
     }
 
-    private int[][] receiveDataOverBluetooth() {
+    private Board receiveDataOverBluetooth() {
         int[][] opponentsBoatCoordinates = new int[10][10];
         // Do bluetooth stuff here
-        return opponentsBoatCoordinates;
+        Board playersData = new Board(10, "Online player");
+        return playersData;
         /*
         private void init() throws IOException {
 
@@ -474,8 +475,7 @@ public class GameController extends Activity {
                             Log.w("device name", device.getName());
                             Log.w("Get name", mBluetoothAdapter.getName());
                             receiveDataOverBluetooth();
-
-                            //playGameView();
+                            playingViaBluetooth();
                             ProgressDialog.show(GameController.this, "Loading", "Wait for other player to finish " +
                                     "place thier boats...");
                         }
@@ -521,6 +521,88 @@ public class GameController extends Activity {
         game.getPlayer1Board().boardView.coordinatesOfPlayer1Ships = game.getPlayer1Board().readBoatCoordinates();
 
         /* Define Player's 2 Board */
+        game.getPlayer2Board().boardView = (BoardView) findViewById(R.id.computerBoard);
+        game.getPlayer2Board().boardView.setBoard(game.getPlayer2Board());
+
+        // Define buttons and text views here
+        TextView currentPlayerName = (TextView) findViewById(R.id.currentPlayerName);
+        TextView opponentsName = (TextView) findViewById(R.id.opponentsName);
+        TextView battleshipTitle = (TextView) findViewById(R.id.BattleShip);
+        final TextView counter = (TextView) findViewById(R.id.countOfHits);
+        Button newButton = (Button) findViewById(R.id.newButton);
+        Button quitButton = (Button) findViewById(R.id.quitButton);
+        currentPlayerName.setText(game.getPlayer1Board().getTypeOfPlayer());
+        opponentsName.setText(game.getPlayer2Board().getTypeOfPlayer());
+
+        // Change font
+        changeFont(newButton);
+        changeFont(quitButton);
+        changeFont(battleshipTitle);
+        changeFont(counter);
+
+        // The predefined methods that allow the user to quit or start a new game
+        newActivity(newButton, activityContext);
+        quitActivity(quitButton, activityContext);
+
+        /* End Computer Stuff GameController*/
+        Log.w("Computers board", Arrays.deepToString(game.getPlayer2Board().grid));
+        Log.w("Humans board", Arrays.deepToString(game.getPlayer1Board().grid));
+        longToast("Player " + game.getPlayer1Board().getTypeOfPlayer() + " tap " + game.getPlayer2Board()
+                .getTypeOfPlayer() + "'s board to shooot!");
+
+        // Handles the instance where the player1 touches player2's board.
+        game.getPlayer2Board().boardView.addBoardTouchListener(new BoardView.BoardTouchListener() {
+            /* After player taps on computers board */
+            @Override
+            public void onTouch(int x, int y) {
+                if (!game.isGameOver()) {
+                    // Human shoots at Computers board
+                    if (game.shootsAt(game.getPlayer2Board(), x, y)) { // Human hits a boat, paint red
+                        toast("HIT");
+                        makeExplosionSound(activityContext);
+                    } else { // Human misses, paint computers board white
+                        toast("MISS");
+                        makeMissedSound(activityContext);
+
+                        game.getPlayer1Board().shoots(); // Increment counter for # of shots
+                        counter.setText(String.valueOf("Number of Shots: " + game.getPlayer1Board().getNumberOfShots()));
+
+                        // COMPUTER SHOOT AT HUMAN BOARD
+                        int randomX = generateRandomCoordinate(); // Generate random coordinates
+                        int randomY = generateRandomCoordinate(); // Generate random coordinates
+
+                        if (game.shootsAt(game.getPlayer1Board(), randomX, randomY)) {
+                            makeExplosionSound(activityContext);
+                            toast("Your boat has been shot!");
+                            game.getPlayer1Board().boardView.invalidate();
+                        } else {
+                            game.getPlayer1Board().boardView.invalidate();
+                            makeMissedSound(activityContext);
+                        }
+                        game.getPlayer1Board().boardView.invalidate();
+                    }
+                    mRetainedFragment.setData(game);
+                } else {
+                    gameEnded(activityContext); // Game has ended display what player won.
+                }
+            }
+        });
+    }
+
+    private void playingViaBluetooth() {
+        setContentView(R.layout.current_game);
+        mRetainedFragment.setCurrentView("playGameView");
+        final Context activityContext = this;
+
+        /* Define Player's 1 Board */
+        game.getPlayer1Board().boardView = (BoardView) findViewById(R.id.humanBoard);
+        game.getPlayer1Board().boardView.setBoard(game.getPlayer1Board());
+        // And then draw its boats accordingly, so Player 1 can visually see their current boats //
+        game.getPlayer1Board().boardView.coordinatesOfPlayer1Ships = game.getPlayer1Board().readBoatCoordinates();
+
+        /* Define Player's 2 Board */
+        Board player2Data = receiveDataOverBluetooth(); // Receives data over bluetooth
+        game.setPlayer2Board(player2Data);
         game.getPlayer2Board().boardView = (BoardView) findViewById(R.id.computerBoard);
         game.getPlayer2Board().boardView.setBoard(game.getPlayer2Board());
 
