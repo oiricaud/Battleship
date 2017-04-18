@@ -186,9 +186,9 @@ public class GameController extends Activity {
                 longToast("Done searching");
 
             } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
-                longToast("Device is about to disconnect");
+                // longToast("Device is about to disconnect");
             } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                longToast("Device has been disconnected");
+                //  longToast("Device has been disconnected");
             }
         }
     };
@@ -366,9 +366,7 @@ public class GameController extends Activity {
                     public void onClick(View v) {
                         // Set up network
                         game.setTypeOfGame("1 VS 1");
-                        if (checkBluetoothConnection()) {
-                            placeBoatsView();
-                        }
+                        checkBluetoothConnection();
                         if (mBluetoothAdapter.isEnabled() && device != null) {
                             placeBoatsView();
                         }
@@ -433,7 +431,7 @@ public class GameController extends Activity {
     private void placeBoatsView() {
         setContentView(R.layout.activity_human_place_boats);
         mRetainedFragment.setCurrentView("placeBoatsView");
-
+        game.getPlayer1Board().setNameOfPlayer(device.getName()); // Player 1 phone device name
         /* Define the image objects */
         ImageView aircraft = (ImageView) findViewById(R.id.aircraft);
         ImageView battleship = (ImageView) findViewById(R.id.battleship);
@@ -459,7 +457,7 @@ public class GameController extends Activity {
 
         /* Define the particular location where these boat images are allowed to be dragged onto */
         findViewById(R.id.humanBoardPlacer).setOnDragListener(new MyDragListener());
-
+        ;
         Button next = (Button) findViewById(R.id.next); // Advance to the next view
         Button random = (Button) findViewById(R.id.random); // Place boats at random
         changeFont(next);
@@ -592,6 +590,7 @@ public class GameController extends Activity {
         final Context activityContext = this;
 
         /* Define Player's 1 Board */
+
         game.getPlayer1Board().boardView = (BoardView) findViewById(R.id.humanBoard);
         game.getPlayer1Board().boardView.setBoard(game.getPlayer1Board());
         // And then draw its boats accordingly, so Player 1 can visually see their current boats //
@@ -610,8 +609,16 @@ public class GameController extends Activity {
         final TextView counter = (TextView) findViewById(R.id.countOfHits);
         Button newButton = (Button) findViewById(R.id.newButton);
         Button quitButton = (Button) findViewById(R.id.quitButton);
-        currentPlayerName.setText(game.getPlayer1Board().getTypeOfPlayer());
-        opponentsName.setText(game.getPlayer2Board().getTypeOfPlayer());
+
+        try {
+            BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+            String player1DeviceName = myDevice.getName();
+            String opponentsDeviceName = device.getName();
+            currentPlayerName.setText(player1DeviceName);
+            opponentsName.setText(opponentsDeviceName); // Opponents phone device name
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Change font
         changeFont(newButton);
@@ -649,7 +656,7 @@ public class GameController extends Activity {
                     // PLAYER 2 SHOOTS AT PLAYER 1
                     // DO BLUETOOTH STUFF HERE SUCH AS OBTAINING THE X & Y COORDINATES FROM PLAYER 2
 
-                    
+
                     // STORE FRAGMENT, IN CASE PHONE SCREEN ORIENTATION HAS CHANGED
                     mRetainedFragment.setData(game);
                 } else {

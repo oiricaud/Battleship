@@ -19,6 +19,7 @@ class Board {
     private int y;
     private int numberOfShipsFloating;
     private String typeOfPlayer;
+    private String nameOfPlayer;
     private int numberOfShots;
     private String address;
     BoardView boardView;
@@ -183,5 +184,13 @@ class Board {
      */
     public boolean playerPlacedAllBoats() {
         return aircraft.isPlaced() && battleship.isPlaced() && destroyer.isPlaced() && submarine.isPlaced() && patrol.isPlaced();
+    }
+
+    public String getNameOfPlayer() {
+        return nameOfPlayer;
+    }
+
+    public void setNameOfPlayer(String nameOfPlayer) {
+        this.nameOfPlayer = nameOfPlayer;
     }
 }
