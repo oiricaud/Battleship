@@ -61,7 +61,6 @@ public class GameController extends Activity {
     private BluetoothSocket clientSocket;
     private ProgressDialog mDialog;
     private byte[] mmBuffer; // mmBuffer store for the stream
-    //private BluetoothChatService mChatService = null;
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
     private Game game = new Game();
@@ -162,14 +161,14 @@ public class GameController extends Activity {
             BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
 
             /* If device does not support bluetooth */
-            if(btAdapter == null) {
+            if (btAdapter == null) {
                 longToast("Device does not support Bluetooth!");
             }
 
             Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-            if(pairedDevices.size() > 0){
+            if (pairedDevices.size() > 0) {
                 //There are paired devices. Get the name and address of each paired device
-                for(BluetoothDevice device : pairedDevices){
+                for (BluetoothDevice device : pairedDevices) {
                     String deviceName = device.getName();
                     String deviceHardwareAddress = device.getAddress(); // MAC Address
                 }
@@ -271,7 +270,6 @@ public class GameController extends Activity {
             //mOutEditText.setText(mOutStringBuffer);
         }
     }
-
     public void run() {
         mmBuffer = new byte[1024];
         int numBytes; // bytes returned from read()
@@ -653,7 +651,7 @@ public class GameController extends Activity {
             game.getPlayer2Board().setNameOfPlayer(opponentsDeviceName);  // Player 2 phone device name
             currentPlayerName.setText(player1DeviceName + "'s board");
             opponentsName.setText(opponentsDeviceName + "'s board"); // Opponents phone device name
-           // sendDataOverBluetooth();
+            //sendDataOverBluetooth();
 
             // Give the opponent player 10 seconds to place boats.
             Handler handler = new Handler();
