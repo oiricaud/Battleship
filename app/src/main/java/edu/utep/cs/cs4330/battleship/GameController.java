@@ -255,7 +255,7 @@ public class GameController extends Activity {
     private void sendDataOverBluetooth(int coor) {
         // Check that we're actually connected before trying anything
         if (BluetoothController.getState() != BluetoothController.STATE_CONNECTED) {
-            longToast("Device not counnected");
+            longToast("Device not connected");
             return;
         }
         String message = String.valueOf(coor);
@@ -302,7 +302,7 @@ public class GameController extends Activity {
                     MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
             writtenMsg.sendToTarget();
         } catch (IOException e) {
-            Log.e(TAG, "Error occurred when sending data", e);
+            Log.e(TAG, "Sending data... error", e);
 
             // Send a failure message back to the activity.
             Message writeErrorMsg =
