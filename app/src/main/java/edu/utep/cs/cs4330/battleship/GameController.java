@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
@@ -60,7 +61,7 @@ public class GameController extends Activity {
     private BluetoothSocket clientSocket;
     private ProgressDialog mDialog;
     private byte[] mmBuffer; // mmBuffer store for the stream
-    private BluetoothChatService mChatService = null;
+    //private BluetoothChatService mChatService = null;
     private RetainedFragment mRetainedFragment; // If the screen is changed we can restore data and layouts
     private String fontPath;
     private Game game = new Game();
@@ -158,6 +159,21 @@ public class GameController extends Activity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+
+            /* If device does not support bluetooth */
+            if(btAdapter == null) {
+                longToast("Device does not support Bluetooth!");
+            }
+
+            Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+            if(pairedDevices.size() > 0){
+                //There are paired devices. Get the name and address of each paired device
+                for(BluetoothDevice device : pairedDevices){
+                    String deviceName = device.getName();
+                    String deviceHardwareAddress = device.getAddress(); // MAC Address
+                }
+            }
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 longToast("Device found");
@@ -237,18 +253,18 @@ public class GameController extends Activity {
      * @return true if there is a success sending data to other device
      * false if there is a failure of sending data to other device
      */
-    private void sendDataOverBluetooth() {
+    private void sendDataOverBluetooth(int coor) {
         // Check that we're actually connected before trying anything
-        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+        if (BluetoothController.getState() != BluetoothController.STATE_CONNECTED) {
             longToast("Device not counnected");
             return;
         }
-        String message = "Hello";
+        String message = String.valueOf(coor);
         // Check that there's actually something to send
         if (message.length() > 0) {
             // Get the message bytes and tell the BluetoothChatService to write
             byte[] send = message.getBytes();
-            mChatService.write(send);
+            write(send);
 
             // Reset out string buffer to zero and clear the edit text field
             mOutStringBuffer.setLength(0);
@@ -637,7 +653,7 @@ public class GameController extends Activity {
             game.getPlayer2Board().setNameOfPlayer(opponentsDeviceName);  // Player 2 phone device name
             currentPlayerName.setText(player1DeviceName + "'s board");
             opponentsName.setText(opponentsDeviceName + "'s board"); // Opponents phone device name
-            //sendDataOverBluetooth();
+           // sendDataOverBluetooth();
 
             // Give the opponent player 10 seconds to place boats.
             Handler handler = new Handler();
@@ -669,19 +685,19 @@ public class GameController extends Activity {
             public void onTouch(int x, int y) {
                 if (!game.isGameOver()) {
                     // PLAYER 1 SHOOTS AT PLAYER 2
+                    sendDataOverBluetooth(x);
+                    sendDataOverBluetooth(y);
                     if (game.shootsAt(game.getPlayer2Board(), x, y)) { // Human hits a boat, paint red
                         toast("HIT");
                         makeExplosionSound(activityContext);
                     } else { // Human misses, paint computers board white
                         toast("MISS");
                         makeMissedSound(activityContext);
-
                         game.getPlayer1Board().shoots(); // Increment counter for # of shots
                         counter.setText(String.valueOf("# Shots Fired: " + game.getPlayer1Board().getNumberOfShots()));
                     }
                     // PLAYER 2 SHOOTS AT PLAYER 1
                     // DO BLUETOOTH STUFF HERE SUCH AS OBTAINING THE X & Y COORDINATES FROM PLAYER 2
-
                     // STORE FRAGMENT, IN CASE PHONE SCREEN ORIENTATION HAS CHANGED
                     mRetainedFragment.setData(game);
                 } else {
